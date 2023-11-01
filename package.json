@@ -1,7 +1,7 @@
 {
-  "name": "bloggify-kp",
-  "private": true,
-  "version": "0.0.0",
+  "name": "infinite-talk",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,7 @@
   "dependencies": {
     "aos": "^2.3.4",
     "autoprefixer": "^10.4.16",
+    "axios": "^1.6.0",
     "flowbite-react": "^0.6.4",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
