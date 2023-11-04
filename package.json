@@ -2,6 +2,7 @@
   "name": "infinitetalk-be",
   "version": "1.0.0",
   "description": "API For InfiniteTalk!",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",

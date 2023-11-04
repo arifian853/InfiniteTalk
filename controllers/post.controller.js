@@ -1,27 +1,27 @@
-const Posts = require('../models/postData.model')
+// const Posts = require('../models/postData.model')
 
-exports.getPosts = async (req, res) => {
-    try {
-        const response = await Posts.find();
-        res.json(response);
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-}
+// exports.getPosts = async (req, res) => {
+//     try {
+//         const response = await Posts.find();
+//         res.json(response);
+//     } catch (error) {
+//         console.log(error.message)
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// }
 
-exports.sendPost = async (req, res) => { 
-    const { whoCreated, title, content } = req.body
+// exports.sendPost = async (req, res) => { 
+//     const { whoCreated, title, content } = req.body
 
-    const post = new Posts({
-        whoCreated: whoCreated,
-        title: title,
-        content: content,
-    })
+//     const post = new Posts({
+//         whoCreated: whoCreated,
+//         title: title,
+//         content: content,
+//     })
 
-    post.save()
+//     post.save()
 
-    return res.status(201).json({
-        message: 'Posted!',
-    })
-}
+//     return res.status(201).json({
+//         message: 'Posted!',
+//     })
+// }

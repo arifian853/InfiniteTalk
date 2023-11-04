@@ -1,37 +1,37 @@
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const cors = require('cors')
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
 
-app.use(cors())
-app.use(bodyParser.json())
+const app = express();
 
-const userRoute = require('./routes/user.routes') 
-const postsRoute = require('./routes/posts.routes')
+dotenv.config();
+
+app.use(cors());
+app.use(express.json());
+
+import userRoutes from "./routes/userRoutes.js";
+
+// import postsRoute from './routes/posts.routes';
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true, 
-      useUnifiedTopology: true
-    })
-  
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
     console.log(`MongoDB Database Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log(error); 
+    console.error(error);
     process.exit(1);
   }
-}
+};
 
-// Use Express Router for better route management
+app.use('/api/user', userRoutes);
+// app.use('/posts', postsRoute);
 
-app.use('/user', userRoute)
-app.use('/posts', postsRoute)
-
-// Error handling middleware
-app.use((err, req, res, next) => { 
+app.use((err, res,) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
@@ -42,4 +42,4 @@ connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running at PORT ${PORT}`);
   });
-}) 
+});

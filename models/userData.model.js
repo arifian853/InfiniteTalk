@@ -1,6 +1,7 @@
-const mongoose = require('mongoose')
+import { Schema, model } from "mongoose";
+import jwt from "jsonwebtoken";
 
-const userDataSchema = new mongoose.Schema({
+const userDataSchema = new Schema({
     username: {
         type: String,
         required: true,
@@ -19,21 +20,41 @@ const userDataSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
-    }, 
-    program: {
-        type: String,
     },
-    accountRole: {
+    program: {
+        type: String
+    },
+    mentor: {
+        type: Boolean,
+        default: false
+    },
+    admin: {
+        type: Boolean,
+        default: false
+    },
+    verificationCode: {
         type: String,
+        required: false 
     },
     lastLogin: {
-        type: Date, 
-        default: null 
+        type: Date,
+        default: null
     },
     createdAt: {
         type: Date,
         default: Date.now
     }
-})
+},
+{
+    timestamps: true
+});
 
-module.exports = mongoose.model('User', userDataSchema)
+
+userDataSchema.methods.generateJWT = async function () {
+    return await jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+  };
+
+const User = model('User', userDataSchema);
+export default User;
