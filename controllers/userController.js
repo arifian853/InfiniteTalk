@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs';
 
 const UserRegistration = async (req, res, next) => {
     try {
-        const {email, password, fullName, program, mentor, admin, username } = req.body;
+        const { email, password, fullName, program, mentor, admin, username } = req.body;
 
         // check whether the user exists or not
         let user = await User.findOne({ email });
@@ -21,7 +21,7 @@ const UserRegistration = async (req, res, next) => {
                 message: 'Username already used. Please choose another username.'
             });
         }
-        
+
         const hashPassword = await bcryptjs.hash(password, 15);
 
         // creating a new user
@@ -38,7 +38,7 @@ const UserRegistration = async (req, res, next) => {
         return res.status(201).json({
             _id: user._id,
             username: user.username,
-            avatar: user.avatar, 
+            avatar: user.avatar,
             fullName: user.fullName,
             email: user.email,
             admin: user.admin,
@@ -54,13 +54,13 @@ const UserLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
-        let userEmail = await User.findOne({ email });
+        let user = await User.findOne({ email });
 
-        if (!userEmail) {
+        if (!user) {
             throw new Error("Email not found");
         }
-
-        if (await user.comparePassword(password)) {
+        const isPasswordMatch = await bcryptjs.compare(password, user.password);
+        if (isPasswordMatch) {
             return res.status(201).json({
                 _id: user._id,
                 avatar: user.avatar,
@@ -68,6 +68,7 @@ const UserLogin = async (req, res, next) => {
                 email: user.email,
                 verified: user.verified,
                 admin: user.admin,
+                mentor: user.mentor,
                 token: await user.generateJWT(),
             });
         } else {
@@ -78,4 +79,27 @@ const UserLogin = async (req, res, next) => {
     }
 };
 
-export { UserRegistration, UserLogin };
+const UserProfile = async (req, res, next) => {
+    try {
+        let user = await User.findById(req.user._id);
+
+        if (user) {
+            return res.status(201).json({
+                _id: user._id,
+                avatar: user.avatar,
+                name: user.name,
+                email: user.email,
+                verified: user.verified,
+                admin: user.admin,
+            });
+        } else {
+            let error = new Error("User not found");
+            error.statusCode = 404;
+            next(error);
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { UserRegistration, UserLogin, UserProfile };

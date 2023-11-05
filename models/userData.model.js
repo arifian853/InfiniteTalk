@@ -17,6 +17,10 @@ const userDataSchema = new Schema({
         type: String,
         required: true
     },
+    avatar: {
+        type: String,
+        default: ""
+    },
     fullName: {
         type: String,
         required: true
@@ -34,27 +38,27 @@ const userDataSchema = new Schema({
     },
     verificationCode: {
         type: String,
-        required: false 
+        required: false
     },
     lastLogin: {
         type: Date,
         default: null
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
 },
-{
-    timestamps: true
-});
+    {
+        timestamps: true
+    });
 
 
 userDataSchema.methods.generateJWT = async function () {
     return await jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
+        expiresIn: "30d",
     });
-  };
+};
+
+// userDataSchema.methods.comparePassword = async function (enteredPassword) {
+//     return await compare(enteredPassword, this.password);
+// };
 
 const User = model('User', userDataSchema);
 export default User;

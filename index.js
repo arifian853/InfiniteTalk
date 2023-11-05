@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import { errorResponserHandler, invalidPathHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
@@ -9,6 +10,7 @@ dotenv.config();
 
 app.use(cors());
 app.use(express.json());
+
 
 import userRoutes from "./routes/userRoutes.js";
 
@@ -35,6 +37,9 @@ app.use((err, res,) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
+
+app.use(errorResponserHandler);
+app.use(invalidPathHandler);
 
 const PORT = process.env.PORT || 7777;
 
