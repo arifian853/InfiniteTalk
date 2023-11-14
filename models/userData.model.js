@@ -49,16 +49,11 @@ const userDataSchema = new Schema({
         timestamps: true
     });
 
-
 userDataSchema.methods.generateJWT = async function () {
     return await jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
 };
-
-// userDataSchema.methods.comparePassword = async function (enteredPassword) {
-//     return await compare(enteredPassword, this.password);
-// };
 
 const User = model('User', userDataSchema);
 export default User;
