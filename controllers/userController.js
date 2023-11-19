@@ -13,7 +13,8 @@ const generateRandomBase32 = () => {
 
 const generateTOTP = (base32Secret) => {
     return new OTPAuth.TOTP({
-        issuer: 'YOUR_ISSUER_NAME',
+        issuer: 'InfiniteTalk!',
+        label: User.email,
         algorithm: 'SHA1',
         digits: 6,
         secret: base32Secret,
@@ -75,7 +76,8 @@ const UserRegistration = async (req, res, next) => {
             admin: user.admin,
             mentor: user.mentor,
             token: await user.generateJWT(),
-            otp_auth_url: otpAuthURL, // Include this in the response
+            otp_auth_url: otpAuthURL,
+            message: `User created , Welcome ${username}`, // Include this in the response
         });
     } catch (error) {
         next(error);
@@ -311,6 +313,47 @@ const UpdateProfilePicture = async (req, res, next) => {
     }
 };
 
+const ValidateOTP = async (req, res, next) => {
+    try {
+      const { user_id, token } = req.body;
+      const user = await User.findById(user_id);
+  
+      const message = "Token is invalid or user doesn't exist";
+      if (!user) {
+        return res.status(401).json({
+          status: "fail",
+          message,
+        });
+      }
+  
+      let totp = new OTPAuth.TOTP({
+        issuer: "InfiniteTalk!",
+        label: user.email,
+        algorithm: "SHA1",
+        digits: 6,
+        secret: user.otp_base32,
+      });
+  
+      let delta = totp.validate({ token, window: 1 });
+  
+      if (delta === null) {
+        return res.status(401).json({
+          status: "fail",
+          message,
+        });
+      }
+  
+      res.status(200).json({
+        otp_valid: true,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: error.message,
+      });
+    }
+  };
+
 const DisableOTP = async (req, res, next) => {
     try {
         const { user_id } = req.body;
@@ -357,6 +400,7 @@ export {
     UpdateUserProfile,
     UpdateProfilePicture,
     GenerateOTP,
+    ValidateOTP,
     VerifyOTP,
     DisableOTP,
 };
