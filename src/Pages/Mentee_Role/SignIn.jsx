@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import { HiInformationCircle } from 'react-icons/hi'
 
-export const SignIn = ({ setIsAuthenticated }) => {
+export const SignIn = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [navigate, setNavigate] = useState(false)
@@ -32,11 +32,10 @@ export const SignIn = ({ setIsAuthenticated }) => {
             password: password
         }
 
-        axios.post('http://localhost:7777/user/login', data)
+        axios.post('http://localhost:7777/api/user/signin', data)
             .then(result => {
                 console.log(result)
                 if (result) {
-                    setIsAuthenticated(true)
                     setAlert('Login successful!')
                     setTimeout(() => {
                         setNavigate(true)

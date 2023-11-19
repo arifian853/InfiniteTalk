@@ -10,16 +10,16 @@ export const LandingPage = () => {
             </Helmet>
             <div className="h-screen landing-page flex flex-col justify-center items-center gap-4">
                 <h1 data-aos="zoom-in" className="text-5xl font-bold">Welcome to <span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span> </h1>
-                <p data-aos="zoom-in">A place for <Link to='/mentors'>Mentors</Link> and Mentee <b className="text-blue-400">connect</b> and <b className="text-green-400">grow</b>!</p>
+                <p data-aos="zoom-in">A place for Mentors and Mentee <b className="text-blue-400">connect</b> and <b className="text-green-400">grow</b>!</p>
                 <div className="flex flex-row gap-3">
-                    <Link to='/signin'>
+                    <Link to='/mentors'>
                         <Button className='btn-dark'>
-                            Let me in
+                           I&rsquo;m a Mentor
                         </Button>
                     </Link>
-                    <Link to='/signup'>
+                    <Link to='/mentees'>
                         <Button className='btn-dark'>
-                            I&apos;m just started
+                        I&rsquo;m a Mentee
                         </Button>
                     </Link>
                 </div>

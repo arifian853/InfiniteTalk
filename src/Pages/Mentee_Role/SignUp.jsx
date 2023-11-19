@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Checkbox, Modal } from 'flowbite-react'
+import { Alert, Button, Checkbox, Modal, Spinner } from 'flowbite-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { HiInformationCircle } from 'react-icons/hi'
@@ -17,6 +17,7 @@ export const SignUp = () => {
   const [alert, setAlert] = useState('')
   const [error, setError] = useState('')
   const [openModal, setOpenModal] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const changeUsername = (e) => {
     const value = e.target.value;
@@ -49,15 +50,17 @@ export const SignUp = () => {
   }
 
   const registBtn = () => {
+    setLoading(true);
     const data = {
       username: username,
       email: email,
-      fullName: fullName,
       password: password,
+      fullName: fullName,
       program: program,
-      accountRole: 'Mentee'
+      mentor: false,
+      admin: false
     }
-    axios.post('http://localhost:7777/user/register', data)
+    axios.post('http://localhost:7777/api/user/signup', data)
       .then(result => {
         if (result) {
           if (result.data) {
@@ -78,6 +81,9 @@ export const SignUp = () => {
           setError('')
         }, 7000)
       })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   const navigate = useNavigate()
@@ -149,19 +155,19 @@ export const SignUp = () => {
           value={program}
           onChange={changeProgram}
         >
-           <option>
+          <option>
             Choose your program
           </option>
           <option value='Hybrid Cloud & AI'>
             Hybrid Cloud & AI
           </option>
-          <option value='Web Developement'>
+          <option value='Web Development'>
             Web Development
           </option>
-          <option value='Mobile Developement'>
+          <option value='Mobile Development'>
             Mobile Development
           </option>
-          <option value='Game Developement'>
+          <option value='Game Development'>
             Game Development
           </option>
         </select>
@@ -183,11 +189,11 @@ export const SignUp = () => {
           <Checkbox id="remember" />
           <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
         </div>
-        <Button onClick={registBtn}>
-          Sign Up
+        <Button disabled={loading} onClick={registBtn}>
+          {loading ? <span className='flex flex-row gap-2 items-center justify-center'>Sign Up <Spinner color="success" aria-label="Loader" size="xs" /></span> : 'Sign Up'}
         </Button>
         <div className='text-sm text-center'>
-          <p> Already have an account? <Link to='/signin'> <span className='underline'>Login now</span> </Link></p>
+          <p> Already have an account? <Link to='/mentors-signin'> <span className='underline'>Login now</span> </Link></p>
           <span onClick={goBack} className='underline cursor-pointer'>Cancel</span>
         </div>
       </div>

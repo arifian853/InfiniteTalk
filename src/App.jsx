@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom'
 
 import { LandingPage } from './Pages/LandingPage'
@@ -17,9 +17,9 @@ import { MentorSignUp } from './Pages/Mentor_Role/MentorSignUp'
 import AOS from 'aos'
 import 'aos/dist/aos.css' 
 import { Feed } from './Pages/Feed';
+import { MenteePage } from './Pages/Mentee_Role/MenteePage';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState('')
   useEffect(() => {
     AOS.init();
   })
@@ -31,17 +31,19 @@ function App() {
 
         <Route path='*' element={<NotFound />}/>
 
-        <Route path='/signin' element={<SignIn setIsAuthenticated={setIsAuthenticated}/>} />
+        <Route path='/signin' element={<SignIn />} />
 
         <Route path='/signup' element={<SignUp />} />
 
         <Route path='/mentors' element={<MentorPage />} />
+        
+        <Route path='/mentees' element={<MenteePage />} />
 
         <Route path='/mentors/mentors-signin' element={<MentorSignIn />} />
 
         <Route path='/mentors/mentors-signup' element={<MentorSignUp />} />
 
-        <Route path='/feed' element={<Feed isAuthenticated={isAuthenticated} />} />
+        <Route path='/feed' element={<Feed />} />
       </Routes>
     </>
   )
