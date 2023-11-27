@@ -27,7 +27,7 @@ export const MentorSignIn = () => {
                     Sign In
                 </Button>
                 <div className='text-sm text-center'>
-                    <p> Doesn&apos;t have an account? <Link to='/mentors/mentors-signup'> <span className='underline'>Make one</span> </Link></p>     
+                    <p> Doesn&apos;t have an account? <Link to='/signup-mentor'> <span className='underline'>Make one</span> </Link></p>     
                         <span onClick={goBack} className='underline cursor-pointer'>Cancel</span> 
                 </div>
             </div>

@@ -18,6 +18,7 @@ import AOS from 'aos'
 import 'aos/dist/aos.css' 
 import { Feed } from './Pages/Feed';
 import { MenteePage } from './Pages/Mentee_Role/MenteePage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path='/' exact element={<LandingPage />} />
 
@@ -39,9 +41,9 @@ function App() {
         
         <Route path='/mentees' element={<MenteePage />} />
 
-        <Route path='/mentors/mentors-signin' element={<MentorSignIn />} />
+        <Route path='/signin-mentor' element={<MentorSignIn />} />
 
-        <Route path='/mentors/mentors-signup' element={<MentorSignUp />} />
+        <Route path='/signup-mentor' element={<MentorSignUp />} />
 
         <Route path='/feed' element={<Feed />} />
       </Routes>

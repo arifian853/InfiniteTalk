@@ -12,12 +12,12 @@ export const MentorPage = () => {
                 <h1 data-aos="zoom-in" className="text-5xl font-bold">Welcome to <span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span> Mentors! </h1>
                 <p data-aos="zoom-in">A place to <b className="text-blue-400">manage</b> your Mentees <b className="text-green-400">discussion</b>!</p>
                 <div className="flex flex-row gap-3">
-                    <Link to='/mentors/mentors-signin'>
+                    <Link to='/signin-mentor'>
                         <Button className='btn-dark'>
                             Sign In
                         </Button>
                     </Link>
-                    <Link to='/mentors/mentors-signup'>
+                    <Link to='/signup-mentor'>
                         <Button className='btn-dark'>
                             Sign Up
                         </Button>

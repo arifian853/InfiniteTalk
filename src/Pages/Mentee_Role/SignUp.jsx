@@ -1,202 +1,209 @@
-import { useState } from 'react'
-import { Alert, Button, Checkbox, Modal, Spinner } from 'flowbite-react'
+import { useState, useEffect } from 'react'
+import { Button, Checkbox, Modal } from 'flowbite-react'
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { HiInformationCircle } from 'react-icons/hi'
-
-import axios from 'axios';
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux"
+import { userActions } from '../../store/reducers/userReducers'
+import { useMutation } from "@tanstack/react-query"
+import { signUp } from '../../Services/index/users'
 
 export const SignUp = () => {
-  /*Signin states*/
-  const [username, setUsername] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
-  const [program, setProgram] = useState('')
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   /*Utility states*/
-  const [alert, setAlert] = useState('')
-  const [error, setError] = useState('')
   const [openModal, setOpenModal] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ username, email, password, fullName, program }) => {
+      return signUp({ username, email, password, fullName, program });
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("account", JSON.stringify(data));
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
 
-  const changeUsername = (e) => {
-    const value = e.target.value;
-    setUsername(value);
-    setError('')
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      fullName: "",
+      program: ""
+    },
+    mode: "onChange",
+  });
 
-  const changeEmail = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    setError('')
-  }
-
-  const changeFullName = (e) => {
-    const value = e.target.value;
-    setFullName(value);
-    setError('')
-  }
-
-  const changePassword = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    setError('')
-  }
-
-  const changeProgram = (e) => {
-    const value = e.target.value;
-    setProgram(value);
-    setError('')
-  }
-
-  const registBtn = () => {
-    setLoading(true);
-    const data = {
-      username: username,
-      email: email,
-      password: password,
-      fullName: fullName,
-      program: program,
-      mentor: false,
-      admin: false
+  useEffect(() => {
+    if (userState.userInfo) {
+      const timeoutId = setTimeout(() => {
+        navigate('/signin');
+      }, 4000);
+      return () => clearTimeout(timeoutId);
     }
-    axios.post('http://localhost:7777/api/user/signup', data)
-      .then(result => {
-        if (result) {
-          if (result.data) {
-            setUsername('')
-            setEmail('')
-            setPassword('')
-            setAlert(result.data.message)
-            setTimeout(() => {
-              setAlert('')
-              window.location.href = '/signin'
-            }, 2000)
-          }
-        }
-      })
-      .catch(e => {
-        setError(e.response.data.message)
-        setTimeout(() => {
-          setError('')
-        }, 7000)
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  }, [userState.userInfo, navigate]);
+
+
+  const registBtn = (data) => {
+    const { username, email, password, fullName, program } = data;
+    mutate({ username, email, password, fullName, program });
   }
 
-  const navigate = useNavigate()
   const goBack = () => {
     navigate(-1)
   }
 
-
   return (
     <div className="forms flex flex-col justify-center items-center gap-4">
       <h1 className='text-3xl font-semibold'>Sign up to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
-      <p>Welcome, new Mentee!</p>
+      <p>Welcome, new Mentor!</p>
       <Helmet>
         <title>InfiniteTalk! - Sign Up</title>
       </Helmet>
-      <div data-aos="zoom-in" className="text-sm form-light flex flex-col text-left items-left gap-2 p-3">
-        {
-          error && (
-            <Alert
-              color="failure"
-              icon={HiInformationCircle}
-            >
-              <span>
-                <p>
-                  <span className="font-medium">
-                    {error}
-                  </span>
 
-                </p>
-              </span>
-            </Alert>
-          )
-        }
-        {
-          alert && (
-            <Alert
-              color="success"
-              icon={HiInformationCircle}
-            >
-              <span>
-                <p>
-                  <span className="font-medium">
-                    {alert}
-                  </span>
-
-                </p>
-              </span>
-            </Alert>
-          )
-        }
-        <p>Full Name</p>
-        <input id="name1"
-          placeholder="John Doe"
-          required
-          type="text"
-          value={fullName}
-          onChange={changeFullName} />
-        <p>Email</p>
-        <input id="email1"
-          placeholder="name@flowbite.com"
-          required
-          type="email"
-          value={email}
-          onChange={changeEmail} />
-        <p>Program</p>
-        <select
-          id="countries"
-          required
-          value={program}
-          onChange={changeProgram}
-        >
-          <option>
-            Choose your program
-          </option>
-          <option value='Hybrid Cloud & AI'>
-            Hybrid Cloud & AI
-          </option>
-          <option value='Web Development'>
-            Web Development
-          </option>
-          <option value='Mobile Development'>
-            Mobile Development
-          </option>
-          <option value='Game Development'>
-            Game Development
-          </option>
-        </select>
-        <p>Username</p>
-        <input id="username1"
-          placeholder="Your username"
-          required
-          type="text"
-          value={username}
-          onChange={changeUsername} />
-        <p>Password</p>
-        <input id="password1"
-          placeholder="Your Password"
-          required
-          type="password"
-          value={password}
-          onChange={changePassword} />
-        <div className="flex items-center gap-2 py-1">
-          <Checkbox id="remember" />
-          <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
+      <form onSubmit={handleSubmit(registBtn)}>
+        <div data-aos="zoom-in" className="text-sm form-light flex flex-col text-left items-left gap-2 p-3">
+          <p>Full Name</p>
+          <input id="fullName"
+            {...register("fullName", {
+              minLength: {
+                value: 1,
+                message: "Your full name length must be at least 1 character",
+              },
+              required: {
+                value: true,
+                message: "Full name is required",
+              },
+            })}
+            placeholder="Your Name"
+            required
+            type="text"
+          />
+          {errors.fullName?.message && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.fullName?.message}
+            </p>
+          )}
+          <p>Email</p>
+          <input id="email"
+            {...register("email", {
+              pattern: {
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "Enter a valid email",
+              },
+              required: {
+                value: true,
+                message: "Email is required",
+              },
+            })}
+            placeholder="name@email.com"
+            required
+            type="email"
+          />
+          {errors.email?.message && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.email?.message}
+            </p>
+          )}
+          <p>Program</p>
+          <select
+            id="countries"
+            required
+            {...register("program", { required: "Please select your program" })}
+          >
+            <option value="" disabled>
+              Choose your program
+            </option>
+            <option value='Hybrid Cloud & AI'>
+              Hybrid Cloud & AI
+            </option>
+            <option value='Web Development'>
+              Web Development
+            </option>
+            <option value='Mobile Development'>
+              Mobile Development
+            </option>
+            <option value='Game Development'>
+              Game Development
+            </option>
+          </select>
+          {errors.program && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.program?.message}
+            </p>
+          )}
+          <p>Username</p>
+          <input id="username1"
+            placeholder="Your username"
+            required
+            {...register("username", {
+              minLength: {
+                value: 1,
+                message: "Username length must be at least 1 character",
+              },
+              required: {
+                value: true,
+                message: "Username is required",
+              },
+            })}
+            type="text"
+          />
+          {errors.username && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.username?.message}
+            </p>
+          )}
+          <p>Password</p>
+          <input id="password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Password is required",
+              },
+              minLength: {
+                value: 8,
+                message: "Password length must be at least 8 characters",
+              },
+              pattern: {
+                value: /^(?=.*\d)(?=.*[A-Z])/,
+                message: "Password must contain at least one number and one capital letter",
+              },
+            })}
+            placeholder="Your Password"
+            required
+            type="password"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.password?.message}
+            </p>
+          )}
+          <div className="flex items-center gap-2 py-1">
+            <Checkbox id="remember" required />
+            <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
+          </div>
+          <Button className='disabled:opacity-70 disabled:cursor-not-allowed' type='submit' disabled={!isValid || isLoading}>
+            Sign Up
+          </Button>
+          <div className='text-sm text-center'>
+            <p> Already have an account? <Link to='/signin'> <span className='underline'>Login now</span> </Link></p>
+            <span onClick={goBack} className='underline cursor-pointer'>Cancel</span>
+          </div>
         </div>
-        <Button disabled={loading} onClick={registBtn}>
-          {loading ? <span className='flex flex-row gap-2 items-center justify-center'>Sign Up <Spinner color="success" aria-label="Loader" size="xs" /></span> : 'Sign Up'}
-        </Button>
-        <div className='text-sm text-center'>
-          <p> Already have an account? <Link to='/mentors-signin'> <span className='underline'>Login now</span> </Link></p>
-          <span onClick={goBack} className='underline cursor-pointer'>Cancel</span>
-        </div>
-      </div>
+      </form>
       <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
         <div data-aos="zoom-in" data-aos-duration="200">
           <Modal.Header className='modal-title'> <h1 className='modal-title'>Terms of Service</h1></Modal.Header>
@@ -212,6 +219,7 @@ export const SignUp = () => {
           </Modal.Body>
         </div>
       </Modal>
-    </div>
+    </div >
   )
 }
+
