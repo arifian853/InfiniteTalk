@@ -21,7 +21,7 @@ const generateTOTP = (base32Secret) => {
     });
 };
 
-const UserRegistration = async (req, res, next) => {
+const UserRegistrationMentor = async (req, res, next) => {
     try {
         const { email, password, fullName, program, mentor, admin, username } = req.body;
 
@@ -51,8 +51,8 @@ const UserRegistration = async (req, res, next) => {
             email,
             password: hashPassword, // Hashed password
             program,
-            mentor,
-            admin,
+            mentor: true,
+            admin: true,
         });
 
         // TOTP related code
@@ -73,8 +73,71 @@ const UserRegistration = async (req, res, next) => {
             avatar: user.avatar,
             fullName: user.fullName,
             email: user.email,
-            admin: user.admin,
-            mentor: user.mentor,
+            admin: true,
+            mentor: true,
+            token: await user.generateJWT(),
+            otp_auth_url: otpAuthURL,
+            message: `User created , Welcome ${username}`, // Include this in the response
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const UserRegistrationMentee = async (req, res, next) => {
+    try {
+        const { email, password, fullName, program, mentor, admin, username } = req.body;
+
+        // check whether the user exists or not
+        let user = await User.findOne({ email });
+        if (user) {
+            return res.status(404).json({
+                status: false,
+                message: 'Email already used. Please use another email.',
+            });
+        }
+
+        const usernameUser = await User.findOne({ username });
+        if (usernameUser) {
+            return res.status(404).json({
+                status: false,
+                message: 'Username already used. Please choose another username.',
+            });
+        }
+
+        const hashPassword = await bcryptjs.hash(password, 15);
+
+        // creating a new user
+        user = await User.create({
+            username,
+            fullName,
+            email,
+            password: hashPassword, // Hashed password
+            program,
+            mentor: false,
+            admin: false,
+        });
+
+        // TOTP related code
+        const base32Secret = generateRandomBase32();
+        const totp = generateTOTP(base32Secret);
+
+        const otpAuthURL = totp.toString();
+
+        user.otp_auth_url = otpAuthURL;
+        user.otp_base32 = base32Secret;
+
+        // Save the user with TOTP-related information
+        await user.save();
+
+        return res.status(201).json({
+            _id: user._id,
+            username: user.username,
+            avatar: user.avatar,
+            fullName: user.fullName,
+            email: user.email,
+            admin: false,
+            mentor: false,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
             message: `User created , Welcome ${username}`, // Include this in the response
@@ -394,7 +457,8 @@ const DisableOTP = async (req, res, next) => {
 };
 
 export {
-    UserRegistration,
+    UserRegistrationMentor,
+    UserRegistrationMentee,
     UserLogin,
     UserProfile,
     UpdateUserProfile,
