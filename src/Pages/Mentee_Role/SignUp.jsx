@@ -49,7 +49,7 @@ export const SignUp = () => {
   useEffect(() => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
-        navigate('/signin');
+        navigate('/feed');
       }, 4000);
       return () => clearTimeout(timeoutId);
     }
@@ -222,4 +222,3 @@ export const SignUp = () => {
     </div >
   )
 }
-

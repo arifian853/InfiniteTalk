@@ -49,7 +49,7 @@ export const MentorSignUp = () => {
   useEffect(() => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
-        navigate('/mentor-signin');
+        navigate('/feed');
       }, 4000);
       return () => clearTimeout(timeoutId);
     }
