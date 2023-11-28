@@ -75,6 +75,7 @@ const UserRegistrationMentor = async (req, res, next) => {
             email: user.email,
             admin: true,
             mentor: true,
+            program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
             message: `User created , Welcome ${username}`, // Include this in the response
@@ -138,6 +139,7 @@ const UserRegistrationMentee = async (req, res, next) => {
             email: user.email,
             admin: false,
             mentor: false,
+            program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
             message: `User created , Welcome ${username}`, // Include this in the response
