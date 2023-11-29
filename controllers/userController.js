@@ -251,6 +251,7 @@ const UserLogin = async (req, res, next) => {
                 program: user.program,
                 token: await user.generateJWT(),
                 otp_auth_url: user.otp_auth_url, // Include TOTP URL in the response
+                message: `Login success , Welcome ${email}`, 
             });
         } else {
             throw new Error("Invalid email or password");
