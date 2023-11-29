@@ -1,12 +1,15 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react"
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
+import toast from "react-hot-toast";
 
 
 export const Header = () => {
     const logoutHandler = () => {
         dispatch(logout());
+        toast.success("Log out success")
+        navigate("/");
     };
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
@@ -40,18 +43,30 @@ export const Header = () => {
                             <Dropdown.Item onClick={logoutHandler}>Sign out</Dropdown.Item>
                         </Dropdown>
                     ) : (
-                        <Dropdown.Item onClick={() => navigate("/signup")}>Sign In</Dropdown.Item>
+                        <Button onClick={() => navigate("/signin")}>
+                            Sign In
+                        </Button>
                     )
                     }
 
                     <Navbar.Toggle />
                 </div>
-                <Navbar.Collapse>
-                    <Navbar.Link href="#">
-                        Feed
-                    </Navbar.Link>
-                    <Navbar.Link href="#">About</Navbar.Link>
-                </Navbar.Collapse>
+                {userState.userInfo ? (
+                    <Navbar.Collapse>
+                        <Navbar.Link>
+                            <Link to='/feed'>
+                                Feed
+                            </Link>
+                        </Navbar.Link>
+                        <Navbar.Link>
+                            <Link to='/about'>
+                                About
+                            </Link>
+                        </Navbar.Link>
+                    </Navbar.Collapse>
+                ) : (
+                    <></>
+                )}
             </Navbar>
         </div>
     )

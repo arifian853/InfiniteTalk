@@ -1,132 +1,155 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react'
-import { Alert, Button, Checkbox } from 'flowbite-react'
+import { useState, useEffect } from 'react'
+import { Button, Checkbox, Modal } from 'flowbite-react'
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Link, Navigate } from 'react-router-dom'
-import axios from 'axios'
-
-import { HiInformationCircle } from 'react-icons/hi'
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux"
+import { userActions } from '../../store/reducers/userReducers'
+import { useMutation } from "@tanstack/react-query"
+import { signIn } from '../../Services/index/users'
 
 export const SignIn = () => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [navigate, setNavigate] = useState(false)
-    const [error, setError] = useState('')
-    const [alert, setAlert] = useState('')
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
-    const onChangeUsername = (e) => {
-        const value = e.target.value;
-        setUsername(value);
-        setError('')
+  /*Utility states*/
+  const [openModal, setOpenModal] = useState('')
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ email, password }) => {
+      return signIn({ email, password});
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("account", JSON.stringify(data));
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (userState.userInfo) {
+      const timeoutId = setTimeout(() => {
+        navigate('/feed');
+      }, 2500);
+      return () => clearTimeout(timeoutId);
     }
+  }, [userState.userInfo, navigate]);
 
-    const onChangePassword = (e) => {
-        const value = e.target.value;
-        setPassword(value);
-        setError('')
-    }
 
-    const loginBtn = () => {
-        const data = {
-            username: username,
-            password: password
-        }
+  const loginBtn = (data) => {
+    const { email, password } = data;
+    mutate({ email, password });
+  }
 
-        axios.post('http://localhost:7777/api/user/signin', data)
-            .then(result => {
-                console.log(result)
-                if (result) {
-                    setAlert('Login successful!')
-                    setTimeout(() => {
-                        setNavigate(true)
-                    }, 2000)
-                } else {
-                    setError('Login failed. Please check your credentials.');
-                }
-            })
-            .catch(e => {
-                setError(e.response.data.message)
-            })
-    }
+  const goBack = () => {
+    navigate(-1)
+  }
 
-    const backButton = () => {
-        window.history.back();
-    };
 
-    return (
+  return (
+    <div className="forms flex flex-col justify-center items-center gap-4">
+      <h1 className='text-3xl font-semibold'>Sign in to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
+      <p>Welcome back, Mentee!</p>
+      <Helmet>
+        <title>InfiniteTalk! - Sign In Mentee</title>
+      </Helmet>
 
-        <>
-            {
-                navigate && (
-                    <Navigate to="/feed" />
-                )
-            }
-            <div className="forms flex flex-col justify-center items-center gap-4">
-                <h1 className='text-3xl font-semibold'>Sign in to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
-                <p>Welcome back, Mentee!</p>
-                <Helmet>
-                    <title>InfiniteTalk! - Sign In</title>
-                </Helmet>
-                <div data-aos="zoom-in" className="form-light text-sm flex flex-col text-left items-left gap-2 p-3">
-                    {
-                        error && (
-                            <Alert
-                                color="failure"
-                                icon={HiInformationCircle}
-                            >
-                                <span>
-                                    <p>
-                                        <span className="font-medium">
-                                            {error}
-                                        </span>
-
-                                    </p>
-                                </span>
-                            </Alert>
-                        )
-                    }
-                    {
-                        alert && (
-                            <Alert
-                                color="success"
-                                icon={HiInformationCircle}
-                            >
-                                <span>
-                                    <p>
-                                        <span className="font-medium">
-                                            {alert}
-                                        </span>
-
-                                    </p>
-                                </span>
-                            </Alert>
-                        )
-                    }
-                    <p>Username</p>
-                    <input type="text" id="username1"
-                        placeholder="Your username"
-                        required
-                        value={username}
-                        onChange={onChangeUsername} />
-                    <p>Password</p>
-                    <input type="password" id="password1"
-                        required
-                        value={password}
-                        onChange={onChangePassword} />
-                    <div className="flex items-center gap-2 py-1">
-                        <Checkbox id="remember" />
-                        <p>Remember me</p>
-                    </div>
-                    <Button onClick={loginBtn}>
-                        Sign In
-                    </Button>
-                    <div className='text-sm text-center'>
-                        <p> Doesn&apos;t have an account? <Link to='/signup'> <span className='underline'>Make one</span> </Link></p>
-                        <span onClick={backButton} className='underline cursor-pointer'>Cancel</span>
-                    </div>
-                </div>
+      <form onSubmit={handleSubmit(loginBtn)}>
+        <div data-aos="zoom-in" className="text-sm form-light flex flex-col text-left items-left gap-2 p-3">
+          <p>Email</p>
+          <input id="email"
+            {...register("email", {
+              pattern: {
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "Enter a valid email",
+              },
+              required: {
+                value: true,
+                message: "Email is required",
+              },
+            })}
+            placeholder="name@email.com"
+            required
+            type="email"
+          />
+          {errors.email?.message && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.email?.message}
+            </p>
+          )}
+          
+          <p>Password</p>
+          <input id="password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Password is required",
+              },
+              minLength: {
+                value: 8,
+                message: "Password length must be at least 8 characters",
+              },
+              pattern: {
+                value: /^(?=.*\d)(?=.*[A-Z])/,
+                message: "Password must contain at least one number and one capital letter",
+              },
+            })}
+            placeholder="Your Password"
+            required
+            type="password"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.password?.message}
+            </p>
+          )}
+          <div className="flex items-center gap-2 py-1">
+            <Checkbox id="remember" required />
+            <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
+          </div>
+          <Button className='disabled:opacity-70 disabled:cursor-not-allowed' type='submit' disabled={!isValid || isLoading}>
+            Sign In
+          </Button>
+          <div className='text-sm text-center'>
+            <p> Doesn&rsquo;t have an account? <Link to='/signup-mentee'> <span className='underline'>Register now</span> </Link></p>
+            <span onClick={goBack} className='underline cursor-pointer'>Cancel</span>
+          </div>
+        </div>
+      </form>
+      <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+        <div data-aos="zoom-in" data-aos-duration="200">
+          <Modal.Header className='modal-title'> <h1 className='modal-title'>Terms of Service</h1></Modal.Header>
+          <Modal.Body className='modal-body'>
+            <div className="space-y-6">
+              <p className="text-base leading-relaxed">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta commodi id, quasi numquam quae esse optio nisi quo expedita sapiente.
+              </p>
+              <p className="text-base leading-relaxed">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae expedita aut maiores modi nesciunt vitae nihil eum sunt a tempore neque est, odit delectus rem unde veniam error consequatur earum.
+              </p>
             </div>
-        </>
-
-    )
+          </Modal.Body>
+        </div>
+      </Modal>
+    </div >
+  )
 }
+
