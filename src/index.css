@@ -35,6 +35,19 @@ body {
     transition: 0.4s;
 }
 
+.btn-dark-md {
+    background-color: var(--white) !important;
+    height: 40px;
+    color: var(--black);
+    transition: 0.4s;
+}
+
+.btn-dark-md:hover {
+    background-color: var(--light-gray) !important;
+    color: var(--black);
+    transition: 0.4s;
+}
+
 .forms {
     color: var(--white);
     max-height: 150vh;

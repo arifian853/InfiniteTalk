@@ -57,7 +57,7 @@ export const getUserProfile = async ({ token }) => {
       },
     };
 
-    const { data } = await axios.get("/api/user/profile", config);
+    const { data } = await axios.get("http://localhost:7777/api/user/profile", config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -75,7 +75,7 @@ export const updateProfile = async ({ token, userData }) => {
     };
 
     const { data } = await axios.put(
-      "/api/user/updateProfile",
+      "http://localhost:7777/api/user/updateProfile",
       userData,
       config
     );

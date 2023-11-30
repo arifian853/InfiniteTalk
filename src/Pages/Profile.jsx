@@ -1,11 +1,12 @@
-import { Avatar } from "flowbite-react"
+import { Avatar, Button } from "flowbite-react"
 import { Header } from "../Components/Header"
 import { Table } from 'flowbite-react';
 import { useSelector } from "react-redux";
-import { FaArrowLeft } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaCheck } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { MdErrorOutline } from "react-icons/md";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -47,6 +48,9 @@ export const Profile = () => {
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
                                         {userState.userInfo.fullName}
                                     </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
+                                    </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
@@ -54,6 +58,9 @@ export const Profile = () => {
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
                                         {userState.userInfo.email}
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -63,6 +70,9 @@ export const Profile = () => {
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
                                         {userState.userInfo.username}
                                     </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
+                                    </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
@@ -71,21 +81,8 @@ export const Profile = () => {
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
                                         {userState.userInfo.program}
                                     </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        OTP Enabled
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        OTP Enabled
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
+
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -104,6 +101,9 @@ export const Profile = () => {
                                             timeZone: 'Asia/Jakarta',
                                         }).format(new Date(userState.userInfo.lastLogin))}
                                     </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
+                                    </Table.Cell>
                                 </Table.Row>
                                 {
                                     userState?.userInfo?.admin && (
@@ -114,11 +114,43 @@ export const Profile = () => {
                                             <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
                                                 {userState.userInfo.admin ? "True" : "False"}
                                             </Table.Cell>
+                                            <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
+                                            </Table.Cell>
                                         </Table.Row>
                                     )
                                 }
+                                <Table.Row>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        OTP Enabled
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><FaCheck /></p> : <p className="text-2xl text-yellow-500"><MdErrorOutline /></p>}
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        OTP Verified
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><FaCheck /></p> : <p className="text-2xl text-yellow-500"><MdErrorOutline /></p>}
+                                    </Table.Cell>
+                                </Table.Row>
                             </Table.Body>
                         </Table>
+                        <div className="flex justify-center items-center">
+                            <Link to='/profile-settings'>
+                                <Button className='btn-dark-md mt-4'>
+                                    Edit profile data
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             ) : (

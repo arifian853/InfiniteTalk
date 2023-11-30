@@ -22,6 +22,7 @@ import { Toaster } from 'react-hot-toast';
 import { About } from './Pages/About';
 import { Admin } from './Pages/Admin';
 import { Profile } from './Pages/Profile';
+import { ProfileSettings } from './Pages/ProfileSettings';
 
 function App() {
   useEffect(() => {
@@ -53,6 +54,8 @@ function App() {
         <Route path='/about' element={<About />} />
 
         <Route path='/profile' element={<Profile />} />
+
+        <Route path='/profile-settings' element={<ProfileSettings />} />
 
         <Route path='/admin' element={<Admin />} />
 

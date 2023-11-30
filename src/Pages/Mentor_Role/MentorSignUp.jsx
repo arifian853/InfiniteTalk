@@ -147,7 +147,7 @@ export const MentorSignUp = () => {
             </p>
           )}
           <p>Username</p>
-          <input id="username1"
+          <input id="username"
             placeholder="Your username"
             required
             {...register("username", {
