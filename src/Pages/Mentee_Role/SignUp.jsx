@@ -50,7 +50,7 @@ export const SignUp = () => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
-      }, 4000);
+      }, 2000);
       return () => clearTimeout(timeoutId);
     }
   }, [userState.userInfo, navigate]);
@@ -68,7 +68,7 @@ export const SignUp = () => {
   return (
     <div className="forms flex flex-col justify-center items-center gap-4">
       <h1 className='text-3xl font-semibold'>Sign up to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
-      <p>Welcome, new Mentor!</p>
+      <p>Welcome, new Mentee!</p>
       <Helmet>
         <title>InfiniteTalk! - Sign Up</title>
       </Helmet>

@@ -99,3 +99,14 @@ body {
     color: var(--white);
     transition: 0.4s;
 }
+
+/* Profile Page */
+
+.profile-section {
+    color: var(--white);
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    width: 85vw;
+    border-radius: 7px;
+}

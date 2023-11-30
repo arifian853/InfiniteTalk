@@ -47,7 +47,7 @@ export const SignIn = () => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
-      }, 2500);
+      }, 2000);
       return () => clearTimeout(timeoutId);
     }
   }, [userState.userInfo, navigate]);
@@ -129,7 +129,7 @@ export const SignIn = () => {
             Sign In
           </Button>
           <div className='text-sm text-center'>
-            <p> Doesn&rsquo;t have an account? <Link to='/signup-mentee'> <span className='underline'>Register now</span> </Link></p>
+            <p> Doesn&rsquo;t have an account? <Link to='/signup'> <span className='underline'>Register now</span> </Link></p>
             <span onClick={goBack} className='underline cursor-pointer'>Cancel</span>
           </div>
         </div>

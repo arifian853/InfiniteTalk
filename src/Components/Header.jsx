@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
 import toast from "react-hot-toast";
 
-
 export const Header = () => {
     const logoutHandler = () => {
         dispatch(logout());
@@ -36,6 +35,7 @@ export const Header = () => {
                                 <span className="block truncate text-sm font-medium text-green-400">{userState.userInfo.mentor ? "Mentor" : "Mentee"} @ {userState.userInfo.program} </span>
                             </Dropdown.Header>
                             <Dropdown.Item onClick={() => navigate("/profile")}>Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={() => navigate("/profile-settings")}>Settings</Dropdown.Item>
                             <Dropdown.Divider />
                             {userState?.userInfo?.admin && (
                                 <Dropdown.Item onClick={() => navigate("/admin")}>Admin Dashboard</Dropdown.Item>

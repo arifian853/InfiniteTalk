@@ -50,7 +50,7 @@ export const MentorSignUp = () => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
-      }, 4000);
+      }, 2000);
       return () => clearTimeout(timeoutId);
     }
   }, [userState.userInfo, navigate]);

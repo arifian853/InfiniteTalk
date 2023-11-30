@@ -47,7 +47,7 @@ export const MentorSignIn = () => {
     if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
-      }, 2500);
+      }, 2000);
       return () => clearTimeout(timeoutId);
     }
   }, [userState.userInfo, navigate]);
