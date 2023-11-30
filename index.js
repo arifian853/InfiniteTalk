@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import path from "path";
 import cors from 'cors';
 import { errorResponserHandler, invalidPathHandler } from './middleware/errorHandler.js';
 
@@ -40,6 +41,9 @@ app.use((err, res,) => {
 
 app.use(errorResponserHandler);
 app.use(invalidPathHandler);
+
+// // static assets
+// app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 const PORT = process.env.PORT || 7777;
 

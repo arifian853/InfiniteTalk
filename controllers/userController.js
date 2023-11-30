@@ -23,7 +23,7 @@ const generateTOTP = (base32Secret) => {
 
 const UserRegistrationMentor = async (req, res, next) => {
     try {
-        const { email, password, fullName, program, mentor, admin, username } = req.body;
+        const { email, password, fullName, program, mentor, admin, username, lastLogin } = req.body;
 
         // check whether the user exists or not
         let user = await User.findOne({ email });
@@ -53,6 +53,7 @@ const UserRegistrationMentor = async (req, res, next) => {
             program,
             mentor: true,
             admin: true,
+            lastLogin: new Date()
         });
 
         // TOTP related code
@@ -90,7 +91,7 @@ const UserRegistrationMentor = async (req, res, next) => {
 
 const UserRegistrationMentee = async (req, res, next) => {
     try {
-        const { email, password, fullName, program, mentor, admin, username } = req.body;
+        const { email, password, fullName, program, mentor, admin, username, lastLogin } = req.body;
 
         // check whether the user exists or not
         let user = await User.findOne({ email });
@@ -120,6 +121,7 @@ const UserRegistrationMentee = async (req, res, next) => {
             program,
             mentor: false,
             admin: false,
+            lastLogin: new Date()
         });
 
         // TOTP related code
@@ -244,6 +246,8 @@ const UserLogin = async (req, res, next) => {
         if (!user) {
             throw new Error("Email not found");
         }
+        user.lastLogin = new Date();
+        await user.save();
         const isPasswordMatch = await bcryptjs.compare(password, user.password);
         if (isPasswordMatch) {
             return res.status(201).json({
@@ -257,7 +261,7 @@ const UserLogin = async (req, res, next) => {
                 program: user.program,
                 otp_enabled: user.otp_enabled,
                 otp_verified: user.otp_verified,
-                lastLogin: new Date(),
+                lastLogin: user.lastLogin,
                 token: await user.generateJWT(),
                 otp_auth_url: user.otp_auth_url, // Include TOTP URL in the response
                 message: `Login success , Welcome ${email}`,
@@ -286,7 +290,8 @@ const UserProfile = async (req, res, next) => {
                 program: user.program,
                 otp_enabled: user.otp_enabled,
                 otp_verified: user.otp_verified,
-                otp_auth_url: user.otp_auth_url, // Include TOTP URL in the response
+                otp_auth_url: user.otp_auth_url,
+                lastLogin: user.lastLogin // Include TOTP URL in the response
             });
         } else {
             let error = new Error("User not found");
@@ -308,9 +313,10 @@ const UpdateUserProfile = async (req, res, next) => {
 
         user.fullName = req.body.fullName || user.fullName;
         user.email = req.body.email || user.email;
+        user.username = req.body.username || user.username;
 
         if (req.body.password && req.body.password.length < 8) {
-            throw new Error("Password length must be at least 6 characters");
+            throw new Error("Password length must be at least 8 characters");
         } else if (req.body.password) {
             const hashedPassword = await bcryptjs.hash(req.body.password, 10); // Hash the updated password
             user.password = hashedPassword; // Set the hashed password
@@ -324,11 +330,16 @@ const UpdateUserProfile = async (req, res, next) => {
             _id: newUserProfile._id,
             avatar: newUserProfile.avatar,
             fullName: newUserProfile.fullName,
+            username: newUserProfile.username,
             email: newUserProfile.email,
+            admin: newUserProfile.admin,
+            mentor: newUserProfile.mentor,
+            program: newUserProfile.program,
             token: await newUserProfile.generateJWT(),
             otp_enabled: newUserProfile.otp_enabled,
             otp_verified: newUserProfile.otp_verified,
             otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
+            lastLogin: newUserProfile.lastLogin
         });
     } catch (error) {
         next(error);
