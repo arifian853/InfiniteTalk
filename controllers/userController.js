@@ -75,6 +75,9 @@ const UserRegistrationMentor = async (req, res, next) => {
             email: user.email,
             admin: true,
             mentor: true,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: new Date(),
             program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
@@ -139,6 +142,9 @@ const UserRegistrationMentee = async (req, res, next) => {
             email: user.email,
             admin: false,
             mentor: false,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: new Date(),
             program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
@@ -249,9 +255,12 @@ const UserLogin = async (req, res, next) => {
                 admin: user.admin,
                 mentor: user.mentor,
                 program: user.program,
+                otp_enabled: user.otp_enabled,
+                otp_verified: user.otp_verified,
+                lastLogin: new Date(),
                 token: await user.generateJWT(),
                 otp_auth_url: user.otp_auth_url, // Include TOTP URL in the response
-                message: `Login success , Welcome ${email}`, 
+                message: `Login success , Welcome ${email}`,
             });
         } else {
             throw new Error("Invalid email or password");
@@ -381,44 +390,44 @@ const UpdateProfilePicture = async (req, res, next) => {
 
 const ValidateOTP = async (req, res, next) => {
     try {
-      const { user_id, token } = req.body;
-      const user = await User.findById(user_id);
-  
-      const message = "Token is invalid or user doesn't exist";
-      if (!user) {
-        return res.status(401).json({
-          status: "fail",
-          message,
+        const { user_id, token } = req.body;
+        const user = await User.findById(user_id);
+
+        const message = "Token is invalid or user doesn't exist";
+        if (!user) {
+            return res.status(401).json({
+                status: "fail",
+                message,
+            });
+        }
+
+        let totp = new OTPAuth.TOTP({
+            issuer: "InfiniteTalk!",
+            label: user.email,
+            algorithm: "SHA1",
+            digits: 6,
+            secret: user.otp_base32,
         });
-      }
-  
-      let totp = new OTPAuth.TOTP({
-        issuer: "InfiniteTalk!",
-        label: user.email,
-        algorithm: "SHA1",
-        digits: 6,
-        secret: user.otp_base32,
-      });
-  
-      let delta = totp.validate({ token, window: 1 });
-  
-      if (delta === null) {
-        return res.status(401).json({
-          status: "fail",
-          message,
+
+        let delta = totp.validate({ token, window: 1 });
+
+        if (delta === null) {
+            return res.status(401).json({
+                status: "fail",
+                message,
+            });
+        }
+
+        res.status(200).json({
+            otp_valid: true,
         });
-      }
-  
-      res.status(200).json({
-        otp_valid: true,
-      });
     } catch (error) {
-      res.status(500).json({
-        status: "error",
-        message: error.message,
-      });
+        res.status(500).json({
+            status: "error",
+            message: error.message,
+        });
     }
-  };
+};
 
 const DisableOTP = async (req, res, next) => {
     try {
