@@ -1,7 +1,7 @@
-import { Avatar, Button } from "flowbite-react"
+import { Button } from "flowbite-react"
 import { Header } from "../Components/Header"
 import { Table } from 'flowbite-react';
-import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowLeft, FaCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
@@ -11,8 +11,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserProfile, updateProfile } from "../Services/index/users";
 import { useMemo } from "react";
 import { userActions } from "../store/reducers/userReducers";
-// import { ProfilePicture } from "../Components/ProfilePicture";
-
+import { MdErrorOutline } from "react-icons/md";
+import { ProfilePicture } from "../Components/ProfilePicture";
 
 export const ProfileSettings = () => {
     const navigate = useNavigate();
@@ -95,8 +95,9 @@ export const ProfileSettings = () => {
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile Settings</h1>
                         </div>
                         <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
-                        <Avatar className="m-3" alt="User settings" img={profileData?.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" />
-                        {/* <div className="flex items-center flex-row justify-center"><ProfilePicture avatar={profileData?.avatar} /></div> */}
+                        {/* <Avatar className="m-3" alt="User settings" img={profileData?.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" /> */}
+                        <div className="flex items-center flex-row justify-center"><ProfilePicture avatar={profileData?.avatar} /></div>
+                        <p className="text-xs text-center p-2">*Max 1MB</p>
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                             <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> Update data and profile picture</li>
                         </ul>
@@ -224,9 +225,8 @@ export const ProfileSettings = () => {
                                             OTP Authentication
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                            <Button className='btn-dark-md'>
-                                                Enable OTP
-                                            </Button>
+
+                                            {userState.userInfo.otp_enabled ? <Button className='btn-dark-md'> Disable OTP <FaCheck /> </Button>  : <Button className='btn-dark-md'> Enable OTP <MdErrorOutline /> </Button>}
                                         </Table.Cell>
                                     </Table.Row>
                                 </Table.Body>

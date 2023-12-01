@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { MdErrorOutline } from "react-icons/md";
+import { Tooltip } from 'flowbite-react';
+import stables from "../Constants/stables";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -34,7 +36,7 @@ export const Profile = () => {
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile</h1>
                         </div>
                         <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
-                        <Avatar className="m-3" alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded bordered size="lg" status="online" statusPosition="top-right" />
+                        <Avatar className="m-3" alt="User settings" img={stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" />
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                             <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> <h1 className="text-2xl font-semibold">{userState.userInfo.fullName}</h1> {userState.userInfo.mentor ? "Mentor" : "Mentee"} @ {userState.userInfo.program}</li>
                         </ul>
@@ -128,7 +130,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><FaCheck /></p> : <p className="text-2xl text-yellow-500"><MdErrorOutline /></p>}
+                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><Tooltip content="OTP is enabled, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -139,7 +141,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><FaCheck /></p> : <p className="text-2xl text-yellow-500"><MdErrorOutline /></p>}
+                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
 import toast from "react-hot-toast";
+import stables from "../Constants/stables";
 
 export const Header = () => {
     const logoutHandler = () => {
@@ -13,7 +14,7 @@ export const Header = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
     const navigate = useNavigate();
-
+    
     return (
         <div>
             <Navbar fluid rounded>
@@ -26,8 +27,9 @@ export const Header = () => {
                             arrowIcon={false}
                             inline
                             label={
-                                <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                                <Avatar alt="User settings" img={stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar} rounded />
                             }
+                            
                         >
                             <Dropdown.Header>
                                 <span className="block text-sm font-medium">{userState.userInfo.fullName}</span>
