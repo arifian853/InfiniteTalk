@@ -23,6 +23,7 @@ import { About } from './Pages/About';
 import { Admin } from './Pages/Admin';
 import { Profile } from './Pages/Profile';
 import { ProfileSettings } from './Pages/ProfileSettings';
+import { ValidateTOTP } from './Pages/ValidateTOTP';
 
 function App() {
   useEffect(() => {
@@ -58,6 +59,8 @@ function App() {
         <Route path='/profile-settings' element={<ProfileSettings />} />
 
         <Route path='/admin' element={<Admin />} />
+
+        <Route path='/otp' element={<ValidateTOTP />} />
 
       </Routes>
     </>

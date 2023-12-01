@@ -44,11 +44,13 @@ export const SignIn = () => {
   });
 
   useEffect(() => {
-    if (userState.userInfo) {
+    if (userState.userInfo &&  userState.userInfo.otp_enabled == false) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
       }, 2000);
       return () => clearTimeout(timeoutId);
+    } else {
+      navigate('/otp');
     }
   }, [userState.userInfo, navigate]);
 

@@ -108,3 +108,21 @@ export const updateProfilePicture = async ({ token, formData }) => {
     throw new Error(error.message);
   }
 };
+
+
+export const generateTOTP = async ({ token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.post("http://localhost:7777/api/user/otp/generate", config);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
