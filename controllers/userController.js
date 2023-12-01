@@ -13,16 +13,6 @@ const generateRandomBase32 = () => {
     return base32;
 };
 
-const generateTOTP = (base32Secret) => {
-    return new OTPAuth.TOTP({
-        issuer: 'InfiniteTalk!',
-        label: User.email,
-        algorithm: 'SHA1',
-        digits: 6,
-        secret: base32Secret,
-    });
-};
-
 const UserRegistrationMentor = async (req, res, next) => {
     try {
         const { email, password, fullName, program, mentor, admin, username, lastLogin } = req.body;
@@ -60,7 +50,13 @@ const UserRegistrationMentor = async (req, res, next) => {
 
         // TOTP related code
         const base32Secret = generateRandomBase32();
-        const totp = generateTOTP(base32Secret);
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: base32Secret,
+        });
 
         const otpAuthURL = totp.toString();
 
@@ -84,6 +80,7 @@ const UserRegistrationMentor = async (req, res, next) => {
             program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
+            otp_base32: base32Secret,
             message: `User created , Welcome ${username}`, // Include this in the response
         });
     } catch (error) {
@@ -128,7 +125,13 @@ const UserRegistrationMentee = async (req, res, next) => {
 
         // TOTP related code
         const base32Secret = generateRandomBase32();
-        const totp = generateTOTP(base32Secret);
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: base32Secret,
+        });
 
         const otpAuthURL = totp.toString();
 
@@ -152,6 +155,7 @@ const UserRegistrationMentee = async (req, res, next) => {
             program: user.program,
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
+            otp_base32: base32Secret,
             message: `User created , Welcome ${username}`, // Include this in the response
         });
     } catch (error) {
@@ -159,11 +163,10 @@ const UserRegistrationMentee = async (req, res, next) => {
     }
 };
 
+
 const GenerateOTP = async (req, res, next) => {
     try {
-        const { user_id } = req.body;
-
-        const user = await User.findById(user_id);
+        const user = await User.findById(req.user._id)
 
         if (!user) {
             return res.status(404).json({
@@ -173,7 +176,13 @@ const GenerateOTP = async (req, res, next) => {
         }
 
         const base32Secret = generateRandomBase32();
-        const totp = generateTOTP(base32Secret);
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: base32Secret,
+        });
 
         const otpAuthURL = totp.toString();
 
@@ -184,7 +193,19 @@ const GenerateOTP = async (req, res, next) => {
         await user.save();
 
         res.status(200).json({
-            base32: base32Secret,
+            _id: user._id,
+            username: user.username,
+            avatar: user.avatar,
+            fullName: user.fullName,
+            email: user.email,
+            admin: false,
+            mentor: false,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: user.lastLogin,
+            program: user.program,
+            token: await user.generateJWT(),
+            otp_base32: base32Secret,
             otp_auth_url: otpAuthURL,
         });
     } catch (error) {
@@ -194,9 +215,9 @@ const GenerateOTP = async (req, res, next) => {
 
 const VerifyOTP = async (req, res, next) => {
     try {
-        const { user_id, token } = req.body;
+        const { token } = req.body;
 
-        const user = await User.findById(user_id);
+        const user = await User.findById(req.user._id)
 
         if (!user) {
             return res.status(401).json({
@@ -231,6 +252,9 @@ const VerifyOTP = async (req, res, next) => {
                 email: user.email,
                 admin: user.admin,
                 mentor: user.mentor,
+                otp_enabled: user.otp_enabled,
+                otp_verified: user.otp_verified,
+                lastLogin: user.lastLogin,
                 program: user.program,
             },
         });
@@ -265,7 +289,8 @@ const UserLogin = async (req, res, next) => {
                 otp_verified: user.otp_verified,
                 lastLogin: user.lastLogin,
                 token: await user.generateJWT(),
-                otp_auth_url: user.otp_auth_url, // Include TOTP URL in the response
+                otp_auth_url: user.otp_auth_url, 
+                otp_base32: user.otp_base32,// Include TOTP URL in the response
                 message: `Login success , Welcome ${email}`,
             });
         } else {
