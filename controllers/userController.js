@@ -3,6 +3,8 @@ import bcryptjs from 'bcryptjs';
 import crypto from 'crypto';
 import * as OTPAuth from 'otpauth';
 import pkg from 'hi-base32';
+import { uploadPicture } from '../middleware/uploadPictureMiddleware.js';
+import { fileRemover } from '../utils/fileRemover.js';
 const { encode } = pkg;
 
 const generateRandomBase32 = () => {
@@ -370,10 +372,16 @@ const UpdateProfilePicture = async (req, res, next) => {
                         _id: newUserProfile._id,
                         avatar: newUserProfile.avatar,
                         fullName: newUserProfile.fullName,
+                        username: newUserProfile.username,
                         email: newUserProfile.email,
-                        admin: updatedUser.admin,
-                        mentor: updatedUser.mentor,
+                        admin: newUserProfile.admin,
+                        mentor: newUserProfile.mentor,
+                        program: newUserProfile.program,
                         token: await newUserProfile.generateJWT(),
+                        otp_enabled: newUserProfile.otp_enabled,
+                        otp_verified: newUserProfile.otp_verified,
+                        otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
+                        lastLogin: newUserProfile.lastLogin
                     });
                 } else {
                     let filename;
@@ -386,10 +394,16 @@ const UpdateProfilePicture = async (req, res, next) => {
                         _id: newUserProfile._id,
                         avatar: newUserProfile.avatar,
                         fullName: newUserProfile.fullName,
+                        username: newUserProfile.username,
                         email: newUserProfile.email,
-                        admin: updatedUser.admin,
-                        mentor: updatedUser.mentor,
+                        admin: newUserProfile.admin,
+                        mentor: newUserProfile.mentor,
+                        program: newUserProfile.program,
                         token: await newUserProfile.generateJWT(),
+                        otp_enabled: newUserProfile.otp_enabled,
+                        otp_verified: newUserProfile.otp_verified,
+                        otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
+                        lastLogin: newUserProfile.lastLogin
                     });
                 }
             }

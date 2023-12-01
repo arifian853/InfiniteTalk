@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 import path from "path";
 import cors from 'cors';
 import { errorResponserHandler, invalidPathHandler } from './middleware/errorHandler.js';
+import { fileURLToPath } from 'url';
+import userRoutes from "./routes/userRoutes.js";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -11,11 +15,7 @@ dotenv.config();
 
 app.use(cors());
 app.use(express.json());
-
-
-import userRoutes from "./routes/userRoutes.js";
-
-// import postsRoute from './routes/posts.routes';
+app.use(express.static(path.join(__dirname, '/public')));
 
 const connectDB = async () => {
   try {
@@ -35,15 +35,14 @@ app.use('/api/user', userRoutes);
 // app.use('/posts', postsRoute);
 
 app.use((err, res,) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  res.status(500).json({ error: 'Internal Server Error', stack: err.stack });
 });
 
 app.use(errorResponserHandler);
 app.use(invalidPathHandler);
-
 // // static assets
 // app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+// app.use(express.static(__dirname + "/public"));
 
 const PORT = process.env.PORT || 7777;
 
@@ -52,3 +51,4 @@ connectDB().then(() => {
     console.log(`Server running at PORT ${PORT}`);
   });
 });
+
