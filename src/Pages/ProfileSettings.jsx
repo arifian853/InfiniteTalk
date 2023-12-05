@@ -1,23 +1,23 @@
-import { Button, Modal } from "flowbite-react"
+/* eslint-disable react/prop-types */
+import { Button } from "flowbite-react"
 import { Header } from "../Components/Header"
 import { Table } from 'flowbite-react';
 import { FaArrowLeft, FaCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { generateTOTP, getUserProfile, updateProfile } from "../Services/index/users";
+import { getUserProfile, updateProfile } from "../Services/index/users";
 import { useMemo } from "react";
 import { userActions } from "../store/reducers/userReducers";
-import { MdErrorOutline } from "react-icons/md";
 import { ProfilePicture } from "../Components/ProfilePicture";
-import QRCode from "qrcode";
+import { ActivateTOTP } from "../Components/ActivateTOTP";
+
 
 export const ProfileSettings = () => {
-    const [openModal, setOpenModal] = useState('')
-    const [qrcodeUrl, setqrCodeUrl] = useState("");
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
@@ -25,10 +25,7 @@ export const ProfileSettings = () => {
     const goBack = () => {
         navigate(-1)
     }
-    useEffect(() => {
-        QRCode.toDataURL(userState.userInfo.otp_auth_url).then(setqrCodeUrl);
-    }, [userState.userInfo.otp_auth_url]);
-
+    
     useEffect(() => {
         if (!userState.userInfo) {
             const timeoutId = setTimeout(() => {
@@ -38,6 +35,16 @@ export const ProfileSettings = () => {
             return () => clearTimeout(timeoutId);
         }
     }, [userState.userInfo, navigate]);
+
+    useEffect(() => {
+        if (!userState.userInfo.otp_valid && userState.userInfo.otp_enabled === true) {
+          const timeoutId = setTimeout(() => {
+            navigate('/otp');
+            toast.error("OTP Not Authenticated.")
+          }, 50);
+          return () => clearTimeout(timeoutId);
+        }
+      }, [userState.userInfo, navigate]);
 
     const { data: profileData, isLoading: profileIsLoading } = useQuery({
         queryFn: () => {
@@ -90,46 +97,15 @@ export const ProfileSettings = () => {
         mutate({ fullName, email, username, password });
     };
 
-    const generateOtpBtn = () => {
-        generateTOTP({
-            token: userState.userInfo.token,
-        });
-        setOpenModal('default')
-    }
-
-
+    
+   
 
     return (
         <>
             <Header />
             {userState.userInfo ? (
-                <div className='flex flex-col gap-4 justify-center items-center p-7'>
-                    <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
-                        <div data-aos="zoom-in" data-aos-duration="200">
-                            <Modal.Header className='modal-title'> <h1 className='modal-title'>Activate TOTP (Time-based OTP)</h1> </Modal.Header>
-                            <Modal.Body className='modal-body'>
-                                <div className="space-y-6 divide-y">
-                                    <div className="w-full flex flex-col justify-center items-center gap-2">
-                                        <p className="text-center">Scan this QR Code or paste the Base32 Secret to the Authenticator App.</p>
-
-                                        <img
-                                            className="block w-64 h-64 object-contain"
-                                            src={qrcodeUrl}
-                                            alt="qrcode url"
-                                        />
-                                        <p className="text-center">Base32 Secret : {userState.userInfo.otp_base32}</p>
-                                    </div>
-                                    <div className="p-4 w-full flex flex-col justify-center items-center gap-2">
-                                        Verify the code in your Authenticator App here
-                                        <input className="rounded-md py-2 px-3 text-slate-800 md:w-1/2 w-full text-center" type="number" max="999999" min="0" />
-                                        <Button className="btn-dark w-32 h-10">
-                                            Verify
-                                        </Button>
-                                    </div>
-                                </div>
-                            </Modal.Body>
-                        </div>
-                    </Modal>
+                <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
+                    
                     <div className="profile-section bg-slate-800">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
@@ -267,7 +243,7 @@ export const ProfileSettings = () => {
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
 
-                                            {userState.userInfo.otp_enabled ? <Button className='btn-dark-md'> Disable OTP <FaCheck /> </Button> : <Button className='btn-dark-md' onClick={generateOtpBtn}> Enable OTP <MdErrorOutline /> </Button>}
+                                            {userState.userInfo.otp_enabled ? <Button className='btn-dark-md'> Disable OTP <FaCheck /> </Button> : <ActivateTOTP />}
                                         </Table.Cell>
                                     </Table.Row>
                                 </Table.Body>

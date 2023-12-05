@@ -123,3 +123,17 @@ body {
     width: 85vw;
     border-radius: 7px;
 }
+
+/*OTP*/
+
+.otp {
+    color: var(--white);
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    text-align: center;
+    gap: 0.5em;
+}

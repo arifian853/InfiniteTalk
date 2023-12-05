@@ -23,6 +23,13 @@ export const SignIn = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
+      if (userState.userInfo.otp_enabled === true) {
+        // Navigate to /otp if OTP is enabled and verified
+        navigate('/otp');
+      } else {
+        // Navigate to /feed if no OTP is required or if OTP is not verified
+        navigate('/feed');
+      }
       toast.success(data.message);
     },
     onError: (error) => {
@@ -31,6 +38,7 @@ export const SignIn = () => {
     },
   });
 
+  
   const {
     register,
     handleSubmit,
@@ -44,16 +52,13 @@ export const SignIn = () => {
   });
 
   useEffect(() => {
-    if (userState.userInfo &&  userState.userInfo.otp_enabled == false) {
+    if (userState.userInfo) {
       const timeoutId = setTimeout(() => {
         navigate('/feed');
       }, 2000);
       return () => clearTimeout(timeoutId);
-    } else {
-      navigate('/otp');
     }
   }, [userState.userInfo, navigate]);
-
 
   const loginBtn = (data) => {
     const { email, password } = data;

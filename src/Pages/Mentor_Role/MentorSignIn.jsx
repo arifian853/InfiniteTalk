@@ -45,10 +45,16 @@ export const MentorSignIn = () => {
 
   useEffect(() => {
     if (userState.userInfo) {
-      const timeoutId = setTimeout(() => {
-        navigate('/feed');
-      }, 2000);
-      return () => clearTimeout(timeoutId);
+      if (userState.userInfo.otp_enabled === false) {
+        // If OTP is not enabled, navigate to /feed after a delay
+        const timeoutId = setTimeout(() => {
+          navigate('/feed');
+        }, 2000);
+        return () => clearTimeout(timeoutId);
+      } else if (userState.userInfo.otp_enabled === true) {
+        // If OTP is enabled but not verified, navigate to /otp
+        navigate('/otp');
+      }
     }
   }, [userState.userInfo, navigate]);
 

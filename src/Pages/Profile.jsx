@@ -25,11 +25,22 @@ export const Profile = () => {
             return () => clearTimeout(timeoutId);
         }
     }, [userState.userInfo, navigate]);
+
+    useEffect(() => {
+        if (!userState.userInfo.otp_valid && userState.userInfo.otp_enabled === true) {
+          const timeoutId = setTimeout(() => {
+            navigate('/otp');
+            toast.error("OTP Not Authenticated.")
+          }, 50);
+          return () => clearTimeout(timeoutId);
+        }
+      }, [userState.userInfo, navigate]);
+      
     return (
         <>
             <Header />
             {userState.userInfo ? (
-                <div className='flex flex-col gap-4 justify-center items-center p-7'>
+                <div  data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
                     <div className="profile-section bg-slate-800">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
@@ -89,10 +100,10 @@ export const Profile = () => {
                                 </Table.Row>
                                 <Table.Row>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Last Sign In
+                                        Last sign in
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {new Intl.DateTimeFormat('en-US', {
+                                        {new Intl.DateTimeFormat('en-GB', {
                                             weekday: 'long',
                                             day: 'numeric',
                                             month: 'long',
@@ -102,6 +113,21 @@ export const Profile = () => {
                                             minute: 'numeric',
                                             timeZone: 'Asia/Jakarta',
                                         }).format(new Date(userState.userInfo.lastLogin))}
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+
+                                    </Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        Member since
+                                    </Table.Cell>
+                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                        {new Intl.DateTimeFormat('en-GB', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        }).format(new Date(userState.userInfo.createdAt))}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
 
@@ -130,7 +156,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><Tooltip content="OTP is enabled, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
+                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><Tooltip content="OTP is enabled, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'><p className="text-2xl text-yellow-500"><Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link>}
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -141,7 +167,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
+                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'> <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link> }
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>

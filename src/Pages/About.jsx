@@ -16,6 +16,16 @@ export const About = () => {
           return () => clearTimeout(timeoutId);
         }
       }, [userState.userInfo, navigate]);
+
+      useEffect(() => {
+        if (!userState.userInfo.otp_valid && userState.userInfo.otp_enabled === true) {
+          const timeoutId = setTimeout(() => {
+            navigate('/otp');
+            toast.error("OTP Not Authenticated.")
+          }, 50);
+          return () => clearTimeout(timeoutId);
+        }
+      }, [userState.userInfo, navigate]);
     return (
         <>
             <Header />
