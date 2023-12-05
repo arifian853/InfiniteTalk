@@ -6,6 +6,7 @@ import cors from 'cors';
 import { errorResponserHandler, invalidPathHandler } from './middleware/errorHandler.js';
 import { fileURLToPath } from 'url';
 import userRoutes from "./routes/userRoutes.js";
+import otpRoutes from "./routes/otpRoutes.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,6 +17,10 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
+app.use('/api/user', userRoutes);
+app.use('/api/otp', otpRoutes);
+// app.use('/posts', postsRoute);
+
 
 const connectDB = async () => {
   try {
@@ -30,16 +35,16 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
-app.use('/api/user', userRoutes);
-// app.use('/posts', postsRoute);
-
 app.use((err, res,) => {
   res.status(500).json({ error: 'Internal Server Error', stack: err.stack });
 });
 
 app.use(errorResponserHandler);
 app.use(invalidPathHandler);
+
+
+
+
 // // static assets
 // app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 // app.use(express.static(__dirname + "/public"));

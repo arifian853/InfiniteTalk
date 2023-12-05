@@ -81,6 +81,7 @@ const UserRegistrationMentor = async (req, res, next) => {
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
             otp_base32: base32Secret,
+            createdAt: user.createdAt,
             message: `User created , Welcome ${username}`, // Include this in the response
         });
     } catch (error) {
@@ -156,6 +157,7 @@ const UserRegistrationMentee = async (req, res, next) => {
             token: await user.generateJWT(),
             otp_auth_url: otpAuthURL,
             otp_base32: base32Secret,
+            createdAt: user.createdAt,
             message: `User created , Welcome ${username}`, // Include this in the response
         });
     } catch (error) {
@@ -163,15 +165,15 @@ const UserRegistrationMentee = async (req, res, next) => {
     }
 };
 
-
 const GenerateOTP = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user._id)
-
+        const { username } = req.body;
+        let user = await User.findOne({ username });
+        
         if (!user) {
             return res.status(404).json({
                 status: 'fail',
-                message: 'No user with that ID exists',
+                message: 'No user with that username exists',
             });
         }
 
@@ -198,8 +200,8 @@ const GenerateOTP = async (req, res, next) => {
             avatar: user.avatar,
             fullName: user.fullName,
             email: user.email,
-            admin: false,
-            mentor: false,
+            admin: user.admin,
+            mentor: user.mentor,
             otp_enabled: user.otp_enabled,
             otp_verified: user.otp_verified,
             lastLogin: user.lastLogin,
@@ -207,6 +209,7 @@ const GenerateOTP = async (req, res, next) => {
             token: await user.generateJWT(),
             otp_base32: base32Secret,
             otp_auth_url: otpAuthURL,
+            createdAt: user.createdAt,
         });
     } catch (error) {
         next(error);
@@ -215,9 +218,8 @@ const GenerateOTP = async (req, res, next) => {
 
 const VerifyOTP = async (req, res, next) => {
     try {
-        const { token } = req.body;
-
-        const user = await User.findById(req.user._id)
+        const { token, username } = req.body;
+        const user = await User.findOne({ username })
 
         if (!user) {
             return res.status(401).json({
@@ -226,7 +228,14 @@ const VerifyOTP = async (req, res, next) => {
             });
         }
 
-        const totp = generateTOTP(user.otp_base32);
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: user.otp_base32,
+        });
+        
         const delta = totp.validate({ token });
 
         if (delta === null) {
@@ -239,12 +248,11 @@ const VerifyOTP = async (req, res, next) => {
         // Update user data (if needed)
         user.otp_enabled = true;
         user.otp_verified = true;
-
-        await user.save();
+        
+        await user.save();  
 
         res.status(200).json({
-            otp_verified: true,
-            user: {
+                otp_valid: true,
                 _id: user._id,
                 username: user.username,
                 avatar: user.avatar,
@@ -256,7 +264,8 @@ const VerifyOTP = async (req, res, next) => {
                 otp_verified: user.otp_verified,
                 lastLogin: user.lastLogin,
                 program: user.program,
-            },
+                token: await user.generateJWT(),
+                createdAt: user.createdAt,
         });
     } catch (error) {
         next(error);
@@ -289,8 +298,9 @@ const UserLogin = async (req, res, next) => {
                 otp_verified: user.otp_verified,
                 lastLogin: user.lastLogin,
                 token: await user.generateJWT(),
-                otp_auth_url: user.otp_auth_url, 
+                otp_auth_url: user.otp_auth_url,
                 otp_base32: user.otp_base32,// Include TOTP URL in the response
+                createdAt: user.createdAt,
                 message: `Login success , Welcome ${email}`,
             });
         } else {
@@ -307,6 +317,7 @@ const UserProfile = async (req, res, next) => {
 
         if (user) {
             return res.status(201).json({
+                otp_valid: true,
                 _id: user._id,
                 avatar: user.avatar,
                 fullName: user.fullName,
@@ -318,6 +329,8 @@ const UserProfile = async (req, res, next) => {
                 otp_enabled: user.otp_enabled,
                 otp_verified: user.otp_verified,
                 otp_auth_url: user.otp_auth_url,
+                otp_base32: user.otp_base32,
+                createdAt: user.createdAt,
                 lastLogin: user.lastLogin // Include TOTP URL in the response
             });
         } else {
@@ -354,6 +367,7 @@ const UpdateUserProfile = async (req, res, next) => {
         const newUserProfile = await user.save();
 
         res.json({
+            otp_valid: true,
             _id: newUserProfile._id,
             avatar: newUserProfile.avatar,
             fullName: newUserProfile.fullName,
@@ -366,7 +380,9 @@ const UpdateUserProfile = async (req, res, next) => {
             otp_enabled: newUserProfile.otp_enabled,
             otp_verified: newUserProfile.otp_verified,
             otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
-            lastLogin: newUserProfile.lastLogin
+            otp_base32: newUserProfile.otp_base32,
+            lastLogin: newUserProfile.lastLogin,
+            createdAt: newUserProfile.createdAt,
         });
     } catch (error) {
         next(error);
@@ -394,6 +410,7 @@ const UpdateProfilePicture = async (req, res, next) => {
                     newUserProfile.avatar = req.file.filename;
                     await newUserProfile.save();
                     res.json({
+                        otp_valid: true,
                         _id: newUserProfile._id,
                         avatar: newUserProfile.avatar,
                         fullName: newUserProfile.fullName,
@@ -406,7 +423,10 @@ const UpdateProfilePicture = async (req, res, next) => {
                         otp_enabled: newUserProfile.otp_enabled,
                         otp_verified: newUserProfile.otp_verified,
                         otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
-                        lastLogin: newUserProfile.lastLogin
+                        otp_base32: newUserProfile.otp_base32,
+                        lastLogin: newUserProfile.lastLogin,
+                        createdAt: newUserProfile.createdAt,
+                        
                     });
                 } else {
                     let filename;
@@ -416,6 +436,7 @@ const UpdateProfilePicture = async (req, res, next) => {
                     await newUserProfile.save();
                     fileRemover(filename);
                     res.json({
+                        otp_valid: true,
                         _id: newUserProfile._id,
                         avatar: newUserProfile.avatar,
                         fullName: newUserProfile.fullName,
@@ -428,7 +449,9 @@ const UpdateProfilePicture = async (req, res, next) => {
                         otp_enabled: newUserProfile.otp_enabled,
                         otp_verified: newUserProfile.otp_verified,
                         otp_auth_url: newUserProfile.otp_auth_url, // Include TOTP URL in the response
-                        lastLogin: newUserProfile.lastLogin
+                        otp_base32: newUserProfile.otp_base32,
+                        lastLogin: newUserProfile.lastLogin,
+                        createdAt: newUserProfile.createdAt,
                     });
                 }
             }
@@ -440,8 +463,8 @@ const UpdateProfilePicture = async (req, res, next) => {
 
 const ValidateOTP = async (req, res, next) => {
     try {
-        const { user_id, token } = req.body;
-        const user = await User.findById(user_id);
+        const { token, username } = req.body;
+        const user = await User.findOne({ username });
 
         const message = "Token is invalid or user doesn't exist";
         if (!user) {
@@ -470,6 +493,22 @@ const ValidateOTP = async (req, res, next) => {
 
         res.status(200).json({
             otp_valid: true,
+            message: "OTP Valid",
+            _id: user._id,
+            avatar: user.avatar,
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email,
+            admin: user.admin,
+            mentor: user.mentor,
+            program: user.program,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: user.lastLogin,
+            token: await user.generateJWT(),
+            otp_auth_url: user.otp_auth_url,
+            otp_base32: user.otp_base32,// Include TOTP URL in the response
+            createdAt: user.createdAt,
         });
     } catch (error) {
         res.status(500).json({
@@ -481,9 +520,7 @@ const ValidateOTP = async (req, res, next) => {
 
 const DisableOTP = async (req, res, next) => {
     try {
-        const { user_id } = req.body;
-
-        const user = await User.findById(user_id);
+        const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
@@ -511,6 +548,8 @@ const DisableOTP = async (req, res, next) => {
                 otp_enabled: updatedUser.otp_enabled,
                 otp_verified: updatedUser.otp_verified,
                 otp_auth_url: updatedUser.otp_auth_url, // Include TOTP URL in the response
+                createdAt: updatedUser.createdAt,
+                message: "OTP Disabled",
             },
         });
     } catch (error) {
