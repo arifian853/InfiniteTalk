@@ -15,10 +15,11 @@ import { userActions } from "../store/reducers/userReducers";
 import { ProfilePicture } from "../Components/ProfilePicture";
 import { ActivateTOTP } from "../Components/ActivateTOTP";
 import { DisableTOTP } from "../Components/DisableTOTP";
+import { Helmet } from "react-helmet";
 
 
 export const ProfileSettings = () => {
-    
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ export const ProfileSettings = () => {
     const goBack = () => {
         navigate(-1)
     }
-    
+
     useEffect(() => {
         if (!userState.userInfo) {
             const timeoutId = setTimeout(() => {
@@ -39,13 +40,13 @@ export const ProfileSettings = () => {
 
     useEffect(() => {
         if (!userState.userInfo.otp_valid && userState.userInfo.otp_enabled === true) {
-          const timeoutId = setTimeout(() => {
-            navigate('/otp');
-            toast.error("OTP Not Authenticated.")
-          }, 50);
-          return () => clearTimeout(timeoutId);
+            const timeoutId = setTimeout(() => {
+                navigate('/otp');
+                toast.error("OTP Not Authenticated.")
+            }, 50);
+            return () => clearTimeout(timeoutId);
         }
-      }, [userState.userInfo, navigate]);
+    }, [userState.userInfo, navigate]);
 
     const { data: profileData, isLoading: profileIsLoading } = useQuery({
         queryFn: () => {
@@ -98,15 +99,18 @@ export const ProfileSettings = () => {
         mutate({ fullName, email, username, password });
     };
 
-    
-   
+
+
 
     return (
         <>
             <Header />
+            <Helmet>
+                <title>InfiniteTalk! - Profile Settings</title>
+            </Helmet>
             {userState.userInfo ? (
                 <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
-                    
+
                     <div className="profile-section bg-slate-800">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
@@ -115,7 +119,7 @@ export const ProfileSettings = () => {
                         <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
                         {/* <Avatar className="m-3" alt="User settings" img={profileData?.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" /> */}
                         <div className="flex items-center flex-row justify-center"><ProfilePicture avatar={profileData?.avatar} /></div>
-                        <p className="text-xs text-center p-2">*Max 1MB</p>
+                        <p className="text-xs text-center p-2">*Max 1MB & .jpg/.jpeg, and .png only is allowed </p>
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                             <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> Update data and profile picture</li>
                         </ul>

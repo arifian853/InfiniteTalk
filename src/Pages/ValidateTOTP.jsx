@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ValidateOTP } from "../Services/index/otp";
 import { userActions } from "../store/reducers/userReducers";
 import { useForm } from "react-hook-form";
+import { Helmet } from "react-helmet";
 
 export const ValidateTOTP = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export const ValidateTOTP = () => {
       console.log(error);
     },
   });
-  
+
   useEffect(() => {
     if (!userState.userInfo) {
       const timeoutId = setTimeout(() => {
@@ -54,14 +55,11 @@ export const ValidateTOTP = () => {
         navigate('/feed');
       }, 50);
       return () => clearTimeout(timeoutId);
-    } else if (!userState.userInfo.otp_valid === true || !userState.userInfo.otp_valid){
+    } else if (!userState.userInfo.otp_valid === true || !userState.userInfo.otp_valid) {
       // If no valid OTP, prevent navigation
       navigate('/otp');
     }
   }, [userState.userInfo, navigate]);
-
- 
-
 
   const {
     register,
@@ -82,9 +80,13 @@ export const ValidateTOTP = () => {
 
   return (
     <div className="flex h-screen justify-center items-center">
+      <Helmet>
+        <title>InfiniteTalk! - TOTP Authentication</title>
+      </Helmet>
       <div className="bg-slate-800 otp w-4/5 md:w-2/5">
-        <h1 className="text-2xl">TOTP Authentication</h1>
-        <p>Open your Authenticator app and insert the OTP code for this account</p>
+        <h1 className="text-2xl font-semibold"><span className="text-blue-400"> Time-Based OTP</span><span className="text-green-400"> Authentication</span></h1>
+        <hr className="w-full h-px my-1 bg-gray-200 border-0 dark:bg-gray-500" />
+        <p>Open your <span className="text-center font-semibold text-green-400">Authenticator App</span> and insert the OTP code for <span className="font-semibold">{userState.userInfo.email}</span> </p>
         <form className="w-2/3 flex justify-center gap-2 flex-col items-center" onSubmit={handleSubmit(otpValidate)}>
           <input {...register("token")} className="rounded-md py-2 px-3 mb-3 text-slate-800 md:w-2/3 w-full text-center" type="number" />
           <Button type="submit" disabled={!isValid} className="btn-dark">

@@ -50,7 +50,7 @@ export const ActivateTOTP = () => {
                     <Modal.Body className='modal-body'>
                         <div className="space-y-6 divide-y">
                             <div className="w-full flex flex-col justify-center items-center gap-2">
-                                <p className="text-center">Scan this QR Code or paste the Base32 Secret to the Authenticator App.</p>
+                                <p className="text-center text-sm">Scan this QR Code or paste the Base32 Secret to your <span className="text-center text-sm font-semibold text-green-400">Authenticator App</span>.</p>
 
                                 <img
                                     className="block w-64 h-64 object-contain rounded-md"
@@ -58,9 +58,11 @@ export const ActivateTOTP = () => {
                                     alt="qrcode url"
                                 />
                                 <p className="text-center">Base32 Secret : {userState.userInfo.otp_base32}</p>
+                                <p className="text-center text-sm">You can use <span className="text-center text-sm font-semibold text-yellow-400"> Google Authenticator, IBM Security Verify, or Twilio Authy </span>for authenticating</p>
+                                
                             </div>
-                            <div className="p-4 w-full flex flex-col justify-center items-center gap-2">
-                                Verify the code in your Authenticator App here
+                            <div className="p-4 w-full flex flex-col justify-center items-center gap-2 text-sm">
+                               <p> Input the 6-digit code that appeared in your <span className="text-center text-sm font-semibold text-green-400">Authenticator App</span> here</p>
                                 <VerifyOTPBtn />
                             </div>
                         </div>

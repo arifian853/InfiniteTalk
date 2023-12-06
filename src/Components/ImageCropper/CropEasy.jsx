@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/reducers/userReducers";
 import { toast } from "react-hot-toast";
 import { updateProfilePicture } from "../../Services/index/users";
+import { Button } from "flowbite-react";
 
 const CropEasy = ({ photo, setOpenCrop }) => {
   const userState = useSelector((state) => state.user);
@@ -61,7 +62,7 @@ const CropEasy = ({ photo, setOpenCrop }) => {
 
   return (
     <div className="fixed z-[1000] inset-0 bg-black/50 flex justify-center p-5 overflow-auto">
-      <div className="bg-white h-fit w-full sm:max-w-[350px] p-5 rounded-lg">
+      <div className="bg-slate-800 text-white h-fit w-full sm:max-w-[350px] p-5 rounded-lg">
         <h2 className="font-semibold text-dark-hard mb-2">Crop Image</h2>
         <div className="relative w-full aspect-square rounded-lg overflow-hidden">
           <Cropper
@@ -77,7 +78,7 @@ const CropEasy = ({ photo, setOpenCrop }) => {
         <div>
           <label
             htmlFor="zoomRage"
-            className="block mt-2 mb-0.5 text-sm font-medium text-gray-900"
+            className="block mt-2 mb-0.5 text-sm font-medium text-white"
           >
             Zoom: {`${Math.round(zoom * 100)}%`}
           </label>
@@ -93,20 +94,21 @@ const CropEasy = ({ photo, setOpenCrop }) => {
           />
         </div>
         <div className="flex justify-between gap-2 flex-wrap">
-          <button
+          <Button
+            color="failure"
             disabled={isLoading}
             onClick={() => setOpenCrop(false)}
-            className="px-5 py-2.5 rounded-lg text-red-500 border border-red-500 text-sm disabled:opacity-70"
+            className="text-sm disabled:opacity-70"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             disabled={isLoading}
             onClick={handleCropImage}
-            className="px-5 py-2.5 rounded-lg text-white bg-blue-500 text-sm disabled:opacity-70"
+            className="btn-dark text-sm disabled:opacity-70"
           >
             Crop & Upload
-          </button>
+          </Button>
         </div>
       </div>
     </div>

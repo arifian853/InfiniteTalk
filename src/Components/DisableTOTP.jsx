@@ -44,7 +44,7 @@ export const DisableTOTP = () => {
                         <div className="space-y-6 divide-y">
                             <div className="w-full flex flex-col justify-center items-center gap-2">
                                 <h1 className="text-2xl text-red-500 font-semibold">Are you sure?</h1>
-                                <p className="text-center">This action will cause your account not safe anymore!</p>
+                                <p className="text-center">This action will cause your account <span className="text-red-500 font-semibold">not safe</span>  anymore!</p>
                                 <div className="mt-2 flex flex-row gap-2">
                                     <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
                                         Cancel

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { MdErrorOutline } from "react-icons/md";
 import { Tooltip } from 'flowbite-react';
 import stables from "../Constants/stables";
+import { Helmet } from "react-helmet";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -39,6 +40,9 @@ export const Profile = () => {
     return (
         <>
             <Header />
+            <Helmet>
+                <title>InfiniteTalk! - {userState.userInfo.username}&rsquo;s Profile</title>
+            </Helmet>
             {userState.userInfo ? (
                 <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
                     <div className="profile-section bg-slate-800">

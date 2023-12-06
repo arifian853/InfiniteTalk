@@ -4,17 +4,53 @@ import stables from "../Constants/stables"
 import CropEasy from "./ImageCropper/CropEasy"
 import { HiOutlineCamera } from 'react-icons/hi'
 import { createPortal } from "react-dom"
+import { Button, Modal } from "flowbite-react"
+import toast from "react-hot-toast"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useDispatch, useSelector } from "react-redux"
+import { updateProfilePicture } from "../Services/index/users"
+import { userActions } from "../store/reducers/userReducers"
 
 export const ProfilePicture = ({ avatar }) => {
-
+    const queryClient = useQueryClient();
+    const dispatch = useDispatch();
+    const userState = useSelector((state) => state.user);
     const [openCrop, setOpenCrop] = useState(false)
     const [photo, setPhoto] = useState(null)
+    const [openModal, setOpenModal] = useState('')
+
+    const { mutate } = useMutation({
+        mutationFn: ({ token, formData }) => {
+            return updateProfilePicture({
+                token: token,
+                formData: formData,
+            });
+        },
+        onSuccess: (data) => {
+            dispatch(userActions.setUserInfo(data));
+            setOpenCrop(false);
+            localStorage.setItem("account", JSON.stringify(data));
+            queryClient.invalidateQueries(["profile"]);
+            toast.success("Profile Photo is removed");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+            console.log(error);
+        },
+    });
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setPhoto({ url: URL.createObjectURL(file), file });
         setOpenCrop(true);
     }
+
+    const handleDeleteImage = () => {
+        const formData = new FormData();
+        formData.append("profilePicture", undefined);
+        mutate({ token: userState.userInfo.token, formData: formData });
+        setOpenModal(undefined)
+    };
 
     return (
         <>
@@ -47,13 +83,37 @@ export const ProfilePicture = ({ avatar }) => {
                         onChange={handleFileChange}
                     />
                 </div>
-                <button
-                    onClick={""}
+                <Button
+                    onClick={() => setOpenModal('default')}
                     type="button"
-                    className="border border-red-500 rounded-lg px-4 py-2 text-red-500"
+                    color="failure"
                 >
-                    Delete
-                </button>
+                    Delete profile picture
+                </Button>
+               
+            <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+                <div>
+                    <Modal.Header className='modal-title'> <h1 className='modal-title'>Delete Profile Picture?</h1> </Modal.Header>
+                    <Modal.Body className='modal-body'>
+                        <div className="space-y-6 divide-y">
+                            <div className="w-full flex flex-col justify-center items-center gap-2">
+                                <h1 className="text-2xl font-semibold">Are you sure?</h1>
+                                
+                                <div className="mt-2 flex flex-row gap-2">
+                                    <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
+                                        Cancel
+                                    </Button>
+                                    <Button color="failure" onClick={handleDeleteImage}>
+                                        Delete picture
+                                    </Button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </Modal.Body>
+                </div>
+            </Modal>
             </div>
         </>
     )
