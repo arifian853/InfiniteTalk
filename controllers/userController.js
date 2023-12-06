@@ -165,112 +165,6 @@ const UserRegistrationMentee = async (req, res, next) => {
     }
 };
 
-const GenerateOTP = async (req, res, next) => {
-    try {
-        const { username } = req.body;
-        let user = await User.findOne({ username });
-        
-        if (!user) {
-            return res.status(404).json({
-                status: 'fail',
-                message: 'No user with that username exists',
-            });
-        }
-
-        const base32Secret = generateRandomBase32();
-        let totp = new OTPAuth.TOTP({
-            issuer: 'InfiniteTalk!',
-            label: user.email,
-            algorithm: 'SHA1',
-            digits: 6,
-            secret: base32Secret,
-        });
-
-        const otpAuthURL = totp.toString();
-
-        user.otp_auth_url = otpAuthURL;
-        user.otp_base32 = base32Secret;
-
-        // Save the updated TOTP-related information
-        await user.save();
-
-        res.status(200).json({
-            _id: user._id,
-            username: user.username,
-            avatar: user.avatar,
-            fullName: user.fullName,
-            email: user.email,
-            admin: user.admin,
-            mentor: user.mentor,
-            otp_enabled: user.otp_enabled,
-            otp_verified: user.otp_verified,
-            lastLogin: user.lastLogin,
-            program: user.program,
-            token: await user.generateJWT(),
-            otp_base32: base32Secret,
-            otp_auth_url: otpAuthURL,
-            createdAt: user.createdAt,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const VerifyOTP = async (req, res, next) => {
-    try {
-        const { token, username } = req.body;
-        const user = await User.findOne({ username })
-
-        if (!user) {
-            return res.status(401).json({
-                status: 'fail',
-                message: 'Token is invalid or user does not exist',
-            });
-        }
-
-        let totp = new OTPAuth.TOTP({
-            issuer: 'InfiniteTalk!',
-            label: user.email,
-            algorithm: 'SHA1',
-            digits: 6,
-            secret: user.otp_base32,
-        });
-        
-        const delta = totp.validate({ token });
-
-        if (delta === null) {
-            return res.status(401).json({
-                status: 'fail',
-                message: 'Token is invalid or user does not exist',
-            });
-        }
-
-        // Update user data (if needed)
-        user.otp_enabled = true;
-        user.otp_verified = true;
-        
-        await user.save();  
-
-        res.status(200).json({
-                otp_valid: true,
-                _id: user._id,
-                username: user.username,
-                avatar: user.avatar,
-                fullName: user.fullName,
-                email: user.email,
-                admin: user.admin,
-                mentor: user.mentor,
-                otp_enabled: user.otp_enabled,
-                otp_verified: user.otp_verified,
-                lastLogin: user.lastLogin,
-                program: user.program,
-                token: await user.generateJWT(),
-                createdAt: user.createdAt,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
 
 const UserLogin = async (req, res, next) => {
     try {
@@ -426,7 +320,7 @@ const UpdateProfilePicture = async (req, res, next) => {
                         otp_base32: newUserProfile.otp_base32,
                         lastLogin: newUserProfile.lastLogin,
                         createdAt: newUserProfile.createdAt,
-                        
+
                     });
                 } else {
                     let filename;
@@ -455,6 +349,113 @@ const UpdateProfilePicture = async (req, res, next) => {
                     });
                 }
             }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const GenerateOTP = async (req, res, next) => {
+    try {
+        const { username } = req.body;
+        let user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No user with that username exists',
+            });
+        }
+
+        const base32Secret = generateRandomBase32();
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: base32Secret,
+        });
+
+        const otpAuthURL = totp.toString();
+
+        user.otp_auth_url = otpAuthURL;
+        user.otp_base32 = base32Secret;
+
+        // Save the updated TOTP-related information
+        await user.save();
+
+        res.status(200).json({
+            _id: user._id,
+            username: user.username,
+            avatar: user.avatar,
+            fullName: user.fullName,
+            email: user.email,
+            admin: user.admin,
+            mentor: user.mentor,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: user.lastLogin,
+            program: user.program,
+            token: await user.generateJWT(),
+            otp_base32: base32Secret,
+            otp_auth_url: otpAuthURL,
+            createdAt: user.createdAt,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const VerifyOTP = async (req, res, next) => {
+    try {
+        const { token, username } = req.body;
+        const user = await User.findOne({ username })
+
+        if (!user) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'Token is invalid or user does not exist',
+            });
+        }
+
+        let totp = new OTPAuth.TOTP({
+            issuer: 'InfiniteTalk!',
+            label: user.email,
+            algorithm: 'SHA1',
+            digits: 6,
+            secret: user.otp_base32,
+        });
+
+        const delta = totp.validate({ token });
+
+        if (delta === null) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'Token is invalid or user does not exist',
+            });
+        }
+
+        // Update user data (if needed)
+        user.otp_enabled = true;
+        user.otp_verified = true;
+
+        await user.save();
+
+        res.status(200).json({
+            otp_valid: true,
+            _id: user._id,
+            username: user.username,
+            avatar: user.avatar,
+            fullName: user.fullName,
+            email: user.email,
+            admin: user.admin,
+            mentor: user.mentor,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: user.lastLogin,
+            program: user.program,
+            token: await user.generateJWT(),
+            createdAt: user.createdAt,
         });
     } catch (error) {
         next(error);
@@ -520,7 +521,8 @@ const ValidateOTP = async (req, res, next) => {
 
 const DisableOTP = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user._id);
+        const { username } = req.body;
+        const user = await User.findOne({ username })
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
@@ -528,30 +530,31 @@ const DisableOTP = async (req, res, next) => {
             });
         }
 
-        const updatedUser = await User.findByIdAndUpdate(
-            user_id,
-            { $set: { otp_enabled: false } },
-            { new: true }
-        );
+        user.otp_enabled = false;
+        user.otp_verified = false;
+
+        await user.save();
 
         res.status(200).json({
-            otp_disabled: true,
-            user: {
-                _id: updatedUser._id,
-                username: updatedUser.username,
-                avatar: updatedUser.avatar,
-                fullName: updatedUser.fullName,
-                email: updatedUser.email,
-                admin: updatedUser.admin,
-                mentor: updatedUser.mentor,
-                program: updatedUser.program,
-                otp_enabled: updatedUser.otp_enabled,
-                otp_verified: updatedUser.otp_verified,
-                otp_auth_url: updatedUser.otp_auth_url, // Include TOTP URL in the response
-                createdAt: updatedUser.createdAt,
-                message: "OTP Disabled",
-            },
-        });
+            otp_valid: false,
+            _id: user._id,
+            avatar: user.avatar,
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email,
+            admin: user.admin,
+            mentor: user.mentor,
+            program: user.program,
+            otp_enabled: user.otp_enabled,
+            otp_verified: user.otp_verified,
+            lastLogin: user.lastLogin,
+            token: await user.generateJWT(),
+            otp_auth_url: user.otp_auth_url,
+            otp_base32: user.otp_base32,// Include TOTP URL in the response
+            createdAt: user.createdAt,
+            message: "OTP Disabled",
+        },
+        );
     } catch (error) {
         next(error);
     }
