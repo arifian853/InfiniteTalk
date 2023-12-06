@@ -363,7 +363,7 @@ const GenerateOTP = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({
                 status: 'fail',
-                message: 'No user with that username exists',
+                message: 'User not found',
             });
         }
 
@@ -414,7 +414,7 @@ const VerifyOTP = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'Token is invalid or user does not exist',
+                message: 'OTP is invalid or user not found',
             });
         }
 
@@ -467,7 +467,7 @@ const ValidateOTP = async (req, res, next) => {
         const { token, username } = req.body;
         const user = await User.findOne({ username });
 
-        const message = "Token is invalid or user doesn't exist";
+        const message = "OTP Invalid or user not found";
         if (!user) {
             return res.status(401).json({
                 status: "fail",

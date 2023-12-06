@@ -42,13 +42,6 @@ app.use((err, res,) => {
 app.use(errorResponserHandler);
 app.use(invalidPathHandler);
 
-
-
-
-// // static assets
-// app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-// app.use(express.static(__dirname + "/public"));
-
 const PORT = process.env.PORT || 7777;
 
 connectDB().then(() => {
