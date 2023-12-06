@@ -3,7 +3,7 @@ import { Button } from "flowbite-react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/reducers/userReducers";
-import { VerifyOTP } from "../Services/index/users";
+import { VerifyOTP } from "../Services/index/otp";
 import { useForm } from "react-hook-form";
 
 export const VerifyOTPBtn = () => {
@@ -16,6 +16,7 @@ export const VerifyOTPBtn = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
+      toast.success("OTP Enabled!");
     },
     onError: (error) => {
       toast.error(error.message);

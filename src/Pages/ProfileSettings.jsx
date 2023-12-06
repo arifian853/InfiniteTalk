@@ -2,7 +2,7 @@
 import { Button } from "flowbite-react"
 import { Header } from "../Components/Header"
 import { Table } from 'flowbite-react';
-import { FaArrowLeft, FaCheck } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { userActions } from "../store/reducers/userReducers";
 import { ProfilePicture } from "../Components/ProfilePicture";
 import { ActivateTOTP } from "../Components/ActivateTOTP";
+import { DisableTOTP } from "../Components/DisableTOTP";
 
 
 export const ProfileSettings = () => {
@@ -243,7 +244,7 @@ export const ProfileSettings = () => {
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
 
-                                            {userState.userInfo.otp_enabled ? <Button className='btn-dark-md'> Disable OTP <FaCheck /> </Button> : <ActivateTOTP />}
+                                            {userState.userInfo.otp_enabled ? <DisableTOTP /> : <ActivateTOTP />}
                                         </Table.Cell>
                                     </Table.Row>
                                 </Table.Body>

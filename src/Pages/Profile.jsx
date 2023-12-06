@@ -28,26 +28,30 @@ export const Profile = () => {
 
     useEffect(() => {
         if (!userState.userInfo.otp_valid && userState.userInfo.otp_enabled === true) {
-          const timeoutId = setTimeout(() => {
-            navigate('/otp');
-            toast.error("OTP Not Authenticated.")
-          }, 50);
-          return () => clearTimeout(timeoutId);
+            const timeoutId = setTimeout(() => {
+                navigate('/otp');
+                toast.error("OTP Not Authenticated.")
+            }, 50);
+            return () => clearTimeout(timeoutId);
         }
-      }, [userState.userInfo, navigate]);
-      
+    }, [userState.userInfo, navigate]);
+
     return (
         <>
             <Header />
             {userState.userInfo ? (
-                <div  data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
+                <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
                     <div className="profile-section bg-slate-800">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile</h1>
                         </div>
                         <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
-                        <Avatar className="m-3" alt="User settings" img={stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" />
+                        <Avatar className="m-3" alt="User settings" img={
+                            userState.userInfo.avatar
+                                ? stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar
+                                : "user.png"
+                        } rounded bordered size="lg" status="online" statusPosition="top-right" />
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                             <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> <h1 className="text-2xl font-semibold">{userState.userInfo.fullName}</h1> {userState.userInfo.mentor ? "Mentor" : "Mentee"} @ {userState.userInfo.program}</li>
                         </ul>
@@ -167,7 +171,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'> <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link> }
+                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'> <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link>}
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>
@@ -180,7 +184,7 @@ export const Profile = () => {
                             </Link>
                         </div>
                     </div>
-                    
+
                 </div>
             ) : (
                 <></>

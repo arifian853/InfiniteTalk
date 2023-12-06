@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
-import { ValidateOTP } from "../Services/index/users";
+import { ValidateOTP } from "../Services/index/otp";
 import { userActions } from "../store/reducers/userReducers";
 import { useForm } from "react-hook-form";
 

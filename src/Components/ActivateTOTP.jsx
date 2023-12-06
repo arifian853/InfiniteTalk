@@ -5,14 +5,14 @@ import { useMutation } from "@tanstack/react-query";
 import { Button, Modal } from "flowbite-react";
 import toast from "react-hot-toast";
 import { userActions } from "../store/reducers/userReducers";
-import { GenerateOTP } from "../Services/index/users";
+import { GenerateOTP } from "../Services/index/otp";
 import { MdErrorOutline } from "react-icons/md";
 import { VerifyOTPBtn } from "./VerifyOTPBtn";
 export const ActivateTOTP = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
-    const [openModal, setOpenModal] = useState('')
-    const [qrcodeUrl, setqrCodeUrl] = useState("");
+    const [openModal, setOpenModal] = useState("")
+    const [qrcodeUrl, setqrCodeUrl] = useState("")
 
     useEffect(() => {
         QRCode.toDataURL(userState.userInfo.otp_auth_url).then(setqrCodeUrl);

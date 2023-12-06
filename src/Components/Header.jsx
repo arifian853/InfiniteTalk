@@ -14,7 +14,7 @@ export const Header = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
     const navigate = useNavigate();
-    
+
     return (
         <div>
             <Navbar fluid rounded>
@@ -27,9 +27,12 @@ export const Header = () => {
                             arrowIcon={false}
                             inline
                             label={
-                                <Avatar alt="User settings" img={stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar} rounded />
+                                <Avatar alt="User settings" img={
+                                    userState.userInfo.avatar
+                                    ? stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar
+                                    : "user.png"} rounded />
                             }
-                            
+
                         >
                             <Dropdown.Header>
                                 <span className="block text-sm font-medium">{userState.userInfo.fullName}</span>
