@@ -7,6 +7,7 @@ import { errorResponserHandler, invalidPathHandler } from './middleware/errorHan
 import { fileURLToPath } from 'url';
 import userRoutes from "./routes/userRoutes.js";
 import otpRoutes from "./routes/otpRoutes.js"
+import postsRoutes from "./routes/postsRoutes.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,8 +20,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api/user', userRoutes);
 app.use('/api/otp', otpRoutes);
-// app.use('/posts', postsRoute);
-
+app.use('/api/posts', postsRoutes);
 
 const connectDB = async () => {
   try {
@@ -35,6 +35,7 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
 app.use((err, res,) => {
   res.status(500).json({ error: 'Internal Server Error', stack: err.stack });
 });

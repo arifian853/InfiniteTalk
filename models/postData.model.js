@@ -16,10 +16,10 @@ const PostSchema = new Schema(
 
 
 PostSchema.virtual("comments", {
-    ref: "Comment",
-    localField: "_id",
-    foreignField: "post",
-  });
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "post",
+});
 
 const Post = model("Post", PostSchema);
 export default Post;
