@@ -66,7 +66,7 @@ export const About = () => {
                   Hipster
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                  <a className="underline" href="https://github.com" target="_blank" rel="noreferrer noopener">Samuel Miskan Hanock</a> (2001020037)
+                  <a className="underline" href="https://tpa-4.vercel.app/" target="_blank" rel="noreferrer noopener">Samuel Miskan Hanock</a> (2001020037)
                 </Table.Cell>
               </Table.Row>
               <Table.Row>

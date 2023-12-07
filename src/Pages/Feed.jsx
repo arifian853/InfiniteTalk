@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import { Post } from "../Components/PostComponents/Post";
 
 export const Feed = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export const Feed = () => {
         <title>InfiniteTalk! - Feed</title>
       </Helmet>
       <div className='h-screen flex flex-col gap-4 justify-center items-center'>
-        <p className="text-2xl text-white">FEED</p>
+        <Post />
       </div>
     </>
 
