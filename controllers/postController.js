@@ -103,37 +103,37 @@ const GetPost = async (req, res, next) => {
         const post = await Post.findOne({ slug: req.params.slug }).populate([
             {
                 path: "user",
-                select: ["avatar", "fullName"],
+                select: ["avatar", "fullName", "mentor", "program"],
             },
             // {
             //     path: "categories",
             //     select: ["title"],
             // },
-            // {
-            //     path: "comments",
-            //     match: {
-            //         check: true,
-            //         parent: null,
-            //     },
-            //     populate: [
-            //         {
-            //             path: "user",
-            //             select: ["avatar", "fullName"],
-            //         },
-            //         {
-            //             path: "replies",
-            //             match: {
-            //                 check: true,
-            //             },
-            //             populate: [
-            //                 {
-            //                     path: "user",
-            //                     select: ["avatar", "fullName"],
-            //                 },
-            //             ],
-            //         },
-            //     ],
-            // },
+            {
+                path: "comments",
+                match: {
+                    check: true,
+                    parent: null,
+                },
+                populate: [
+                    {
+                        path: "user",
+                        select: ["avatar", "fullName", "mentor", "program"],
+                    },
+                    {
+                        path: "replies",
+                        match: {
+                            check: true,
+                        },
+                        populate: [
+                            {
+                                path: "user",
+                                select: ["avatar", "fullName", "mentor", "program"],
+                            },
+                        ],
+                    },
+                ],
+            },
         ]);
 
         if (!post) {
@@ -179,7 +179,7 @@ const GetAllPosts = async (req, res, next) => {
             .populate([
                 {
                     path: "user",
-                    select: ["avatar", "fullName", "mentor"],
+                    select: ["avatar", "fullName", "mentor", "program"],
                 },
             ])
             .sort({ updatedAt: "desc" });

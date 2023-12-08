@@ -7,6 +7,6 @@ router.post('/create', authVerifier, CreatePost);
 router.put('/update/:slug', authVerifier, UpdatePost);
 router.get('/all', GetAllPosts);
 router.delete('/delete/:slug', authVerifier, DeletePost); 
-router.get('/detail/:slug', authVerifier, GetPost);
+router.get('/detail/:slug', GetPost);
 
 export default router;
