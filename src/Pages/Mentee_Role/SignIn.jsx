@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Checkbox, Modal } from 'flowbite-react'
+import { Button, Checkbox, Modal, Spinner } from 'flowbite-react'
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -16,9 +16,11 @@ export const SignIn = () => {
 
   /*Utility states*/
   const [openModal, setOpenModal] = useState('')
-  const { mutate, isLoading } = useMutation({
+  const [isLoading, setIsLoading] = useState(false)
+  const { mutate } = useMutation({
     mutationFn: ({ email, password }) => {
-      return signIn({ email, password});
+      setIsLoading(true)
+      return signIn({ email, password });
     },
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
@@ -31,14 +33,16 @@ export const SignIn = () => {
         navigate('/feed');
       }
       toast.success(data.message);
+      setIsLoading(false)
     },
     onError: (error) => {
       toast.error(error.message);
       console.log(error);
+      setIsLoading(false)
     },
   });
 
-  
+
   const {
     register,
     handleSubmit,
@@ -102,7 +106,7 @@ export const SignIn = () => {
               {errors.email?.message}
             </p>
           )}
-          
+
           <p>Password</p>
           <input id="password"
             {...register("password", {
@@ -133,7 +137,7 @@ export const SignIn = () => {
             <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
           </div>
           <Button className='disabled:opacity-70 disabled:cursor-not-allowed' type='submit' disabled={!isValid || isLoading}>
-            Sign In
+            {isLoading ? <span className='flex gap-2'>Signing in ... <Spinner size="sm" /></span> : 'Sign In'}
           </Button>
           <div className='text-sm text-center'>
             <p> Doesn&rsquo;t have an account? <Link to='/signup'> <span className='underline'>Register now</span> </Link></p>

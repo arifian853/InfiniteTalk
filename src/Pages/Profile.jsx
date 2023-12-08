@@ -57,7 +57,7 @@ export const Profile = () => {
                                 : "user.png"
                         } rounded bordered size="lg" status="online" statusPosition="top-right" />
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                            <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> <h1 className="text-2xl font-semibold">{userState.userInfo.fullName}</h1> {userState.userInfo.mentor ? "Mentor" : "Mentee"} @ {userState.userInfo.program}</li>
+                            <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> <h1 className="text-2xl font-semibold">{userState.userInfo.fullName}</h1> {userState.userInfo.mentor ? <p className="text-green-300 font-semibold">Mentor @ {userState.userInfo.program}</p> : <p className="text-blue-300 font-semibold">Mentee @ {userState.userInfo.program}</p>}</li>
                         </ul>
                         <br />
                         <Table>

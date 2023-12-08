@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Checkbox, Modal } from 'flowbite-react'
+import { Button, Checkbox, Modal, Spinner } from 'flowbite-react'
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -16,18 +16,22 @@ export const MentorSignUp = () => {
 
   /*Utility states*/
   const [openModal, setOpenModal] = useState('')
-  const { mutate, isLoading } = useMutation({
+  const [isLoading, setIsLoading] = useState(false)
+  const { mutate } = useMutation({
     mutationFn: ({ username, email, password, fullName, program }) => {
+      setIsLoading(true)
       return signUpMentor({ username, email, password, fullName, program });
     },
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
       toast.success(data.message);
+      setIsLoading(false)
     },
     onError: (error) => {
       toast.error(error.message);
       console.log(error);
+      setIsLoading(false)
     },
   });
 
@@ -197,7 +201,7 @@ export const MentorSignUp = () => {
             <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
           </div>
           <Button className='disabled:opacity-70 disabled:cursor-not-allowed' type='submit' disabled={!isValid || isLoading}>
-            Sign Up
+          {isLoading ? <span className='flex gap-2'>Signing up ... <Spinner size="sm" /></span> : 'Sign Up'}
           </Button>
           <div className='text-sm text-center'>
             <p> Already have an account? <Link to='/signin-mentor'> <span className='underline'>Login now</span> </Link></p>

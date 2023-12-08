@@ -36,7 +36,7 @@ export const Feed = () => {
       <Helmet>
         <title>InfiniteTalk! - Feed</title>
       </Helmet>
-      <div className='h-screen flex flex-col gap-4 justify-center items-center'>
+      <div className='flex flex-col gap-4 justify-center items-center'>
         <Post />
       </div>
     </>

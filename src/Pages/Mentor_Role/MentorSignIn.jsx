@@ -13,10 +13,10 @@ export const MentorSignIn = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false)
 
   /*Utility states*/
   const [openModal, setOpenModal] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { mutate } = useMutation({
     mutationFn: ({ email, password }) => {
       setIsLoading(true)
@@ -138,7 +138,7 @@ export const MentorSignIn = () => {
           <Button
             className='disabled:opacity-70 disabled:cursor-not-allowed'
             type='submit'
-            disabled={!isValid && isLoading}
+            disabled={!isValid || isLoading}
           >
             {isLoading ? <span className='flex gap-2'>Signing in ... <Spinner size="sm" /></span> : 'Sign In'}
 
