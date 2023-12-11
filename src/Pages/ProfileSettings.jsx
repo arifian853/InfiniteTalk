@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { Button } from "flowbite-react"
 import { Header } from "../Components/Header"
@@ -13,10 +14,7 @@ import { getUserProfile, updateProfile } from "../Services/index/users";
 import { useMemo } from "react";
 import { userActions } from "../store/reducers/userReducers";
 import { ProfilePicture } from "../Components/ProfilePicture";
-import { ActivateTOTP } from "../Components/ActivateTOTP";
-import { DisableTOTP } from "../Components/DisableTOTP";
 import { Helmet } from "react-helmet";
-
 
 export const ProfileSettings = () => {
 
@@ -99,9 +97,6 @@ export const ProfileSettings = () => {
         mutate({ fullName, email, username, password });
     };
 
-
-
-
     return (
         <>
             <Header />
@@ -117,7 +112,7 @@ export const ProfileSettings = () => {
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile Settings</h1>
                         </div>
                         <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
-                        {/* <Avatar className="m-3" alt="User settings" img={profileData?.avatar} rounded bordered size="lg" status="online" statusPosition="top-right" /> */}
+
                         <div className="flex items-center flex-row justify-center"><ProfilePicture avatar={profileData?.avatar} /></div>
                         <p className="text-xs text-center p-2">*Max 1MB & .jpg/.jpeg, and .png only is allowed </p>
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -240,15 +235,6 @@ export const ProfileSettings = () => {
                                                     {errors.password?.message}
                                                 </p>
                                             )}
-                                        </Table.Cell>
-                                    </Table.Row>
-                                    <Table.Row>
-                                        <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                            OTP Authentication
-                                        </Table.Cell>
-                                        <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-
-                                            {userState.userInfo.otp_enabled ? <DisableTOTP /> : <ActivateTOTP />}
                                         </Table.Cell>
                                     </Table.Row>
                                 </Table.Body>

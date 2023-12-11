@@ -10,6 +10,8 @@ import { MdErrorOutline } from "react-icons/md";
 import { Tooltip } from 'flowbite-react';
 import stables from "../Constants/stables";
 import { Helmet } from "react-helmet";
+import { DisableTOTP } from "../Components/DisableTOTP";
+import { ActivateTOTP } from "../Components/ActivateTOTP";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -164,7 +166,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? <p className="text-2xl text-green-500"><Tooltip content="OTP is enabled, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'><p className="text-2xl text-yellow-500"><Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link>}
+                                        {userState.userInfo.otp_enabled ? <Tooltip content="OTP is enabled, your account is safer now."><DisableTOTP /></Tooltip> : <Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><ActivateTOTP /></Tooltip>}
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -175,7 +177,7 @@ export const Profile = () => {
                                         {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
                                     </Table.Cell>
                                     <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <Link to='/profile-settings'> <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p></Link>}
+                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>

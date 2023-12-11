@@ -9,6 +9,7 @@ import { Spinner } from "flowbite-react";
 import stables from "../../Constants/stables";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
+import { CommentContainer } from "../CommentComponents/CommentContainer";
 
 export const PostDetail = () => {
     const { slug } = useParams();
@@ -18,11 +19,12 @@ export const PostDetail = () => {
 
     const { data, isError } = useQuery({
         queryFn: () => GetSinglePost({ slug }),
-        queryKey: ["blog", slug],
+        queryKey: ["posts", slug],
         onSuccess: () => {
             setIsLoading(false)
         },
     });
+
 
     const goBack = () => {
         navigate(-1)
@@ -66,7 +68,7 @@ export const PostDetail = () => {
                     <div className="flex flex-col justify-center items-center">
                         <div
                             data-aos="zoom-in"
-                            className={'w-4/5 flex flex-col my-10 bg-slate-800 text-white rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}
+                            className={'w-11/12 flex flex-col md:my-10 my-5 bg-slate-800 text-white rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}
                         >
                             <div onClick={goBack} className="cursor-pointer flex items-center gap-2 justify-start m-5">
                                 <h1 className="text-2xl"> <FaArrowLeft /></h1>
@@ -132,7 +134,17 @@ export const PostDetail = () => {
                                             </h1>
                                         </div>
                                     </div>
-
+                                    <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
+                                    <h1 className="text-xl font-semibold">Comments</h1>
+                                    <div className="md:w-2/3 w-full p-2">
+                                    <CommentContainer
+                                        comments={data?.comments}
+                                        className="mt-10"
+                                        logginedUserId={userState?.userInfo?._id}
+                                        postSlug={slug}
+                                    />
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

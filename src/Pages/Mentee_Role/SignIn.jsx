@@ -25,13 +25,6 @@ export const SignIn = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
-      if (userState.userInfo.otp_enabled === true) {
-        // Navigate to /otp if OTP is enabled and verified
-        navigate('/otp');
-      } else {
-        // Navigate to /feed if no OTP is required or if OTP is not verified
-        navigate('/feed');
-      }
       toast.success(data.message);
       setIsLoading(false)
     },
@@ -57,12 +50,13 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (userState.userInfo) {
-      const timeoutId = setTimeout(() => {
+      if (userState.userInfo.otp_enabled === false) {
         navigate('/feed');
-      }, 2000);
-      return () => clearTimeout(timeoutId);
+      } else if (userState.userInfo.otp_enabled === true) {
+        navigate('/otp');
+      }
     }
-  }, [userState.userInfo, navigate]);
+  }, [userState.userInfo, navigate])
 
   const loginBtn = (data) => {
     const { email, password } = data;

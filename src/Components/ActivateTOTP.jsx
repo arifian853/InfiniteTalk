@@ -20,31 +20,31 @@ export const ActivateTOTP = () => {
 
     const { mutate } = useMutation({
         mutationFn: ({ username }) => {
-          return GenerateOTP({ username });
+            return GenerateOTP({ username });
         },
         onSuccess: (data) => {
-          dispatch(userActions.setUserInfo(data));
-          localStorage.setItem("account", JSON.stringify(data));
+            dispatch(userActions.setUserInfo(data));
+            localStorage.setItem("account", JSON.stringify(data));
         },
         onError: (error) => {
-          toast.error(error.message);
-          console.log(error);
+            toast.error(error.message);
+            console.log(error);
         },
-      });
+    });
 
-      const generateOtpBtn = async () => {
+    const generateOtpBtn = async () => {
         setOpenModal('default');
         const { username } = userState.userInfo;
         mutate({ username });
-      };
+    };
 
     return (
 
         <>
             <Button className="btn-dark" onClick={generateOtpBtn}>
-                Enable OTP <MdErrorOutline />
+                Enable OTP <span className="pl-1"><MdErrorOutline /></span>
             </Button>
-            <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+            <Modal data-aos="fade-in" show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
                 <div>
                     <Modal.Header className='modal-title'> <h1 className='modal-title'>Activate TOTP (Time-based OTP)</h1> </Modal.Header>
                     <Modal.Body className='modal-body'>
@@ -59,10 +59,10 @@ export const ActivateTOTP = () => {
                                 />
                                 <p className="text-center">Base32 Secret : {userState.userInfo.otp_base32}</p>
                                 <p className="text-center text-sm">You can use <span className="text-center text-sm font-semibold text-yellow-400"> Google Authenticator, IBM Security Verify, or Twilio Authy </span>for authenticating</p>
-                                
+
                             </div>
                             <div className="p-4 w-full flex flex-col justify-center items-center gap-2 text-sm">
-                               <p> Input the 6-digit code that appeared in your <span className="text-center text-sm font-semibold text-green-400">Authenticator App</span> here</p>
+                                <p> Input the 6-digit code that appeared in your <span className="text-center text-sm font-semibold text-green-400">Authenticator App</span> here</p>
                                 <VerifyOTPBtn />
                             </div>
                         </div>

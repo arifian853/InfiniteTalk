@@ -90,30 +90,30 @@ export const ProfilePicture = ({ avatar }) => {
                 >
                     Delete profile picture
                 </Button>
-               
-            <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
-                <div>
-                    <Modal.Header className='modal-title'> <h1 className='modal-title'>Delete Profile Picture?</h1> </Modal.Header>
-                    <Modal.Body className='modal-body'>
-                        <div className="space-y-6 divide-y">
-                            <div className="w-full flex flex-col justify-center items-center gap-2">
-                                <h1 className="text-2xl font-semibold">Are you sure?</h1>
-                                
-                                <div className="mt-2 flex flex-row gap-2">
-                                    <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
-                                        Cancel
-                                    </Button>
-                                    <Button color="failure" onClick={handleDeleteImage}>
-                                        Delete picture
-                                    </Button>
+
+                <Modal data-aos="fade-in" show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+                    <div>
+                        <Modal.Header className='modal-title'> <h1 className='modal-title'>Delete Profile Picture?</h1> </Modal.Header>
+                        <Modal.Body className='modal-body'>
+                            <div className="space-y-6 divide-y">
+                                <div className="w-full flex flex-col justify-center items-center gap-2">
+                                    <h1 className="text-2xl font-semibold">Are you sure?</h1>
+
+                                    <div className="mt-2 flex flex-row gap-2">
+                                        <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
+                                            Cancel
+                                        </Button>
+                                        <Button color="failure" onClick={handleDeleteImage}>
+                                            Delete picture
+                                        </Button>
+                                    </div>
+
                                 </div>
 
                             </div>
-
-                        </div>
-                    </Modal.Body>
-                </div>
-            </Modal>
+                        </Modal.Body>
+                    </div>
+                </Modal>
             </div>
         </>
     )

@@ -4,18 +4,20 @@ import toast from "react-hot-toast";
 import { Alert, Spinner } from "flowbite-react";
 import PostCard from "./PostCard";
 import { HiInformationCircle } from 'react-icons/hi';
+import { CreateNewPost } from "./CreateNewPost"; 
 
 export const Post = () => {
     const { data, isLoading, isError } = useQuery({
         queryFn: () => GetAllPosts(),
         queryKey: ["posts"],
         onError: (error) => {
-            toast.error(error.message);
+            toast.error(error.message); 
             console.log(error);
         },
     });
     return (
-        <div className="bg-transparent md:w-4/5 w-10/12 flex flex-col my-10 gap-6">
+        <div className="bg-transparent md:w-4/5 w-10/12 flex flex-col my-10 gap-4">
+            <CreateNewPost />
             <h1 className="text-2xl font-semibold text-white">Latest posts</h1>
             {isLoading ? (
                 [...Array(1)].map((item, index) => (

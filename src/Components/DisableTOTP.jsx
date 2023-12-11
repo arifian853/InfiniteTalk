@@ -35,9 +35,9 @@ export const DisableTOTP = () => {
 
         <>
             <Button className="btn-dark" onClick={() => setOpenModal('default')}>
-                Disable OTP <FaCheck />
+                Disable OTP <span className="pl-1"><FaCheck /></span>
             </Button>
-            <Modal show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+            <Modal data-aos="fade-in" show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
                 <div>
                     <Modal.Header className='modal-title'> <h1 className='modal-title'>Disable TOTP (Time-based OTP)?</h1> </Modal.Header>
                     <Modal.Body className='modal-body'>
