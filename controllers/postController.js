@@ -5,21 +5,44 @@ import { fileRemover } from '../utils/fileRemover.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const CreatePost = async (req, res, next) => {
+    const { title, caption, tags } = req.body;
+
     try {
         const post = new Post({
-            title: "Sample title",
-            caption: "This is a caption",
+            title,
+            caption,
             slug: uuidv4(),
             body: {
                 type: 'doc',
                 content: [],
             },
-            photo: "",
-            user: req.user._id
+            photo: "", // This will be updated with the image filename after uploading
+            user: req.user._id,
+            tags,
         });
 
+        // Save the post without the image first
         const createdPost = await post.save();
-        return res.json(createdPost);
+
+        // Now, handle image upload
+        const upload = uploadPicture.single("postImage");
+
+        upload(req, res, async function (err) {
+            if (err) {
+                // If an error occurs during image upload, handle it
+                const error = new Error("An unknown error occurred when uploading image: " + err.message);
+                next(error);
+            } else {
+                // If image upload is successful, update the post with the image filename
+                if (req.file) {
+                    createdPost.photo = req.file.filename;
+                    await createdPost.save();
+                }
+
+                // Respond with the created post
+                res.json(createdPost);
+            }
+        });
     } catch (error) {
         next(error);
     }

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import userRoutes from "./routes/userRoutes.js";
 import otpRoutes from "./routes/otpRoutes.js"
 import postsRoutes from "./routes/postsRoutes.js"
+import commentRoutes from './routes/commentRoutes.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api/user', userRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentRoutes);
 
 const connectDB = async () => {
   try {
