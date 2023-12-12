@@ -26,7 +26,7 @@ const PostCard = ({ post }) => {
             {post.title}
           </h1>
         </Link>
-        <p className="mt-2 text-md">
+        <p className="mt-2 text-md line-clamp-2">
           {post.caption}
         </p>
 

@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../Header";
-import { GetSinglePost } from "../../Services/index/posts";
-import { useQuery } from "@tanstack/react-query";
-import { Spinner } from "flowbite-react";
+import { DeletePost, GetSinglePost } from "../../Services/index/posts";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Dropdown, Spinner } from "flowbite-react";
 import stables from "../../Constants/stables";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
@@ -14,6 +15,7 @@ import { CommentContainer } from "../CommentComponents/CommentContainer";
 export const PostDetail = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const userState = useSelector((state) => state.user);
     const [isLoading, setIsLoading] = useState(false)
 
@@ -25,6 +27,31 @@ export const PostDetail = () => {
         },
     });
 
+    const { mutate: mutateDeletePost } =
+        useMutation({
+            mutationFn: ({ slug, token }) => {
+                return DeletePost({
+                    slug,
+                    token,
+                });
+            },
+            onSuccess: () => {
+                queryClient.invalidateQueries(["posts"]);
+                toast.success("Post is deleted");
+                navigate('/feed')
+            },
+            onError: (error) => {
+                toast.error(error.message);
+                console.log(error);
+            },
+        });
+
+    const deletePostHandler = ({ slug, token }) => {
+        mutateDeletePost({ slug, token });
+    };
+
+    const postBelongsToUser = data?.user._id === userState.userInfo?._id;
+    console.log(data?.user._id)
 
     const goBack = () => {
         navigate(-1)
@@ -70,9 +97,23 @@ export const PostDetail = () => {
                             data-aos="zoom-in"
                             className={'w-11/12 flex flex-col md:my-10 my-5 bg-slate-800 text-white rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}
                         >
-                            <div onClick={goBack} className="cursor-pointer flex items-center gap-2 justify-start m-5">
-                                <h1 className="text-2xl"> <FaArrowLeft /></h1>
-                                <h1 className="text-1xl"> Back</h1>
+                            <div className="flex items-center gap-2 justify-between m-5">
+                                <span className="flex cursor-pointer flex-row gap-3" onClick={goBack}>
+                                    <h1 className="text-2xl"> <FaArrowLeft /></h1>
+                                    <h1 className="text-1xl"> Back</h1>
+                                </span>
+                                {postBelongsToUser ?
+                                    (
+                                        <Dropdown inline>
+                                            <Dropdown.Item onClick={() => {
+                                                deletePostHandler({
+                                                    slug: data?.slug,
+                                                    token: userState.userInfo.token,
+                                                });
+                                            }}>Delete post</Dropdown.Item>
+                                        </Dropdown>
+                                    ) : (<> </>)
+                                }
                             </div>
                             <div className="w-full flex flex-col justify-center items-center">
                                 <img
@@ -90,19 +131,8 @@ export const PostDetail = () => {
                                 <h1 className="font-semibold text-xl md:text-2xl lg:text-[28px]">
                                     {data?.title}
                                 </h1>
-
-                                <p className="mt-2 text-md">
-                                    {data?.caption}
-                                </p>
-
-                                <p className="underline text-md">
-                                    {
-                                        data?.tags && data?.tags.length > 0 ? <span> Tags : {data?.tags.join(', ')} </span> : ""
-                                    }
-                                </p>
-
                                 <span className="font-semibold opacity-70">
-                                    {data?.createdAt && (
+                                    at {data?.createdAt && (
                                         new Intl.DateTimeFormat('en-GB', {
                                             weekday: 'long',
                                             day: 'numeric',
@@ -115,8 +145,18 @@ export const PostDetail = () => {
                                         }).format(new Date(data.createdAt))
                                     )}
                                 </span>
+                                <p className="underline text-md">
+                                    {
+                                        data?.tags && data?.tags.length > 0 ? <span> Tags : {data?.tags.join(', ')} </span> : ""
+                                    }
+                                </p>
+                                <br />
+                                <p className="w-full md:w-2/3 mt-2 text-md text-justify text-ellipsis whitespace-break-spaces">
+                                    {data?.caption}
+                                </p>
 
                                 <div className="flex flex-col mt-6">
+
                                     <div className="flex items-center gap-x-2 md:gap-x-2.5">
                                         <img
                                             src={
@@ -137,14 +177,14 @@ export const PostDetail = () => {
                                     <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-gray-700" />
                                     <h1 className="text-xl font-semibold">Comments</h1>
                                     <div className="md:w-2/3 w-full p-2">
-                                    <CommentContainer
-                                        comments={data?.comments}
-                                        className="mt-10"
-                                        logginedUserId={userState?.userInfo?._id}
-                                        postSlug={slug}
-                                    />
+                                        <CommentContainer
+                                            comments={data?.comments}
+                                            className="mt-10"
+                                            logginedUserId={userState?.userInfo?._id}
+                                            postSlug={slug}
+                                        />
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>

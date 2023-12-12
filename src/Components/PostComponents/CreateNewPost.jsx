@@ -4,12 +4,14 @@ import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa";
 import { CreatePost } from "../../Services/index/posts";
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { UploadPicture } from "../UploadPicture";
 
 export const CreateNewPost = () => {
     const userState = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
     const [openModal, setOpenModal] = useState('')
     const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
         useMutation({
@@ -20,7 +22,8 @@ export const CreateNewPost = () => {
             },
             onSuccess: (data) => {
                 toast.success("Posted!");
-                window.location.reload();
+                setOpenModal("uploadPicture")
+                queryClient.invalidateQueries(["posts"]);
             },
             onError: (error) => {
                 toast.error(error.message);
@@ -82,21 +85,6 @@ export const CreateNewPost = () => {
                                         {errors.caption?.message}
                                     </p>
                                 )}
-                                <h1>Picture</h1>
-                                {/* <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        // Use the first selected file (if any)
-                                        const file = e.target.files && e.target.files[0];
-                                        setValue('photo', file);
-                                    }}
-                                />
-                                {errors.picture?.message && (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        {errors.picture?.message}
-                                    </p>
-                                )} */}
                                 <h1>Tags</h1>
                                 <input className="rounded-md py-2 px-3 mb-3 text-slate-800 w-full " type="text"
                                     {...register("tags")}
@@ -106,6 +94,25 @@ export const CreateNewPost = () => {
                                     Post!
                                 </Button>
                             </form>
+                        </Modal.Body>
+                    </div>
+                </Modal>
+                <Modal data-aos="fade-in" show={openModal === 'uploadPicture'} onClose={() => setOpenModal(undefined)}>
+                    <div>
+                        <Modal.Header className='modal-title'> <h1 className='modal-title'>Upload picture</h1> </Modal.Header>
+                        <Modal.Body className='modal-body flex flex-col w-full justify-center items-center'>
+                            <h1>Now , add picture to your post</h1>
+                            <UploadPicture />
+                            <div className="mt-2 w-full flex flex-row gap-2 justify-center items-center">
+                                <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
+                                    Without picture 
+                                </Button>
+                                <Button color="failure" onClick={""}>
+                                    Set picture
+                                </Button>
+                            </div>
+
+
                         </Modal.Body>
                     </div>
                 </Modal>
