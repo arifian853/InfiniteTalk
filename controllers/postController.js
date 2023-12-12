@@ -48,6 +48,47 @@ const CreatePost = async (req, res, next) => {
     }
 };
 
+const UploadPicture = async (req, res, next) => {
+    try {
+        const upload = uploadPicture.single("postPicture");
+
+        upload(req, res, async function (err) {
+            if (err) {
+                const error = new Error(
+                    "An unknown error occured when uploading " + err.message
+                );
+                next(error);
+            } else {
+                if (req.file) {
+                    let filename;
+                    let newPicture = await Post.findOne({ slug: slug });
+                    filename = newPicture.photo;
+                    if (filename) {
+                        fileRemover(filename);
+                    }
+                    newPicture.photo = req.file.filename;
+                    await newPicture.save();
+                    res.json({
+                        message: "Photo uploaded"
+                    });
+                } else {
+                    let filename;
+                    let newPicture = await Post.findOne({ slug: slug });
+                    filename = newPicture.photo;
+                    newPicture.photo = "";
+                    await newPicture.save();
+                    fileRemover(filename);
+                    res.json({
+                        message: "Canceled!"
+                    });
+                }
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const UpdatePost = async (req, res, next) => {
     try {
         const post = await Post.findOne({ slug: req.params.slug });
@@ -179,7 +220,7 @@ const GetAllPosts = async (req, res, next) => {
         }
         let query = Post.find(where);
         const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.limit) || 10;
+        const pageSize = parseInt(req.query.limit) || 99;
         const skip = (page - 1) * pageSize;
         const total = await Post.find(where).countDocuments();
         const pages = Math.ceil(total / pageSize);
@@ -218,5 +259,6 @@ export {
     UpdatePost,
     DeletePost,
     GetPost,
-    GetAllPosts
+    GetAllPosts,
+    UploadPicture
 };
