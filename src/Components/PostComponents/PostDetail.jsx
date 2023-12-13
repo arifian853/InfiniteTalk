@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Header } from "../Header";
 import { DeletePost, GetSinglePost } from "../../Services/index/posts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Dropdown, Spinner } from "flowbite-react";
+import { Button, Dropdown, Modal, Spinner } from "flowbite-react";
 import stables from "../../Constants/stables";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
@@ -18,6 +18,7 @@ export const PostDetail = () => {
     const queryClient = useQueryClient();
     const userState = useSelector((state) => state.user);
     const [isLoading, setIsLoading] = useState(false)
+    const [openModal, setOpenModal] = useState('')
 
     const { data, isError } = useQuery({
         queryFn: () => GetSinglePost({ slug }),
@@ -51,7 +52,6 @@ export const PostDetail = () => {
     };
 
     const postBelongsToUser = data?.user._id === userState.userInfo?._id;
-    console.log(data?.user._id)
 
     const goBack = () => {
         navigate(-1)
@@ -104,14 +104,37 @@ export const PostDetail = () => {
                                 </span>
                                 {postBelongsToUser ?
                                     (
-                                        <Dropdown inline>
-                                            <Dropdown.Item onClick={() => {
-                                                deletePostHandler({
-                                                    slug: data?.slug,
-                                                    token: userState.userInfo.token,
-                                                });
-                                            }}>Delete post</Dropdown.Item>
-                                        </Dropdown>
+                                        <>
+                                            <Dropdown inline>
+                                                <Dropdown.Item onClick={() => setOpenModal('default')}>Delete post</Dropdown.Item>
+                                                <Dropdown.Item> <Link to={`/post/edit/${data?.slug}`}>Edit post</Link></Dropdown.Item>
+                                            </Dropdown>
+                                            <Modal data-aos="fade-in" show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+                                                <div>
+                                                    <Modal.Header className='modal-title'> <h1 className='modal-title'>Delete post</h1> </Modal.Header>
+                                                    <Modal.Body className='modal-body'>
+                                                        <div className="space-y-6 divide-y">
+                                                            <div className="w-full flex flex-col justify-center items-center gap-2">
+                                                                <p>Delete this post?</p>
+                                                                <div className="mt-2 flex flex-row gap-2">
+                                                                    <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
+                                                                        Cancel
+                                                                    </Button>
+                                                                    <Button color="failure" onClick={() => {
+                                                                        deletePostHandler({
+                                                                            slug: data?.slug,
+                                                                            token: userState.userInfo.token,
+                                                                        });
+                                                                    }}>
+                                                                        Delete post!
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Modal.Body>
+                                                </div>
+                                            </Modal>
+                                        </>
                                     ) : (<> </>)
                                 }
                             </div>
@@ -145,7 +168,7 @@ export const PostDetail = () => {
                                         }).format(new Date(data.createdAt))
                                     )}
                                 </span>
-                                <p className="underline text-md">
+                                <p className="text-md font-semibold">
                                     {
                                         data?.tags && data?.tags.length > 0 ? <span> Tags : {data?.tags.join(', ')} </span> : ""
                                     }

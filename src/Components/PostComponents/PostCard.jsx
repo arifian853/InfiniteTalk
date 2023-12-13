@@ -30,7 +30,7 @@ const PostCard = ({ post }) => {
           {post.caption}
         </p>
 
-        <p className="underline text-md">
+        <p className="font-semibold text-md">
           {
             post.tags && post.tags.length > 0 ? <span> Tags : {post.tags.join(', ')} </span> : ""
           }

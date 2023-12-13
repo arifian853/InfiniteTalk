@@ -28,9 +28,9 @@ export const CommentContainer = ({
       },
       onSuccess: () => {
         toast.success(
-          "Comment success"
+          "Comment sent!"
         );
-        window.location.reload();
+        queryClient.invalidateQueries(["comments"]);
       },
       onError: (error) => {
         toast.error(error.message);

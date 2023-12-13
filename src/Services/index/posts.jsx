@@ -41,7 +41,7 @@ export const DeletePost = async ({ slug, token }) => {
   }
 };
 
-export const CreatePost = async ({ token, title, caption, tags, photo }) => {
+export const CreatePost = async ({ token, title, caption, tags }) => {
   try {
     const config = {
       headers: {
@@ -49,7 +49,7 @@ export const CreatePost = async ({ token, title, caption, tags, photo }) => {
       },
     };
 
-    const { data } = await axios.post(`http://localhost:7777/api/posts/create`, { title, caption, tags, photo }, config);
+    const { data } = await axios.post(`http://localhost:7777/api/posts/create`, { title, caption, tags }, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -58,21 +58,15 @@ export const CreatePost = async ({ token, title, caption, tags, photo }) => {
   }
 };
 
-export const UploadNewPicture = async ({ token, formData, slug }) => {
+export const UpdatePost = async ({ updatedData, slug, token }) => {
   try {
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await axios.put(
-      "http://localhost:7777/api/post/uploadPicture",
-      formData,
-      config, 
-      slug
-    );
+    const { data } = await axios.put(`http://localhost:7777/api/posts/update/${slug}`, updatedData, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)

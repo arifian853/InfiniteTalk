@@ -4,14 +4,14 @@ import toast from "react-hot-toast";
 import { Alert, Spinner } from "flowbite-react";
 import PostCard from "./PostCard";
 import { HiInformationCircle } from 'react-icons/hi';
-import { CreateNewPost } from "./CreateNewPost"; 
+import { CreateNewPost } from "./CreateNewPost";
 
 export const Post = () => {
     const { data, isLoading, isError } = useQuery({
         queryFn: () => GetAllPosts(),
         queryKey: ["posts"],
         onError: (error) => {
-            toast.error(error.message); 
+            toast.error(error.message);
             console.log(error);
         },
     });
@@ -31,6 +31,11 @@ export const Post = () => {
                     <Alert color="failure" icon={HiInformationCircle}>
                         <span className="font-medium">Error</span> fetching data
                     </Alert>
+                </div>
+            ) : !data || data.data.length === 0 ? (
+                // No data state
+                <div className="h-screen flex flex-col justify-center items-center">
+                    <p className="text-3xl text-white">There&rsquo;s no post data</p>
                 </div>
             ) : (
                 data?.data.map((post) => (

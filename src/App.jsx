@@ -25,6 +25,7 @@ import { Profile } from './Pages/Profile';
 import { ProfileSettings } from './Pages/ProfileSettings';
 import { ValidateTOTP } from './Pages/ValidateTOTP';
 import { PostDetail } from './Components/PostComponents/PostDetail';
+import { EditPost } from './Components/PostComponents/EditPost';
 
 function App() {
   useEffect(() => {
@@ -64,6 +65,8 @@ function App() {
         <Route path='/otp' element={<ValidateTOTP />} />
 
         <Route path='/post/:slug' element={<PostDetail />} />
+
+        <Route path='/post/edit/:slug' element={<EditPost />} />
 
       </Routes>
     </>

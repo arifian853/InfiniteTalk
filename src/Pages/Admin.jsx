@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { Header } from "../Components/Header"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -106,12 +106,19 @@ export const Admin = () => {
 
                 <>
                   <ul className="divide-y mt-2 divide-gray-200 dark:divide-gray-400">
-                    <li className="w-full rounded-lg p-2 bg-slate-700 flex flex-col"> <h1 className="text-xl font-semibold">{post.title}</h1> by {post.user.fullName} <p onClick={() => {
-                                deletePostHandler({
-                                  slug: post?.slug,
-                                  token: userState.userInfo.token,
-                                });
-                              }} className="cursor-pointer text-red-500">Delete</p> </li>
+                    <li className="w-full rounded-lg p-2 bg-slate-700 flex flex-col">  <Link to={`/post/${post?.slug}`}><h1 className="text-xl font-semibold">{post.title}</h1></Link> by {post.user.fullName}
+                      <p onClick={() => {
+                        deletePostHandler({
+                          slug: post?.slug,
+                          token: userState.userInfo.token,
+                        });
+                      }} className="cursor-pointer text-red-500">
+                        Delete
+                      </p> 
+                      <p className="cursor-pointer text-yellow-500">
+                      <Link to={`/post/edit/${post?.slug}`}>Edit post</Link>
+                      </p>
+                      </li>
                   </ul>
 
                 </>

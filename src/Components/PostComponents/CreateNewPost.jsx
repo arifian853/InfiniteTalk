@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { UploadPicture } from "../UploadPicture";
 
 export const CreateNewPost = () => {
     const userState = useSelector((state) => state.user);
@@ -15,15 +14,15 @@ export const CreateNewPost = () => {
     const [openModal, setOpenModal] = useState('')
     const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
         useMutation({
-            mutationFn: ({ title, caption, tags, photo }) => {
+            mutationFn: ({ title, caption, tags }) => {
                 return CreatePost({
-                    token: userState.userInfo.token, title, caption, tags, photo
+                    token: userState.userInfo.token, title, caption, tags
                 });
             },
             onSuccess: (data) => {
-                toast.success("Posted!");
-                setOpenModal("uploadPicture")
+                toast.success("Posted! Edit post to add image and edit tags!");
                 queryClient.invalidateQueries(["posts"]);
+                setOpenModal(undefined)
             },
             onError: (error) => {
                 toast.error(error.message);
@@ -44,10 +43,9 @@ export const CreateNewPost = () => {
         mode: "onChange",
     });
 
-    const handleCreateNewPost = ({ title, caption, tags, photo }) => {
-        mutateCreatePost({ title, caption, tags, photo })
+    const handleCreateNewPost = ({ title, caption, tags }) => {
+        mutateCreatePost({ title, caption, tags })
     }
-
     return (
         <>
             <Button onClick={() => setOpenModal("default")} className="w-full btn-dark">
@@ -85,34 +83,11 @@ export const CreateNewPost = () => {
                                         {errors.caption?.message}
                                     </p>
                                 )}
-                                <h1>Tags</h1>
-                                <input className="rounded-md py-2 px-3 mb-3 text-slate-800 w-full " type="text"
-                                    {...register("tags")}
-                                />
 
                                 <Button type="submit" disabled={isLoadingCreatePost} className="btn-dark">
                                     Post!
                                 </Button>
                             </form>
-                        </Modal.Body>
-                    </div>
-                </Modal>
-                <Modal data-aos="fade-in" show={openModal === 'uploadPicture'} onClose={() => setOpenModal(undefined)}>
-                    <div>
-                        <Modal.Header className='modal-title'> <h1 className='modal-title'>Upload picture</h1> </Modal.Header>
-                        <Modal.Body className='modal-body flex flex-col w-full justify-center items-center'>
-                            <h1>Now , add picture to your post</h1>
-                            <UploadPicture />
-                            <div className="mt-2 w-full flex flex-row gap-2 justify-center items-center">
-                                <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
-                                    Without picture 
-                                </Button>
-                                <Button color="failure" onClick={""}>
-                                    Set picture
-                                </Button>
-                            </div>
-
-
                         </Modal.Body>
                     </div>
                 </Modal>
