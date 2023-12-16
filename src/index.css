@@ -22,6 +22,14 @@ body {
     overflow-x: none;
 }
 
+.header-font {
+    font-family: var(--header-font);
+}
+
+.body-font {
+    font-family: var(--body-font);
+}
+
 /*Utilities*/
 .btn-dark {
     background-color: var(--white) !important;
@@ -113,16 +121,6 @@ body {
     transition: 0.4s;
 }
 
-/* Profile Page */
-
-.profile-section {
-    color: var(--white);
-    padding: 2em;
-    display: flex;
-    flex-direction: column;
-    width: 85vw;
-    border-radius: 7px;
-}
 
 /*OTP*/
 

@@ -13,7 +13,7 @@ export const NotFound = () => {
                 <title>Page not Found!</title>
             </Helmet>
             <h1 className="text-4xl font-semibold">Oops! <span className="text-blue-400"> Page </span><span className="text-green-400">Not Found!</span></h1>
-            <p>Looks like the page you want to access is not exist.</p>
+            <p className="w-3/5">Looks like the page you want to access is not exist.</p>
             <Button className="btn-dark" onClick={goBack}>
                 Go back
             </Button>

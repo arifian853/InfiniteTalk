@@ -25,7 +25,7 @@ export const SignUp = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
-      toast.success(data.message);
+     toast.success(data.message)
       setIsLoading(false)
     },
     onError: (error) => {
@@ -70,7 +70,7 @@ export const SignUp = () => {
   }
 
   return (
-    <div className="forms flex flex-col justify-center items-center gap-4">
+    <div className="md:h-screen h-auto forms flex flex-col justify-center items-center gap-4">
       <h1 className='text-3xl font-semibold'>Sign up to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
       <p>Welcome, new Mentee!</p>
       <Helmet>
@@ -131,17 +131,20 @@ export const SignUp = () => {
             <option value="" disabled>
               Choose your program
             </option>
-            <option value='Hybrid Cloud & AI'>
-              Hybrid Cloud & AI
+            <option value='IBM Advance AI'>
+              IBM Advance AI
             </option>
-            <option value='Web Development'>
-              Web Development
+            <option value='Hybrid Cloud & RedHat'>
+              Hybrid Cloud & RedHat
             </option>
-            <option value='Mobile Development'>
-              Mobile Development
+            <option value='Web Development & UI/UX'>
+              Web Development & UI/UX
             </option>
-            <option value='Game Development'>
-              Game Development
+            <option value='Android Mobile Development'>
+              Android Mobile Development
+            </option>
+            <option value='Local Game Development'>
+              Local Game Development
             </option>
           </select>
           {errors.program && (
@@ -200,7 +203,7 @@ export const SignUp = () => {
             <a className='underline cursor-pointer' onClick={() => setOpenModal('default')}>Agree to our Terms of Service</a>
           </div>
           <Button className='disabled:opacity-70 disabled:cursor-not-allowed' type='submit' disabled={!isValid || isLoading}>
-          {isLoading ? <span className='flex gap-2'>Signing up ... <Spinner size="sm" /></span> : 'Sign Up'}
+            {isLoading ? <span className='flex gap-2'>Signing up ... <Spinner size="sm" /></span> : 'Sign Up'}
           </Button>
           <div className='text-sm text-center'>
             <p> Already have an account? <Link to='/signin'> <span className='underline'>Login now</span> </Link></p>

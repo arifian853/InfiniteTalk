@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux"
 import { userActions } from '../../store/reducers/userReducers'
 import { useMutation } from "@tanstack/react-query"
-import { signIn } from '../../Services/index/users'
+import { signInMentor } from '../../Services/index/users'
 
 export const MentorSignIn = () => {
   const dispatch = useDispatch();
@@ -20,12 +20,12 @@ export const MentorSignIn = () => {
   const { mutate } = useMutation({
     mutationFn: ({ email, password }) => {
       setIsLoading(true)
-      return signIn({ email, password });
+      return signInMentor({ email, password });
     },
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
-      toast.success(data.message);
+     toast.success(data.message)
       setIsLoading(false)
     },
     onError: (error) => {
@@ -57,7 +57,6 @@ export const MentorSignIn = () => {
     }
   }, [userState.userInfo, navigate]);
 
-
   const loginBtn = (data) => {
     const { email, password } = data;
     mutate({ email, password });
@@ -66,7 +65,6 @@ export const MentorSignIn = () => {
   const goBack = () => {
     navigate(-1)
   }
-
 
   return (
     <div className="forms flex flex-col justify-center items-center gap-4">

@@ -8,9 +8,9 @@ export const LandingPage = () => {
             <Helmet>
                 <title>InfiniteTalk!</title>
             </Helmet>
-            <div className="h-screen landing-page flex flex-col justify-center items-center gap-4">
+            <div className="h-screen text-center landing-page flex flex-col justify-center items-center gap-4">
                 <h1 data-aos="zoom-in" className="text-5xl font-bold">Welcome to <span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span> </h1>
-                <p data-aos="zoom-in">A place for Mentors and Mentees <b className="text-blue-400">connect</b> and <b className="text-green-400">grow</b>!</p>
+                <p data-aos="zoom-in" className='w-3/5'>A place for Mentors and Mentees <b className="text-blue-400">connect</b> and <b className="text-green-400">grow</b>!</p>
                 <div className="flex flex-row gap-3">
                     <Link to='/mentors'>
                         <Button className='btn-dark'>

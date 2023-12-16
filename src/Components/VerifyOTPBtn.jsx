@@ -36,14 +36,12 @@ export const VerifyOTPBtn = () => {
     mode: "onChange",
   });
 
-  
   const otpVerify = async (data) => {
     const { token, username } = data;
     mutate({ token, username });
   };
 
   return (
-
       <form className="w-2/3 flex justify-center gap-2 flex-col items-center" onSubmit={handleSubmit(otpVerify)}>
         <input {...register("token")} className="rounded-md py-2 px-3 mb-3 text-slate-800 md:w-full w-full text-center" type="number" />
         <Button type="submit" disabled={!isValid} className="btn-dark w-32 h-10">

@@ -67,7 +67,7 @@ export const CreateNewPost = () => {
                                         },
                                     })} />
                                 {errors.title?.message && (
-                                    <p className="text-red-500 text-xs mt-1">
+                                    <p className="text-red-500 text-xs">
                                         {errors.title?.message}
                                     </p>
                                 )}
@@ -79,11 +79,11 @@ export const CreateNewPost = () => {
                                     },
                                 })} />
                                 {errors.caption?.message && (
-                                    <p className="text-red-500 text-xs mt-1">
+                                    <p className="text-red-500 text-xs">
                                         {errors.caption?.message}
                                     </p>
                                 )}
-
+                                <span className="py-2 text-sm opacity-70">After post, you can edit the post to add image and tags.</span>
                                 <Button type="submit" disabled={isLoadingCreatePost} className="btn-dark">
                                     Post!
                                 </Button>

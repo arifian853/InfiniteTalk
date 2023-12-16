@@ -34,6 +34,33 @@ export const signUp = async ({ username, email, password, fullName, program }) =
   }
 };
 
+// export const signInMentor = async ({ email, password }) => {
+//   try {
+//     const { data } = await axios.post("http://localhost:7777/api/user/signin-mentor", {
+//       email,
+//       password,
+//     });
+//     return data;
+//   } catch (error) {
+//     if (error.response && error.response.data.message)
+//       throw new Error(error.response.data.message);
+//     throw new Error(error.message);
+//   }
+// };
+
+export const signInMentor = async ({ email, password }) => {
+  try {
+    const { data } = await axios.post("http://localhost:7777/api/user/signin-mentor", {
+      email,
+      password,
+    });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
 
 export const signIn = async ({ email, password }) => {
   try {

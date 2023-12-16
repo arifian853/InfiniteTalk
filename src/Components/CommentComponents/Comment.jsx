@@ -31,7 +31,7 @@ export const Comment = ({
     const replyOnUserId = comment.user._id;
 
     return (
-        <div className="bg-slate-800 w-full rounded-lg flex flex-col pr-2">
+        <div className="bg-slate-800 w-full rounded-lg flex flex-col">
             <div className="flex flex-row gap-2 px-3 py-3 items-center">
                 <div className="flex flex-col px-1 gap-2">
                     <div className="flex flex-row items-start gap-2">

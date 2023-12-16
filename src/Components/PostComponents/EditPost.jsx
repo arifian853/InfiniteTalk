@@ -8,6 +8,9 @@ import stables from "../../Constants/stables";
 import { Spinner } from "flowbite-react";
 import { HiOutlineCamera } from "react-icons/hi";
 import CreatableSelect from "react-select/creatable";
+import { FaArrowLeft } from "react-icons/fa6";
+import { Header } from "../Header";
+import { Helmet } from "react-helmet";
 
 
 export const EditPost = () => {
@@ -101,8 +104,16 @@ export const EditPost = () => {
 
   let isPostDataLoaded = !isLoading && !isError;
 
+  const goBack = () => {
+    navigate(-1)
+  }
+
   return (
     <>
+      <Helmet>
+        <title>InfiniteTalk - Edit Post</title>
+      </Helmet>
+      <Header />
       {
         isLoading ? (
           <div className="h-screen flex flex-col justify-center items-center">
@@ -114,86 +125,94 @@ export const EditPost = () => {
           </div>
         ) : (
           <div className="flex justify-center items-center">
-            <div className="w-11/12 flex flex-col justify-center items-center md:my-10 my-5 bg-slate-800 text-white rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]">
-              {photo ? (
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt={data?.title}
-                  className="rounded-xl w-full"
-                />
-              ) : initialPhoto ? (
-                <img
-                  src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
-                  alt={data?.title}
-                  className="rounded-xl w-full"
-                />
-              ) : (
-                <div className="w-full min-h-[200px] bg-blue-50/50 flex justify-center items-center">
-                  <HiOutlineCamera className="w-7 h-auto text-primary" />
-                </div>
-              )}
-
-              <div className="flex flex-col justify-start gap-3 m-3 md:w-10/12 w-full px-3">
-                <input
-                  type="file"
-                  className="rounded-md py-2 px-3 text-slate-800 bg-white"
-                  id="postPicture"
-                  onChange={handleFileChange}
-                />
-                <button
-                  type="button"
-                  onClick={handleDeleteImage}
-                  className="w-fit bg-red-500 text-sm text-white font-semibold rounded-lg px-2 py-1 mt-5"
-                >
-                  Delete Image
-                </button>
-
-                <label className="d-label" htmlFor="title">
-                  <span className="d-label-text">Title</span>
-                </label>
-                <input
-                  id="title"
-                  value={title}
-                  className="rounded-md py-2 px-3 text-slate-800 w-full"
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder={data?.title}
-                />
-
-                <label className="d-label" htmlFor="caption">
-                  <span className="d-label-text">Caption</span>
-                </label>
-                <textarea
-                  id="caption"
-                  value={caption}
-                  className="rounded-md h-32 py-2 px-3 text-slate-800 w-full"
-                  onChange={(e) => setCaption(e.target.value)}
-                  placeholder={data?.caption}
-                />
-                <label className="d-label">
-                  <span className="d-label-text">Tags</span>
-                </label>
-                {isPostDataLoaded && (
-                  <CreatableSelect
-                    defaultValue={data.tags.map((tag) => ({
-                      value: tag,
-                      label: tag,
-                    }))}
-                    isMulti
-                    onChange={(newValue) =>
-                      setTags(newValue.map((item) => item.value))
-                    }
-                    className="relative z-20"
+            <div className="w-11/12 md:my-10 my-5 bg-slate-800 text-white rounded-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]">
+              <div className="m-4 flex flex-start justify-start items-start">
+                <span className="flex cursor-pointer flex-row gap-3" onClick={goBack}>
+                  <h1 className="text-2xl"> <FaArrowLeft /></h1>
+                  <h1 className="text-1xl"> Cancel</h1>
+                </span>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                {photo ? (
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt={data?.title}
+                    className="rounded-xl w-full"
                   />
+                ) : initialPhoto ? (
+                  <img
+                    src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
+                    alt={data?.title}
+                    className="rounded-xl w-full"
+                  />
+                ) : (
+                  <div className="w-full min-h-[200px] bg-blue-50/50 flex justify-center items-center">
+                    <HiOutlineCamera className="w-7 h-auto text-primary" />
+                  </div>
                 )}
-                <br />
-                <button
-                  disabled={isLoadingUpdatePostDetail}
-                  type="button"
-                  onClick={handleUpdatePost}
-                  className="w-full bg-green-500 text-slate-800 font-semibold rounded-lg px-4 py-2 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  Update Post
-                </button>
+
+                <div className="flex flex-col justify-start gap-3 m-3 md:w-10/12 w-full px-3">
+                  <input
+                    type="file"
+                    className="rounded-md py-2 px-3 text-slate-800 bg-white"
+                    id="postPicture"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleDeleteImage}
+                    className="w-fit bg-red-500 text-sm text-white font-semibold rounded-lg px-2 py-1 mt-5"
+                  >
+                    Delete Image
+                  </button>
+
+                  <label className="d-label" htmlFor="title">
+                    <span className="d-label-text">Edit Title</span>
+                  </label>
+                  <input
+                    id="title"
+                    value={title}
+                    className="rounded-md py-2 px-3 text-slate-800 w-full"
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder={data?.title}
+                  />
+
+                  <label className="d-label" htmlFor="caption">
+                    <span className="d-label-text">Edit Caption</span>
+                  </label>
+                  <textarea
+                    id="caption"
+                    value={caption}
+                    className="rounded-md h-32 py-2 px-3 text-slate-800 w-full"
+                    onChange={(e) => setCaption(e.target.value)}
+                    placeholder={data?.caption}
+                  />
+                  <label className="d-label">
+                    <span className="d-label-text">Edit/Add Tags</span>
+                  </label>
+                  {isPostDataLoaded && (
+                    <CreatableSelect
+                      defaultValue={data.tags.map((tag) => ({
+                        value: tag,
+                        label: tag,
+                      }))}
+                      isMulti
+                      onChange={(newValue) =>
+                        setTags(newValue.map((item) => item.value))
+                      }
+                      className="relative z-20"
+                    />
+                  )}
+                  <br />
+                  <button
+                    disabled={isLoadingUpdatePostDetail}
+                    type="button"
+                    onClick={handleUpdatePost}
+                    className="w-full bg-green-500 text-slate-800 font-semibold rounded-lg px-4 py-2 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    Update Post
+                  </button>
+                </div>
               </div>
             </div>
           </div>

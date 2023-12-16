@@ -1,12 +1,10 @@
 import { Avatar, Button } from "flowbite-react"
 import { Header } from "../Components/Header"
-import { Table } from 'flowbite-react';
 import { useSelector } from "react-redux";
-import { FaArrowLeft, FaCheck } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
-import { MdErrorOutline } from "react-icons/md";
 import { Tooltip } from 'flowbite-react';
 import stables from "../Constants/stables";
 import { Helmet } from "react-helmet";
@@ -46,8 +44,8 @@ export const Profile = () => {
                 <title>InfiniteTalk! - {userState.userInfo.username}&rsquo;s Profile</title>
             </Helmet>
             {userState.userInfo ? (
-                <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center p-7'>
-                    <div className="profile-section bg-slate-800">
+                <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center md:p-7 p-4'>
+                    <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile</h1>
@@ -62,126 +60,97 @@ export const Profile = () => {
                             <li className="w-full p-2 bg-slate-700 rounded-lg text-center"> <h1 className="text-2xl font-semibold">{userState.userInfo.fullName}</h1> {userState.userInfo.mentor ? <p className="text-green-300 font-semibold">Mentor @ {userState.userInfo.program}</p> : <p className="text-blue-300 font-semibold">Mentee @ {userState.userInfo.program}</p>}</li>
                         </ul>
                         <br />
-                        <Table>
-                            <Table.Body className="divide-y divide-gray-200 dark:divide-gray-400">
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Full Name
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.fullName}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Email
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.email}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                        <div className="flex flex-col justify-center items-center">
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Username
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.username}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 rounded-t-lg border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Full Name</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">{userState.userInfo.fullName}</p>
+                                <div className="grow">
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Program
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.program}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                </div>
+                            </div>
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Last sign in
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {new Intl.DateTimeFormat('en-GB', {
-                                            weekday: 'long',
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric',
-                                            hour: 'numeric',
-                                            hour12: false,
-                                            minute: 'numeric',
-                                            timeZone: 'Asia/Jakarta',
-                                        }).format(new Date(userState.userInfo.lastLogin))}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Email</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">{userState.userInfo.email}</p>
+                                <div className="grow">
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        Member since
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {new Intl.DateTimeFormat('en-GB', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric',
-                                        }).format(new Date(userState.userInfo.createdAt))}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                                </div>
+                            </div>
 
-                                    </Table.Cell>
-                                </Table.Row>
-                                {
-                                    userState?.userInfo?.admin && (
-                                        <Table.Row>
-                                            <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                                Admin
-                                            </Table.Cell>
-                                            <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                                {userState.userInfo.admin ? "True" : "False"}
-                                            </Table.Cell>
-                                            <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Username</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">{userState.userInfo.username}</p>
+                                <div className="grow">
 
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    )
-                                }
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        OTP Enabled
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? "Enabled" : "Not Enabled"}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_enabled ? <Tooltip content="OTP is enabled, your account is safer now."><DisableTOTP /></Tooltip> : <Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><ActivateTOTP /></Tooltip>}
-                                    </Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        OTP Verified
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? "Verified" : "Not Verified"}
-                                    </Table.Cell>
-                                    <Table.Cell className="whitespace-nowrap font-medium bg-slate-700 text-gray-900 dark:text-white">
-                                        {userState.userInfo.otp_verified ? <p className="text-2xl text-green-500"><Tooltip content="OTP is verified, your account is safer now."><FaCheck className="cursor-pointer" /></Tooltip></p> : <p className="text-2xl text-yellow-500"><Tooltip content="OTP is not verified, your account is not safe, please verify OTP."><MdErrorOutline className="cursor-pointer" /></Tooltip></p>}
-                                    </Table.Cell>
-                                </Table.Row>
-                            </Table.Body>
-                        </Table>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Program</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">{userState.userInfo.program}</p>
+                                <div className="grow">
+
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Last Sign In</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">
+                                    {new Intl.DateTimeFormat('en-GB', {
+                                        weekday: 'long',
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                        hour: 'numeric',
+                                        hour12: false,
+                                        minute: 'numeric',
+                                        timeZone: 'Asia/Jakarta',
+                                    }).format(new Date(userState.userInfo.lastLogin))}
+                                </p>
+                                <div className="grow">
+
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">Member since</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">
+                                    {new Intl.DateTimeFormat('en-GB', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                    }).format(new Date(userState.userInfo.createdAt))}
+                                </p>
+                                <div className="grow">
+
+                                </div>
+                            </div>
+
+
+                            {
+                                userState?.userInfo?.admin && (
+                                    <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 border-b border-gray-300">
+                                        <p className="grow font-semibold text-sm text-white md:w-32 w-full">Admin</p>
+                                        <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full">{userState.userInfo.admin ? "True" : "False"}</p>
+                                        <div className="grow">
+
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+                            <div className="flex flex-col md:flex-row items-center gap-2 bg-slate-700 w-full px-6 py-4 rounded-b-lg">
+                                <p className="grow font-semibold text-sm text-white md:w-32 w-full">OTP Enabled</p>
+                                <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full"> {userState.userInfo.otp_enabled ? <Tooltip content="OTP is enabled, your account is safer now."><DisableTOTP /></Tooltip> : <Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><ActivateTOTP /></Tooltip>}</p>
+                                <div className="grow">
+                                  
+                                </div>
+                            </div>
+
+                        </div>
+
                         <div className="flex justify-center items-center">
                             <Link to='/profile-settings'>
                                 <Button className='btn-dark-md mt-4'>
@@ -189,6 +158,7 @@ export const Profile = () => {
                                 </Button>
                             </Link>
                         </div>
+
                     </div>
 
                 </div>

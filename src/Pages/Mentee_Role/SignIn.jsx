@@ -25,7 +25,7 @@ export const SignIn = () => {
     onSuccess: (data) => {
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
-      toast.success(data.message);
+     toast.success(data.message)
       setIsLoading(false)
     },
     onError: (error) => {
@@ -34,7 +34,6 @@ export const SignIn = () => {
       setIsLoading(false)
     },
   });
-
 
   const {
     register,
@@ -67,7 +66,6 @@ export const SignIn = () => {
     navigate(-1)
   }
 
-
   return (
     <div className="forms flex flex-col justify-center items-center gap-4">
       <h1 className='text-3xl font-semibold'>Sign in to <Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
@@ -75,7 +73,6 @@ export const SignIn = () => {
       <Helmet>
         <title>InfiniteTalk! - Sign In Mentee</title>
       </Helmet>
-
       <form onSubmit={handleSubmit(loginBtn)}>
         <div data-aos="zoom-in" className="text-sm form-light flex flex-col text-left items-left gap-2 p-3">
           <p>Email</p>

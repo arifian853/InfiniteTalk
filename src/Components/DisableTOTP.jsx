@@ -53,9 +53,7 @@ export const DisableTOTP = () => {
                                         Disable OTP
                                     </Button>
                                 </div>
-
                             </div>
-
                         </div>
                     </Modal.Body>
                 </div>

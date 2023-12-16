@@ -54,7 +54,6 @@ export const ProfilePicture = ({ avatar }) => {
 
     return (
         <>
-
             {
                 openCrop && createPortal(<CropEasy photo={photo} setOpenCrop={setOpenCrop} />, document.getElementById('portal'))
             }

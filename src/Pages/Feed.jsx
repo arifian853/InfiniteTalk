@@ -29,7 +29,6 @@ export const Feed = () => {
     }
   }, [userState.userInfo, navigate]);
 
-
   return (
     <>
       <Header />

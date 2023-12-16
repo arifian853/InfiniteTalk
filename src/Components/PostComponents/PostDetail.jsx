@@ -115,7 +115,7 @@ export const PostDetail = () => {
                                                     <Modal.Body className='modal-body'>
                                                         <div className="space-y-6 divide-y">
                                                             <div className="w-full flex flex-col justify-center items-center gap-2">
-                                                                <p>Delete this post?</p>
+                                                                <p>Are you sure want to delete this post?</p>
                                                                 <div className="mt-2 flex flex-row gap-2">
                                                                     <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
                                                                         Cancel

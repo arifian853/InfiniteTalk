@@ -43,7 +43,7 @@ export const CommentContainer = ({
       return UpdateComment({ token, desc, commentId });
     },
     onSuccess: () => {
-      toast.success("Your comment is updated successfully");
+      toast.success("Comment updated!");
       queryClient.invalidateQueries(["blog", postSlug]);
     },
     onError: (error) => {
@@ -57,7 +57,7 @@ export const CommentContainer = ({
       return DeleteComment({ token, commentId });
     },
     onSuccess: () => {
-      toast.success("Your comment is deleted successfully");
+      toast.success("Comment deleted");
       queryClient.invalidateQueries(["blog", postSlug]);
     },
     onError: (error) => {

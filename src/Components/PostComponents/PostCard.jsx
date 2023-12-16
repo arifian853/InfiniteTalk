@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-
 import { Link } from "react-router-dom";
 import stables from "../../Constants/stables";
+import { FaCommentAlt } from "react-icons/fa";
 
 const PostCard = ({ post }) => {
   return (
@@ -67,7 +67,9 @@ const PostCard = ({ post }) => {
               </h1>
             </div>
           </div>
-
+          <p className="mt-4 font-semibold text-md">
+            {post.comments && post.comments.length > 0 ? <span className="flex items-center gap-2"> <FaCommentAlt /> {post.comments.length} Comments</span> : "No comments yet"}
+          </p>
         </div>
       </div>
     </div>

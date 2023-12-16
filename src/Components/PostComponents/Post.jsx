@@ -14,8 +14,7 @@ export const Post = () => {
             toast.error(error.message);
             console.log(error);
         },
-    });
-
+    }); 
     return (
         <div className="bg-transparent md:w-4/5 w-10/12 flex flex-col my-10 gap-4">
             <CreateNewPost />

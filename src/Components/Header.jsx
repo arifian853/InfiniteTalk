@@ -1,23 +1,45 @@
-import { Avatar, Button, Dropdown, Navbar } from "flowbite-react"
+import { Avatar, Button, Dropdown, Modal, Navbar } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
 import toast from "react-hot-toast";
 import stables from "../Constants/stables";
+import { useState } from "react";
 
 export const Header = () => {
     const logoutHandler = () => {
         dispatch(logout());
-        toast.success("Log out success")
+        toast.success("Sign out success!")
         navigate("/");
     };
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const [openModal, setOpenModal] = useState('')
 
     return (
         <div>
-            <Navbar fluid rounded>
+            <Modal data-aos="fade-in" show={openModal === 'default'} onClose={() => setOpenModal(undefined)}>
+                <div>
+                    <Modal.Header className='modal-title'> <h1 className='modal-title'>Sign out?</h1> </Modal.Header>
+                    <Modal.Body className='modal-body'>
+                        <div className="space-y-6 divide-y">
+                            <div className="w-full flex flex-col justify-center items-center gap-2">
+                                <h1 className="text-2xl text-white font-semibold">Are you sure want to sign out?</h1>
+                                <div className="mt-2 flex flex-row gap-2">
+                                    <Button className="btn-dark" onClick={() => setOpenModal(undefined)}>
+                                        Cancel
+                                    </Button>
+                                    <Button className="btn-dark" onClick={logoutHandler}>
+                                        Sign out
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </div>
+            </Modal>
+            <Navbar className="bg-slate-800" fluid rounded>
                 <Navbar.Brand>
                     <h1 className='text-2xl font-semibold'><Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
                 </Navbar.Brand>
@@ -29,8 +51,8 @@ export const Header = () => {
                             label={
                                 <Avatar alt="User settings" img={
                                     userState.userInfo.avatar
-                                    ? stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar
-                                    : "user.png"} rounded />
+                                        ? stables.UPLOAD_FOLDER_BASE_URL + userState.userInfo.avatar
+                                        : "user.png"} rounded />
                             }
 
                         >
@@ -43,10 +65,11 @@ export const Header = () => {
                             <Dropdown.Item onClick={() => navigate("/profile-settings")}>Profile Settings</Dropdown.Item>
                             <Dropdown.Divider />
                             {userState?.userInfo?.admin && (
-                                <Dropdown.Item onClick={() => navigate("/admin")}>Admin Dashboard</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate("/admin")}>User posts (Admin)</Dropdown.Item>
                             )}
-                            <Dropdown.Item onClick={logoutHandler}>Sign out</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setOpenModal('default')}>Sign out</Dropdown.Item>
                         </Dropdown>
+
                     ) : (
                         <Button onClick={() => navigate("/signin")}>
                             Sign In

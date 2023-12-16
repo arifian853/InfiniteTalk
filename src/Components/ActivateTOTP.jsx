@@ -12,7 +12,7 @@ export const ActivateTOTP = () => {
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user);
     const [openModal, setOpenModal] = useState("")
-    const [qrcodeUrl, setqrCodeUrl] = useState("")
+    const [qrcodeUrl, setqrCodeUrl] = useState("") 
 
     useEffect(() => {
         QRCode.toDataURL(userState.userInfo.otp_auth_url).then(setqrCodeUrl);
