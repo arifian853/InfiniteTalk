@@ -245,6 +245,9 @@ const GetAllPosts = async (req, res, next) => {
                     path: "user",
                     select: ["avatar", "fullName", "mentor", "program"],
                 },
+                {
+                    path: "comments",
+                },
             ])
             .sort({ updatedAt: "desc" });
 

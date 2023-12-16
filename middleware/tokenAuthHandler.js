@@ -27,7 +27,7 @@ export const adminVerifier = (req, res, next) => {
   if (req.user && req.user.admin) {
     next();
   } else {
-    let error = new Error("Can't authorized as mentor/admin");
+    let error = new Error("Can't authorized, not mentor/admin");
     error.statusCode = 401;
     next(error);
   }

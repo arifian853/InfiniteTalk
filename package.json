@@ -11,7 +11,7 @@
   "keywords": [
     "api"
   ],
-  "author": "Arifian, Samuel",
+  "author": "Arifian Saputra, Samuel Miskan Hanock",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

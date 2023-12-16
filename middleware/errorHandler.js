@@ -7,7 +7,7 @@ export const errorResponserHandler = (err, req, res, next) => {
 };
 
 export const invalidPathHandler = (req, res, next) => {
-    let error = new Error("Invalid Path");
+    let error = new Error("Invalid Path!");
     error.statusCode = 404;
     next(error);
 };

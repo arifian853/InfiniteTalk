@@ -166,7 +166,7 @@ const UserRegistrationMentee = async (req, res, next) => {
 };
 
 
-const UserLogin = async (req, res, next) => {
+const UserLoginMentor = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -175,6 +175,55 @@ const UserLogin = async (req, res, next) => {
         if (!user) {
             throw new Error("Email not found");
         }
+
+        if (!user.mentor) {
+            throw new Error("You're not a mentor!");
+        }
+
+        user.lastLogin = new Date();
+        await user.save();
+        const isPasswordMatch = await bcryptjs.compare(password, user.password);
+        if (isPasswordMatch) {
+            return res.status(201).json({
+                _id: user._id,
+                avatar: user.avatar,
+                username: user.username,
+                fullName: user.fullName,
+                email: user.email,
+                admin: user.admin,
+                mentor: user.mentor,
+                program: user.program,
+                otp_enabled: user.otp_enabled,
+                otp_verified: user.otp_verified,
+                lastLogin: user.lastLogin,
+                token: await user.generateJWT(),
+                otp_auth_url: user.otp_auth_url,
+                otp_base32: user.otp_base32,// Include TOTP URL in the response
+                createdAt: user.createdAt,
+                message: `Login success , Welcome ${email}`,
+            });
+        } else {
+            throw new Error("Invalid email or password");
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const UserLoginMentee = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            throw new Error("Email not found");
+        }
+
+        if (user.mentor) {
+            throw new Error("You're not a mentee!");
+        }
+
         user.lastLogin = new Date();
         await user.save();
         const isPasswordMatch = await bcryptjs.compare(password, user.password);
@@ -414,7 +463,7 @@ const VerifyOTP = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'OTP is invalid or user not found',
+                message: 'OTP Code is Invalid',
             });
         }
 
@@ -467,7 +516,7 @@ const ValidateOTP = async (req, res, next) => {
         const { token, username } = req.body;
         const user = await User.findOne({ username });
 
-        const message = "OTP Invalid or user not found";
+        const message = "OTP Code Invalid";
         if (!user) {
             return res.status(401).json({
                 status: "fail",
@@ -494,7 +543,7 @@ const ValidateOTP = async (req, res, next) => {
 
         res.status(200).json({
             otp_valid: true,
-            message: "OTP Valid",
+            message: "Authorized!",
             _id: user._id,
             avatar: user.avatar,
             username: user.username,
@@ -560,10 +609,12 @@ const DisableOTP = async (req, res, next) => {
     }
 };
 
+
 export {
     UserRegistrationMentor,
     UserRegistrationMentee,
-    UserLogin,
+    UserLoginMentor,
+    UserLoginMentee,
     UserProfile,
     UpdateUserProfile,
     UpdateProfilePicture,

@@ -24,9 +24,3 @@ export const validationLogin = [
     check('email', `Email can't be empty`).notEmpty(),
     check('password', `Password can't be empty`).notEmpty(),
 ];
-
-// export const validationPost = [
-//     check('whoCreated', `Who is posting can't be empty.`).notEmpty(),
-//     check('title', `Title can't be empty`).notEmpty(),
-//     check('content', `Content can't be empty`).notEmpty(),
-// ];

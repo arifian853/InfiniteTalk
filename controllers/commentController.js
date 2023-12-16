@@ -8,7 +8,7 @@ const CreateComment = async (req, res, next) => {
     const post = await Post.findOne({ slug: slug });
 
     if (!post) {
-      const error = new Error("Post was not found");
+      const error = new Error("Post was not found!");
       return next(error);
     }
 
@@ -34,7 +34,7 @@ const UpdateComment = async (req, res, next) => {
     const comment = await Comment.findById(req.params.commentId);
 
     if (!comment) {
-      const error = new Error("Comment was not found");
+      const error = new Error("Comment was not found!");
       return next(error);
     }
 
@@ -53,7 +53,7 @@ const DeleteComment = async (req, res, next) => {
     await Comment.deleteMany({ parent: comment._id });
 
     if (!comment) {
-      const error = new Error("Comment was not found");
+      const error = new Error("Comment was not found!");
       return next(error);
     }
 
