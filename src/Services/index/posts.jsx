@@ -3,7 +3,7 @@ import axios from "axios";
 export const GetAllPosts = async () => {
   try {
     const { data, headers } = await axios.get(
-      `http://localhost:7777/api/posts/all`
+      `https://infinite-talk-api.onrender.com/api/posts/all`
     );
     return { data, headers };
   } catch (error) {
@@ -15,7 +15,7 @@ export const GetAllPosts = async () => {
 
 export const GetSinglePost = async ({ slug }) => {
   try {
-    const { data } = await axios.get(`http://localhost:7777/api/posts/detail/${slug}`);
+    const { data } = await axios.get(`https://infinite-talk-api.onrender.com/api/posts/detail/${slug}`);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -32,7 +32,7 @@ export const DeletePost = async ({ slug, token }) => {
       },
     };
 
-    const { data } = await axios.delete(`http://localhost:7777/api/posts/delete/${slug}`, config);
+    const { data } = await axios.delete(`https://infinite-talk-api.onrender.com/api/posts/delete/${slug}`, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -49,7 +49,7 @@ export const CreatePost = async ({ token, title, caption, tags }) => {
       },
     };
 
-    const { data } = await axios.post(`http://localhost:7777/api/posts/create`, { title, caption, tags }, config);
+    const { data } = await axios.post(`https://infinite-talk-api.onrender.com/api/posts/create`, { title, caption, tags }, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -66,7 +66,7 @@ export const UpdatePost = async ({ updatedData, slug, token }) => {
       },
     };
 
-    const { data } = await axios.put(`http://localhost:7777/api/posts/update/${slug}`, updatedData, config);
+    const { data } = await axios.put(`https://infinite-talk-api.onrender.com/api/posts/update/${slug}`, updatedData, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)

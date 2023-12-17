@@ -8,20 +8,20 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 
 ## A. Core Features:
 
-1. **Posts:**
+### 1. **Posts:**
    - Create, delete, and edit posts.
 
-2. **Comments:**
+### 2. **Comments:**
    - Create, delete, and edit comments.
    - Reply to comments.
 
-3. **User Authentication:**
+### 3. **User Authentication:**
    - Secure sign-in using TOTP (Time-based One-Time Password) function.
 
-4. **Admin Control:**
+### 4. **Admin Control:**
    - Admin page for controlling all user posts.
 
-5. **Roles:**
+### 5. **Roles:**
    - User roles for Mentee or Mentor.
    - Admin role with additional privileges.
 
