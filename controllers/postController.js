@@ -48,47 +48,6 @@ const CreatePost = async (req, res, next) => {
     }
 };
 
-const UploadPicture = async (req, res, next) => {
-    try {
-        const upload = uploadPicture.single("postPicture");
-
-        upload(req, res, async function (err) {
-            if (err) {
-                const error = new Error(
-                    "An unknown error occured when uploading " + err.message
-                );
-                next(error);
-            } else {
-                if (req.file) {
-                    let filename;
-                    let newPicture = await Post.findOne({ slug: slug });
-                    filename = newPicture.photo;
-                    if (filename) {
-                        fileRemover(filename);
-                    }
-                    newPicture.photo = req.file.filename;
-                    await newPicture.save();
-                    res.json({
-                        message: "Photo uploaded"
-                    });
-                } else {
-                    let filename;
-                    let newPicture = await Post.findOne({ slug: slug });
-                    filename = newPicture.photo;
-                    newPicture.photo = "";
-                    await newPicture.save();
-                    fileRemover(filename);
-                    res.json({
-                        message: "Canceled!"
-                    });
-                }
-            }
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
 const UpdatePost = async (req, res, next) => {
     try {
         const post = await Post.findOne({ slug: req.params.slug });
@@ -169,10 +128,6 @@ const GetPost = async (req, res, next) => {
                 path: "user",
                 select: ["avatar", "fullName", "mentor", "program"],
             },
-            // {
-            //     path: "categories",
-            //     select: ["title"],
-            // },
             {
                 path: "comments",
                 match: {
@@ -263,5 +218,4 @@ export {
     DeletePost,
     GetPost,
     GetAllPosts,
-    UploadPicture
 };
