@@ -37,10 +37,6 @@ const userDataSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    verificationCode: {
-      type: String,
-      required: false,
-    },
     lastLogin: {
       type: Date,
       default: null,

@@ -1,7 +1,9 @@
 # **InfiniteTalk! API Documentation**
 
 Clone this repository with : 
-```git clone --single-branch --branch back-end https://github.com/arifian853/InfiniteTalk.git```
+```
+git clone --single-branch --branch back-end https://github.com/arifian853/InfiniteTalk.git
+```
 
 Then ``` npm install ``` to download all the dependencies, then ```npm run dev``` to start the server with nodemon with ```PORT = 7777```
 Don't forget to make the .env files with this content : 
@@ -34,7 +36,7 @@ PROJ_ENVIRONMENT=development
  
 ## B. Database Model 
 
-## - User Data Schema
+### - User Data Schema
 
 ### Fields:
 
@@ -72,10 +74,6 @@ PROJ_ENVIRONMENT=development
   - Type: Boolean
   - Default: false
 
-- **verificationCode:**
-  - Type: String
-  - Required: false
-
 - **lastLogin:**
   - Type: Date
   - Default: null
@@ -101,7 +99,7 @@ PROJ_ENVIRONMENT=development
 - **Timestamps:**
   - Enabled: true
 
-## - Post Schema
+### - Post Schema
 
 ### Fields:
 
@@ -140,7 +138,7 @@ PROJ_ENVIRONMENT=development
     - Local Field: "_id"
     - Foreign Field: "post"
 
-## Comment Schema
+### - Comment Schema
 ### Fields:
 
 - **user:**
@@ -179,67 +177,108 @@ PROJ_ENVIRONMENT=development
     - Local Field: "_id"
     - Foreign Field: "parent"
 
-## C. Routes : 
-- User Routes
-#### 1. Sign In for Mentee (POST)
-```http://localhost:7777/api/user/signin```
+## C. Routes:
 
-#### 2. Sign Up for Mentee (POST)
-```http://localhost:7777/api/user/signup```
+#### - **User Routes**
+  1. Sign In for Mentee (POST)
+     ```
+     http://localhost:7777/api/routes/signin
+     ```
 
-#### 3. Sign In for Mentor (POST)
-```http://localhost:7777/api/user/signin-mentor```
+  2. Sign Up for Mentee (POST)
+     ```
+     http://localhost:7777/api/routes/signup
+     ```
 
-#### 4. Sign Up for Mentor (POST)
-```http://localhost:7777/api/user/signup-mentor```
+  3. Sign In for Mentor (POST)
+     ```
+     http://localhost:7777/api/routes/signin-mentor
+     ```
 
-#### 5. User Profile (GET)
-```http://localhost:7777/api/user/profile```
+  4. Sign Up for Mentor (POST)
+     ```
+     http://localhost:7777/api/routes/signup-mentor
+     ```
 
-#### 6. Update User Profile (PUT)
-```http://localhost:7777/api/user/updateProfile```
+  5. User Profile (GET)
+     ```
+     http://localhost:7777/api/routes/profile
+     ```
 
-#### 7. Update User Profile Picture (PUT)
-```http://localhost:7777/api/user/updateProfilePicture```
+  6. Update User Profile (PUT)
+     ```
+     http://localhost:7777/api/routes/updateProfile
+     ```
 
-- OTP Routes
-#### 1. Generate OTP (POST)
-```http://localhost:7777/api/otp/generate```
+  7. Update User Profile Picture (PUT)
+     ```
+     http://localhost:7777/api/routes/updateProfilePicture
+     ```
 
-#### 2. Verify OTP (POST)
-```http://localhost:7777/api/otp/verify```
+#### - **OTP Routes**
+  1. Generate OTP (POST)
+     ```
+     http://localhost:7777/api/routes/generate
+     ```
 
-#### 3. Validate OTP (POST)
-```http://localhost:7777/api/otp/validate```
+  2. Verify OTP (POST)
+     ```
+     http://localhost:7777/api/routes/verify
+     ```
 
-#### 4. Disable OTP (POST)
-```http://localhost:7777/api/otp/disable```
+  3. Validate OTP (POST)
+     ```
+     http://localhost:7777/api/routes/validate
+     ```
 
-- Post Routes
-#### 1. Create Post (POST)
-```http://localhost:7777/api/posts/create```
+  4. Disable OTP (POST)
+     ```
+     http://localhost:7777/api/routes/disable
+     ```
 
-#### 2. Update Post (PUT)
-```http://localhost:7777/api/posts/update/:slug```
+#### - **Post Routes**
+  1. Create Post (POST)
+     ```
+     http://localhost:7777/api/routes/create
+     ```
 
-#### 3. Get All Post (GET)
-```http://localhost:7777/api/posts/all```
+  2. Update Post (PUT)
+     ```
+     http://localhost:7777/api/routes/update/:slug
+     ```
 
-#### 4. Delete Post (DELETE)
-```http://localhost:7777/api/posts/delete/:slug```
+  3. Get All Post (GET)
+     ```
+     http://localhost:7777/api/routes/all
+     ```
 
-#### 4. Get Post Detail (GET)
-```http://localhost:7777/api/posts/detail/:slug```
+  4. Delete Post (DELETE)
+     ```
+     http://localhost:7777/api/routes/delete/:slug
+     ```
 
-- Comment Routes
-#### 1. Create Comment (POST)
-```http://localhost:7777/api/comments/createComment```
+  5. Get Post Detail (GET)
+     ```
+     http://localhost:7777/api/routes/detail/:slug
+     ```
 
-#### 2. Update Comment (PUT)
-```http://localhost:7777/api/comments/updateComment/:commentId```
+#### - **Comment Routes**
+  1. Create Comment (POST)
+     ```
+     http://localhost:7777/api/routes/createComment
+     ```
 
-#### 3. Get All Post (GET)
-```http://localhost:7777/api/posts/all```
+  2. Update Comment (PUT)
+     ```
+     http://localhost:7777/api/routes/updateComment/:commentId
+     ```
 
-#### 4. Delete Comment (DELETE)
-```http://localhost:7777/api/comments/deleteComment/:commentId```
+  3. Get All Post (GET)
+     ```
+     http://localhost:7777/api/routes/all
+     ```
+
+  4. Delete Comment (DELETE)
+     ```
+     http://localhost:7777/api/routes/deleteComment/:commentId
+     ```
