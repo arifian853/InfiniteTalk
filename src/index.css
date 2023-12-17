@@ -60,10 +60,10 @@ body {
     color: var(--white);
     max-height: 150vh;
     height: 100vh;
-    overflow-y: auto; 
-} 
+    overflow-y: auto;
+}
 
-.modal-title { 
+.modal-title {
     color: var(--white) !important;
     background-color: var(--black);
 }
@@ -79,7 +79,7 @@ body {
 /*Landing Page*/
 
 .landing-page {
-   background-color: var(--black);
+    background-color: var(--black);
 }
 
 .landing-page h1 {
@@ -100,9 +100,10 @@ body {
     color: var(--black);
     width: 340px;
     border-radius: 7px;
-} 
+}
 
-.form-light input, select {
+.form-light input,
+select {
     padding: 5px;
     border-radius: 7px;
     border: 1px solid var(--black);

@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { userActions } from "../store/reducers/userReducers";
 import { ProfilePicture } from "../Components/ProfilePicture";
 import { Helmet } from "react-helmet";
+import { FooterMain } from "../Components/FooterMain";
 
 export const ProfileSettings = () => {
 
@@ -105,7 +106,7 @@ export const ProfileSettings = () => {
             {userState.userInfo ? (
                 <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center md:p-7 p-4'>
 
-                    <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800">
+                    <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile Settings</h1>
@@ -246,7 +247,7 @@ export const ProfileSettings = () => {
             ) : (
                 <></>
             )}
-
+            <FooterMain />
         </>
     )
 

@@ -67,6 +67,7 @@ export const Header = () => {
                             {userState?.userInfo?.admin && (
                                 <Dropdown.Item onClick={() => navigate("/admin")}>User posts (Admin)</Dropdown.Item>
                             )}
+                            <Dropdown.Item onClick={() => navigate("/tos")}>Terms of Service</Dropdown.Item>
                             <Dropdown.Item onClick={() => setOpenModal('default')}>Sign out</Dropdown.Item>
                         </Dropdown>
 

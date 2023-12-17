@@ -11,6 +11,7 @@ import stables from "../../Constants/stables";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
 import { CommentContainer } from "../CommentComponents/CommentContainer";
+import { FooterMain } from "../FooterMain";
 
 export const PostDetail = () => {
     const { slug } = useParams();
@@ -214,7 +215,9 @@ export const PostDetail = () => {
                     </div>
 
                 )}
+                
             </>
+            <FooterMain />
         </div>
     )
 }

@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DeletePost, GetAllPosts } from "../Services/index/posts";
+import { FooterMain } from "../Components/FooterMain";
 
 export const Admin = () => {
     const navigate = useNavigate();
@@ -83,7 +84,7 @@ export const Admin = () => {
                 <title>InfiniteTalk! - Admin Page</title>
             </Helmet>
             <div data-aos="zoom-in" className=' flex flex-col gap-4 justify-center items-center md:p-7 p-4'>
-                <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800">
+                <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
                     <Link className="flex items-center gap-2 justify-start" to='/feed'>
                         <h1 className="text-2xl cursor-pointer"> <FaArrowLeft /></h1>
                         <h1 className="text-2xl"> Manage Posts</h1>
@@ -147,6 +148,7 @@ export const Admin = () => {
                 </div>
 
             </div>
+            <FooterMain />
         </>
     )
 }

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import { Post } from "../Components/PostComponents/Post";
+import { FooterMain } from "../Components/FooterMain";
 
 export const Feed = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export const Feed = () => {
       <div className='flex flex-col gap-4 justify-center items-center'>
         <Post />
       </div>
+      <FooterMain />
     </>
 
   )

@@ -1,10 +1,11 @@
 import { Header } from "../Components/Header"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet";
+import { FooterMain } from "../Components/FooterMain";
 
 export const About = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export const About = () => {
         <title>InfiniteTalk! - Project About</title>
       </Helmet>
       <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center px-5 md:px-7 my-7 w-full'>
-        <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800">
+        <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
           <div className="flex items-center gap-2 justify-start">
             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
             <h1 className="text-2xl"> About Project</h1>
@@ -76,6 +77,7 @@ export const About = () => {
               <li>Program :  Intern Project @ <a className="text-green-400 underline" href="https://infinitelearning.id" target="_blank" rel="noreferrer noopener">Infinite Learning</a></li>
             </ul>
             <br />
+
             <hr className="w-full h-px my-2 bg-gray-400 border-0" />
             <div className="flex flex-col md:flex-row justify-center items center">
 
@@ -124,9 +126,14 @@ export const About = () => {
               </div>
 
             </div>
+            <hr className="w-full h-px my-2 bg-gray-400 border-0" />
+            <Link to='/tos'>
+              <p className="text-center"> <span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span> Terms of Service</p>
+            </Link>
           </div>
         </div>
       </div>
+      <FooterMain />
     </>
   )
 }

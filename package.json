@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@tanstack/react-query": "^5.8.7",
+    "@tsparticles/react": "^3.0.0",
     "aos": "^2.3.4",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.0",

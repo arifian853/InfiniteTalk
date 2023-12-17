@@ -26,6 +26,7 @@ import { ProfileSettings } from './Pages/ProfileSettings';
 import { ValidateTOTP } from './Pages/ValidateTOTP';
 import { PostDetail } from './Components/PostComponents/PostDetail';
 import { EditPost } from './Components/PostComponents/EditPost';
+import { TOS } from './Pages/TOS';
 function App() {
   useEffect(() => {
     AOS.init();
@@ -54,6 +55,8 @@ function App() {
         <Route path='/feed' element={<Feed />} />
 
         <Route path='/about' element={<About />} />
+
+        <Route path='/tos' element={<TOS />} />
 
         <Route path='/profile' element={<Profile />} />
 

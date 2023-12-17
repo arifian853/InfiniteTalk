@@ -11,6 +11,7 @@ import CreatableSelect from "react-select/creatable";
 import { FaArrowLeft } from "react-icons/fa6";
 import { Header } from "../Header";
 import { Helmet } from "react-helmet";
+import { FooterMain } from "../FooterMain";
 
 
 export const EditPost = () => {
@@ -218,6 +219,7 @@ export const EditPost = () => {
           </div>
         )
       }
+      <FooterMain />
     </>
   )
 }

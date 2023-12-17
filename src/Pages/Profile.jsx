@@ -10,6 +10,7 @@ import stables from "../Constants/stables";
 import { Helmet } from "react-helmet";
 import { DisableTOTP } from "../Components/DisableTOTP";
 import { ActivateTOTP } from "../Components/ActivateTOTP";
+import { FooterMain } from "../Components/FooterMain";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -45,7 +46,7 @@ export const Profile = () => {
             </Helmet>
             {userState.userInfo ? (
                 <div data-aos="zoom-in" className='flex flex-col gap-4 justify-center items-center md:p-7 p-4'>
-                    <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800">
+                    <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
                         <div className="flex items-center gap-2 justify-start">
                             <h1 className="text-2xl cursor-pointer" onClick={goBack}> <FaArrowLeft /></h1>
                             <h1 className="text-2xl"> {userState.userInfo.mentor ? "Mentor" : "Mentee"} Profile</h1>
@@ -145,7 +146,7 @@ export const Profile = () => {
                                 <p className="grow font-semibold text-sm text-white md:w-32 w-full">OTP Enabled</p>
                                 <p className="grow font-semibold text-sm md:text-left text-center text-white md:w-32 w-full"> {userState.userInfo.otp_enabled ? <Tooltip content="OTP is enabled, your account is safer now."><DisableTOTP /></Tooltip> : <Tooltip content="OTP is disabled, your account is not safe, please enable OTP."><ActivateTOTP /></Tooltip>}</p>
                                 <div className="grow">
-                                  
+
                                 </div>
                             </div>
 
@@ -165,7 +166,7 @@ export const Profile = () => {
             ) : (
                 <></>
             )}
-
+            <FooterMain />
         </>
     )
 }
