@@ -25,6 +25,10 @@ app.use('/api/otp', otpRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Project started in port 7777');
+});
+
 app.use((err, res,) => {
   res.status(500).json({ error: 'Internal Server Error', stack: err.stack });
 });
