@@ -33,6 +33,7 @@ PROJ_ENVIRONMENT=development
 - **MongoDB**
 - **MongoDB Compass**
 - **Postman**
+- **Docker**
  
 ## B. Database Model 
 
