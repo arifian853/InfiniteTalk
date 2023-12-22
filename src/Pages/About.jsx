@@ -75,6 +75,7 @@ export const About = () => {
               <li>Hipster :  <a className="underline" href="https://tpa-4.vercel.app/" target="_blank" rel="noreferrer noopener">Samuel Miskan Hanock</a> (2001020037)</li>
               <li>University :  <a className="underline" href="https://umrah.ac.id" target="_blank" rel="noreferrer noopener">Universitas Maritim Raja Ali Haji</a> (UMRAH)</li>
               <li>Program :  Intern Project @ <a className="text-green-400 underline" href="https://infinitelearning.id" target="_blank" rel="noreferrer noopener">Infinite Learning</a></li>
+              <li>Containerized with Docker by :  <a className="underline" href="https://github.com/helios78971" target="_blank" rel="noreferrer noopener">Frederick Benaya Situmorang</a> (Mataram University)</li>
             </ul>
             <br />
 
@@ -122,11 +123,12 @@ export const About = () => {
                   <li>MongoDB</li>
                   <li>MongoDB Compass</li>
                   <li>Postman</li>
+                  <li>Docker</li>
                 </ul>
               </div>
 
             </div>
-            <hr className="w-full h-px my-2 bg-gray-400 border-0" />
+            <hr className="w-full h-px my-4 bg-gray-400 border-0" />
             <Link to='/tos'>
               <p className="text-center"> <span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span> Terms of Service</p>
             </Link>

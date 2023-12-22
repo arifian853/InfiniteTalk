@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GenerateOTP = async ({ username }) => {
     try {
-      const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/otp/generate", {
+      const { data } = await axios.post("http://localhost:7777/api/otp/generate", {
         username
       });
       return data;
@@ -15,7 +15,7 @@ export const GenerateOTP = async ({ username }) => {
   
   export const VerifyOTP = async ({ token, username }) => {
     try {
-      const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/otp/verify", {
+      const { data } = await axios.post("http://localhost:7777/api/otp/verify", {
         token, 
         username
       });
@@ -29,7 +29,7 @@ export const GenerateOTP = async ({ username }) => {
   
   export const ValidateOTP = async ({ token, username }) => {
     try {
-      const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/otp/validate", {
+      const { data } = await axios.post("http://localhost:7777/api/otp/validate", {
         token, 
         username
       });
@@ -43,7 +43,7 @@ export const GenerateOTP = async ({ username }) => {
   
   export const DisableOTP = async ({ username }) => {
     try {
-      const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/otp/disable", {
+      const { data } = await axios.post("http://localhost:7777/api/otp/disable", {
         username, 
       });
       return data;

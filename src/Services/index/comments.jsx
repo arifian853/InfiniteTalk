@@ -15,7 +15,7 @@ export const CreateNewComment = async ({
         };
 
         const { data } = await axios.post(
-            "https://infinite-talk-api.onrender.com/api/comments/createComment",
+            "http://localhost:7777/api/comments/createComment",
             {
                 desc,
                 slug,
@@ -41,7 +41,7 @@ export const UpdateComment = async ({ token, desc, commentId }) => {
         };
 
         const { data } = await axios.put(
-            `https://infinite-talk-api.onrender.com/api/comments/updateComment/${commentId}`,
+            `http://localhost:7777/api/comments/updateComment/${commentId}`,
             {
                 desc,
             },
@@ -63,7 +63,7 @@ export const DeleteComment = async ({ token, commentId }) => {
             },
         };
 
-        const { data } = await axios.delete(`https://infinite-talk-api.onrender.com/api/comments/deleteComment/${commentId}`, config);
+        const { data } = await axios.delete(`http://localhost:7777/api/comments/deleteComment/${commentId}`, config);
         return data;
     } catch (error) {
         if (error.response && error.response.data.message)

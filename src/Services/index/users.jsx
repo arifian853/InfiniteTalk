@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const signUpMentor = async ({ username, email, password, fullName, program }) => {
   try {
-    const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/user/signup-mentor", {
+    const { data } = await axios.post("http://localhost:7777/api/user/signup-mentor", {
       username, 
       email, 
       password, 
@@ -19,7 +19,7 @@ export const signUpMentor = async ({ username, email, password, fullName, progra
 
 export const signUp = async ({ username, email, password, fullName, program }) => {
   try {
-    const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/user/signup", {
+    const { data } = await axios.post("http://localhost:7777/api/user/signup", {
       username, 
       email, 
       password, 
@@ -34,23 +34,9 @@ export const signUp = async ({ username, email, password, fullName, program }) =
   }
 };
 
-// export const signInMentor = async ({ email, password }) => {
-//   try {
-//     const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/user/signin-mentor", {
-//       email,
-//       password,
-//     });
-//     return data;
-//   } catch (error) {
-//     if (error.response && error.response.data.message)
-//       throw new Error(error.response.data.message);
-//     throw new Error(error.message);
-//   }
-// };
-
 export const signInMentor = async ({ email, password }) => {
   try {
-    const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/user/signin-mentor", {
+    const { data } = await axios.post("http://localhost:7777/api/user/signin-mentor", {
       email,
       password,
     });
@@ -64,7 +50,7 @@ export const signInMentor = async ({ email, password }) => {
 
 export const signIn = async ({ email, password }) => {
   try {
-    const { data } = await axios.post("https://infinite-talk-api.onrender.com/api/user/signin", {
+    const { data } = await axios.post("http://localhost:7777/api/user/signin", {
       email,
       password,
     });
@@ -84,7 +70,7 @@ export const getUserProfile = async ({ token }) => {
       },
     };
 
-    const { data } = await axios.get("https://infinite-talk-api.onrender.com/api/user/profile", config);
+    const { data } = await axios.get("http://localhost:7777/api/user/profile", config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -102,7 +88,7 @@ export const updateProfile = async ({ token, userData }) => {
     };
 
     const { data } = await axios.put(
-      "https://infinite-talk-api.onrender.com/api/user/updateProfile",
+      "http://localhost:7777/api/user/updateProfile",
       userData,
       config
     );
@@ -124,7 +110,7 @@ export const updateProfilePicture = async ({ token, formData }) => {
     };
 
     const { data } = await axios.put(
-      "https://infinite-talk-api.onrender.com/api/user/updateProfilePicture",
+      "http://localhost:7777/api/user/updateProfilePicture",
       formData,
       config
     );

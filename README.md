@@ -32,6 +32,8 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 - **University:** [Universitas Maritim Raja Ali Haji](https://umrah.ac.id) (UMRAH)
 - **Program:** Intern Project @ [Infinite Learning](https://infinitelearning.id)
 
+- **Containerized with Docker by** : [Frederick Benaya Situmorang](https://github.com/helios78971) (Mataram University)
+
 ## C. Front-End Tech Stack
 
 ### 1. UI
@@ -68,6 +70,7 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 - **MongoDB**
 - **MongoDB Compass**
 - **Postman**
+- **Docker**
 
 ---
 
