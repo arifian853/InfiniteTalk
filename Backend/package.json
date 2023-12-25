@@ -1,0 +1,33 @@
+{
+  "name": "infinitetalk-be",
+  "version": "1.0.0",
+  "description": "API For InfiniteTalk!",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "Arifian Saputra, Samuel Miskan Hanock",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "hi-base32": "^0.5.1",
+    "http-proxy": "^1.18.1",
+    "jsonwebtoken": "^9.0.1",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.4.1",
+    "multer": "^1.4.5-lts.1",
+    "node-http-proxy": "^0.0.3",
+    "nodemon": "^3.0.1",
+    "otpauth": "^9.2.0",
+    "uuid": "^9.0.1"
+  }
+}
