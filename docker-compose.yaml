@@ -1,0 +1,30 @@
+version: '3'
+services:
+  backend:
+    build: backend_folder_location
+    container_name: backend
+    ports:
+      - "7777:7777"
+    volumes:
+      - backend_folder_location:/app
+      - /app/node_modules
+  frontend:
+    build: frontend_folder_location
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - frontend_folder_location:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    ports:
+      - "4040:4040"
+    command: 
+      /bin/sh -c "ngrok authtoken ngrok_token && sleep infinity"
+    depends_on:
+      - backend
