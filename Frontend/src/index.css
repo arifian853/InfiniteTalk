@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+    --black: #27374D;
+    --gray: #526D82;
+    --light-gray: #9DB2BF;
+    --white: #DDE6ED;
+    --header-font: 'Lato', sans-serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+html,
+body {
+    background-color: var(--black);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: none;
+}
+
+.header-font {
+    font-family: var(--header-font);
+}
+
+.body-font {
+    font-family: var(--body-font);
+}
+
+/*Utilities*/
+.btn-dark {
+    background-color: var(--white) !important;
+    color: var(--black);
+    transition: 0.4s;
+}
+
+.btn-dark:hover {
+    background-color: var(--light-gray) !important;
+    color: var(--black);
+    transition: 0.4s;
+}
+
+.btn-dark-md {
+    background-color: var(--white) !important;
+    height: 40px;
+    color: var(--black);
+    transition: 0.4s;
+}
+
+.btn-dark-md:hover {
+    background-color: var(--light-gray) !important;
+    color: var(--black);
+    transition: 0.4s;
+}
+
+.forms {
+    color: var(--white);
+    max-height: 150vh;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.modal-title {
+    color: var(--white) !important;
+    background-color: var(--black);
+}
+
+.modal-body {
+    background-color: var(--black);
+    color: var(--white);
+    border-bottom-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+
+/*Landing Page*/
+
+.landing-page {
+    background-color: var(--black);
+}
+
+.landing-page h1 {
+    font-family: var(--header-font);
+    color: var(--white);
+}
+
+.landing-page p {
+    font-family: var(--body-font);
+    color: var(--white);
+}
+
+
+/*Sign In Page*/
+
+.form-light {
+    background-color: var(--white);
+    color: var(--black);
+    width: 340px;
+    border-radius: 7px;
+}
+
+.form-light input,
+select {
+    padding: 5px;
+    border-radius: 7px;
+    border: 1px solid var(--black);
+}
+
+
+.form-light button {
+    background-color: var(--black) !important;
+    color: var(--white);
+    transition: 0.4s;
+}
+
+.form-light button:hover {
+    background-color: var(--gray) !important;
+    color: var(--white);
+    transition: 0.4s;
+}
+
+
+/*OTP*/
+
+.otp {
+    color: var(--white);
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    text-align: center;
+    gap: 0.5em;
+}
