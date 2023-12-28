@@ -79,6 +79,22 @@ export const getUserProfile = async ({ token }) => {
   }
 };
 
+export const getAllUser = async ({token}) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get("http://localhost:7777/api/user/users", config);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
 export const updateProfile = async ({ token, userData }) => {
   try {
     const config = {

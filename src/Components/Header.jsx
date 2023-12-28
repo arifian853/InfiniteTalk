@@ -41,7 +41,7 @@ export const Header = () => {
             </Modal>
             <Navbar className="bg-slate-800" fluid rounded>
                 <Navbar.Brand>
-                    <h1 className='text-2xl font-semibold'><Link to='/'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
+                    <h1 className='text-2xl font-semibold'><Link to='/feed'><span className="text-blue-400"> Infinite</span><span className="text-green-400">Talk!</span></Link></h1>
                 </Navbar.Brand>
                 <div className="flex md:order-2">
                     {userState.userInfo ? (
@@ -65,7 +65,7 @@ export const Header = () => {
                             <Dropdown.Item onClick={() => navigate("/profile-settings")}>Profile Settings</Dropdown.Item>
                             <Dropdown.Divider />
                             {userState?.userInfo?.admin && (
-                                <Dropdown.Item onClick={() => navigate("/admin")}>User posts (Admin)</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate("/admin")}>Admin Page</Dropdown.Item>
                             )}
                             <Dropdown.Item onClick={() => navigate("/tos")}>Terms of Service</Dropdown.Item>
                             <Dropdown.Item onClick={() => setOpenModal('default')}>Sign out</Dropdown.Item>

@@ -2,7 +2,9 @@
 A place for Mentors and Mentees **connect** and **grow**! This is a mini-forum for mentors and mentees from Infinite Learning to collaborate and connect. In this forum, mentors and mentees can make posts and comment on each other’s posts to help or share information!
 
 Clone this repository with : 
-```https://github.com/arifian853/InfiniteTalk.git```
+```
+https://github.com/arifian853/InfiniteTalk.git
+```
 
 Then ``` npm install ``` to download all the dependencies, then ```npm run dev``` to start the server in localhost with port 5173 = ```http://localhost:5173```
 
@@ -10,6 +12,8 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 
 ### 1. **Posts:**
    - Create, delete, and edit posts.
+   - Add image to post.
+   - Add tags.
 
 ### 2. **Comments:**
    - Create, delete, and edit comments.
@@ -23,16 +27,20 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 
 ### 5. **Roles:**
    - User roles for Mentee or Mentor.
-   - Admin role with additional privileges.
+   - Admin role with additional privileges (See user enrolled, manage user posts and comments).
+
+### 6. **Containerized**
+   - Containerized with Docker, Container as OS.
+   - Visit Containerization branch to configure the ```compose.yaml``` and use the Containerized version of this project.
 
 ## B. Teams & Information
 
 - **Hacker:** [Arifian Saputra](https://arifian853.vercel.app) (2001020029)
 - **Hipster:** [Samuel Miskan Hanock](https://tpa-4.vercel.app/) (2001020037)
+- **Containerized with Docker by** : [Frederick Benaya Situmorang](https://github.com/helios78971) (Mataram University)
 - **University:** [Universitas Maritim Raja Ali Haji](https://umrah.ac.id) (UMRAH)
 - **Program:** Intern Project @ [Infinite Learning](https://infinitelearning.id)
 
-- **Containerized with Docker by** : [Frederick Benaya Situmorang](https://github.com/helios78971) (Mataram University)
 
 ## C. Front-End Tech Stack
 
@@ -44,7 +52,7 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 - **AOS Animation**
 - **React Hot Toast**
 
-### 2. Data Management
+### 2. Data and State Management
 
 - **React-Redux**
 - **Redux Toolkit**
@@ -65,7 +73,7 @@ Then ``` npm install ``` to download all the dependencies, then ```npm run dev``
 - **OTPAuth**
 - **CORS**
 
-### 3. Database + Tools
+### 3. Database & Tools
 
 - **MongoDB**
 - **MongoDB Compass**

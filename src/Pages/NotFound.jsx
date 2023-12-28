@@ -8,7 +8,7 @@ export const NotFound = () => {
         navigate(-1)
     }
     return (
-        <div className="h-screen flex flex-col justify-center items-center gap-4 forms text-center">
+        <div data-aos="zoom-in" className="h-screen flex flex-col justify-center items-center gap-4 forms text-center">
             <Helmet>
                 <title>Page not Found!</title>
             </Helmet>

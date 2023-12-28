@@ -55,13 +55,13 @@ export const PostDetail = () => {
     const postBelongsToUser = data?.user._id === userState.userInfo?._id;
 
     const goBack = () => {
-        navigate(-1)
+        navigate('/feed')
     }
 
     useEffect(() => {
         if (!userState.userInfo) {
             const timeoutId = setTimeout(() => {
-                navigate('/');
+                navigate('/feed');
                 toast.error("Not authenticated! Login first.")
             }, 50);
             return () => clearTimeout(timeoutId);
@@ -215,7 +215,7 @@ export const PostDetail = () => {
                     </div>
 
                 )}
-                
+
             </>
             <FooterMain />
         </div>

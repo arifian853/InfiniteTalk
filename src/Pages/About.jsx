@@ -78,7 +78,7 @@ export const About = () => {
               <li>Containerized with Docker by :  <a className="underline" href="https://github.com/helios78971" target="_blank" rel="noreferrer noopener">Frederick Benaya Situmorang</a> (Mataram University)</li>
             </ul>
             <br />
-
+ 
             <hr className="w-full h-px my-2 bg-gray-400 border-0" />
             <div className="flex flex-col md:flex-row justify-center items center">
 

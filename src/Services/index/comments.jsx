@@ -1,5 +1,22 @@
 import axios from "axios";
 
+
+export const GetAllComments = async ({token}) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get("http://localhost:7777/api/comments/comments-list", config);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message)
+        throw new Error(error.response.data.message);
+      throw new Error(error.message);
+    }
+  };
+
 export const CreateNewComment = async ({
     token,
     desc,

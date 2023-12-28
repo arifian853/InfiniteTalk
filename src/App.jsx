@@ -20,13 +20,16 @@ import { Feed } from './Pages/Feed';
 import { MenteePage } from './Pages/Mentee_Role/MenteePage';
 import { Toaster } from 'react-hot-toast';
 import { About } from './Pages/About';
-import { Admin } from './Pages/Admin';
+import { Admin } from './Pages/Admin/Admin';
 import { Profile } from './Pages/Profile';
 import { ProfileSettings } from './Pages/ProfileSettings';
 import { ValidateTOTP } from './Pages/ValidateTOTP';
 import { PostDetail } from './Components/PostComponents/PostDetail';
 import { EditPost } from './Components/PostComponents/EditPost';
 import { TOS } from './Pages/TOS';
+import { UserList } from './Pages/Admin/UserList';
+import { PostList } from './Pages/Admin/PostList';
+import { CommentList } from './Pages/Admin/CommentList';
 function App() {
   useEffect(() => {
     AOS.init();
@@ -63,6 +66,12 @@ function App() {
         <Route path='/profile-settings' element={<ProfileSettings />} />
 
         <Route path='/admin' element={<Admin />} />
+
+        <Route path='/admin/posts' element={<PostList />} />
+
+        <Route path='/admin/comments' element={<CommentList />} />
+
+        <Route path='/admin/users' element={<UserList />} />
 
         <Route path='/otp' element={<ValidateTOTP />} />
 
