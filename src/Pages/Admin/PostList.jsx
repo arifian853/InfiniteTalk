@@ -95,7 +95,7 @@ export const PostList = () => {
                     <ul className="divide-y mt-4 mb-1 divide-gray-200 dark:divide-gray-400">
                         <li className="w-full rounded-lg p-2 bg-slate-700 text-center"> <h1 className="text-xl font-semibold">Welcome, <span className="text-green-500">{userState.userInfo.fullName}</span></h1> As an admin, you can control user posts </li>
                     </ul>
-                    <h1 className="text-2xl font-semibold my-2">User posts</h1>
+                    <h1 className="text-2xl font-semibold my-2">User Posts List</h1>
                     {
                         isLoading || isFetching ? (
                             <span className='flex gap-4'>Loading ... <Spinner size="sm" /></span>

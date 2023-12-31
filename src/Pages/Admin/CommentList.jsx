@@ -83,7 +83,7 @@ export const CommentList = () => {
                 <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
                     <div className="flex items-center gap-2 justify-start cursor-pointer" onClick={() => navigate(-1)}>
                         <h1 className="text-2xl"> <FaArrowLeft /></h1>
-                        <h1 className="text-2xl"> User Comments</h1>
+                        <h1 className="text-2xl"> Manage Comments</h1>
                     </div>
                     <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
                     <ul className="divide-y mt-4 mb-1 divide-gray-200 dark:divide-gray-400">

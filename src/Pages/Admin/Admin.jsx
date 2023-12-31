@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FooterMain } from "../../Components/FooterMain";
-import { Table } from 'flowbite-react';
+import { FaCommentAlt, FaUser } from "react-icons/fa";
+import { CgFeed } from "react-icons/cg";
 
 export const Admin = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const Admin = () => {
             return () => clearTimeout(timeoutId);
         }
     }, [userState.userInfo, navigate]);
-    
+
     useEffect(() => {
         if (userState.userInfo.admin === false) {
             const timeoutId = setTimeout(() => {
@@ -61,25 +62,22 @@ export const Admin = () => {
                         <li className="w-full rounded-lg p-2 bg-slate-700 text-center"> <h1 className="text-xl font-semibold">Welcome, <span className="text-green-500">{userState.userInfo.fullName}</span></h1> As an admin, you can control user posts and comments, and can see how many users is enrolled. </li>
                     </ul>
                     <h1 className="text-2xl font-semibold my-2"></h1>
-                    <Table >
-                        <Table.Body className="divide-y divide-gray-200 rounded-lg">
-                            <Table.Row className="bg-slate-700">
-                                <Table.Cell onClick={() => navigate("/admin/posts")} className="cursor-pointer hover:bg-slate-600 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    Manage Posts
-                                </Table.Cell>
-                            </Table.Row>
-                            <Table.Row className="bg-slate-700">
-                                <Table.Cell onClick={() => navigate("/admin/comments")} className="cursor-pointer hover:bg-slate-600 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    Manage Comments
-                                </Table.Cell>
-                            </Table.Row>
-                            <Table.Row className="bg-slate-700">
-                                <Table.Cell onClick={() => navigate("/admin/users")} className="cursor-pointer hover:bg-slate-600 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                    Users list
-                                </Table.Cell>
-                            </Table.Row>
-                        </Table.Body>
-                    </Table>
+                    <div className="flex justify-center">
+                        <div className="flex flex-col justify-center items-center md:flex-row gap-2 w-full">
+                            <button onClick={() => navigate("/admin/posts")}  className="cursor-pointer text-center rounded-lg h-40 w-full md:w-44 bg-slate-700 font-medium text-white flex flex-col items-center justify-center shadow-slate-800 shadow hover:border border-slate-400">
+                                <span className="text-4xl"><CgFeed /></span>
+                                Manage Posts
+                            </button>
+                            <button onClick={() => navigate("/admin/comments")} className="cursor-pointer text-center rounded-lg h-40 w-full md:w-44 bg-slate-700 font-medium text-white flex flex-col items-center justify-center shadow-slate-800 shadow hover:border border-slate-400">
+                                <span className="text-4xl"><FaCommentAlt /></span>
+                                Manage Comments
+                            </button>
+                            <button onClick={() => navigate("/admin/users")} className="cursor-pointer text-center rounded-lg h-40 w-full md:w-44 bg-slate-700 font-medium text-white flex flex-col items-center justify-center shadow-slate-800 shadow hover:border border-slate-400">
+                                <span className="text-4xl"><FaUser /></span>
+                                User List
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>

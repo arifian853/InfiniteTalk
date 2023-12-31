@@ -5,7 +5,8 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
-import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowLeft, FaCheck } from "react-icons/fa6";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
 import { FooterMain } from "../../Components/FooterMain";
 import { getAllUser } from "../../Services/index/users";
@@ -64,13 +65,13 @@ export const UserList = () => {
                 <div className="flex flex-col w-full md:w-11/12 text-white rounded-lg p-5 bg-slate-800 shadow-lg">
                     <div className="flex items-center gap-2 justify-start cursor-pointer" onClick={() => navigate(-1)}>
                         <h1 className="text-2xl"> <FaArrowLeft /></h1>
-                        <h1 className="text-2xl"> User Lists</h1>
+                        <h1 className="text-2xl"> Users List</h1>
                     </div>
                     <hr className="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
                     <ul className="divide-y mt-4 mb-1 divide-gray-200 dark:divide-gray-400">
                         <li className="w-full rounded-lg p-2 bg-slate-700 text-center"> <h1 className="text-xl font-semibold">Welcome, <span className="text-green-500">{userState.userInfo.fullName}</span></h1> Users enrolled in InfiniteTalk!</li>
                     </ul>
-                    <h1 className="text-2xl font-semibold my-2">Users list</h1>
+                    <h1 className="text-2xl font-semibold my-2">Users enrolled</h1>
                     {isLoading || isFetching ? (
                         <span className='flex gap-4'>Loading ... <Spinner size="sm" /></span>
                     ) : isError ? (
@@ -82,9 +83,6 @@ export const UserList = () => {
                             <Table>
                                 <Table.Body className="divide-y divide-gray-200 rounded-lg">
                                     <Table.Row className="bg-gray-700">
-                                        <Table.Cell className="whitespace-nowrap font-medium capitalize text-white">
-
-                                        </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium capitalize text-white">
                                             Full Name
                                         </Table.Cell>
@@ -100,27 +98,30 @@ export const UserList = () => {
                                         <Table.Cell className="whitespace-nowrap font-medium capitalize text-white">
                                             Account created
                                         </Table.Cell>
-                                        <Table.Cell className="whitespace-nowrap font-medium capitalize text-white">
+                                        <Table.Cell className="font-medium capitalize text-white">
                                             Last sign in
+                                        </Table.Cell>
+                                        <Table.Cell className="whitespace-nowrap font-medium capitalize text-white">
+                                            2FA TOTP
                                         </Table.Cell>
                                     </Table.Row>
                                     {profileData.map((profile) => (
                                         <Table.Row className="bg-slate-700">
-                                            <Table.Cell key={profile._id} className="  font-medium text-white">
-                                                <img
-                                                    src={
-                                                        profile.avatar
-                                                            ? stables.UPLOAD_FOLDER_BASE_URL + profile.avatar
-                                                            : "/user.png"
-                                                    }
-                                                    alt="post profile"
-                                                    className="w-20 rounded-full"
-                                                />
+                                            <Table.Cell key={profile._id} className=" font-medium text-white">
+                                                <div className="flex items-center gap-4">
+                                                    <img
+                                                        src={
+                                                            profile.avatar
+                                                                ? stables.UPLOAD_FOLDER_BASE_URL + profile.avatar
+                                                                : "/user.png"
+                                                        }
+                                                        alt="post profile"
+                                                        className="w-8 rounded-full"
+                                                    />
+                                                    {profile.fullName}
+                                                </div>
                                             </Table.Cell>
-                                            <Table.Cell key={profile._id} className="  whitespace-nowrap font-medium text-white">
-                                                {profile.fullName}
-                                            </Table.Cell>
-                                            <Table.Cell key={profile._id} className="  whitespace-nowrap font-medium text-white">
+                                            <Table.Cell key={profile._id} className="font-medium text-white">
                                                 {profile.email}
                                             </Table.Cell>
                                             <Table.Cell key={profile._id} className="  whitespace-nowrap font-medium text-white">
@@ -148,15 +149,16 @@ export const UserList = () => {
                                                     timeZone: 'Asia/Jakarta',
                                                 }).format(new Date(profile.lastLogin))}
                                             </Table.Cell>
+                                            <Table.Cell key={profile._id} className=" font-medium text-white">
+                                                {profile.otp_enabled ? <span className="text-green-500 text-medium text-2xl"><FaCheck /></span> : <span className="text-yellow-500 text-medium text-2xl"><HiOutlineInformationCircle /></span>}
+                                            </Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
                             </Table>
                         </div>
-
                     )}
                 </div>
-
             </div >
             <FooterMain />
         </>
